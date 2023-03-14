@@ -3,3 +3,10 @@
 
 # Production
 /build
+/dist
+
+/.idea
+
+/src/__pycache__
+/src/a
+/test
