@@ -1,17 +1,27 @@
-import os
-from pathlib import Path
+# import os
+# from pathlib import Path
+#
+# import qroma_project
+# from qroma_project import QromaProject
+# # from qroma_project import QromaCliInfo, save_cli_info, load_cli_info
+#
+# project_id = "d"
+#
+#
+# cli_info: QromaProject = QromaProject(project_id)
+# qroma_project.save_qroma_project(cli_info, project_id)
+#
+#
+# loaded = qroma_project.load_qroma_project(project_id)
+# print("LOADED")
+# print(loaded)
 
-import qroma_project
-from qroma_project import QromaProject
-# from qroma_project import QromaCliInfo, save_cli_info, load_cli_info
 
-project_id = "d"
+from shutil import which
 
 
-cli_info: QromaProject = QromaProject(project_id)
-qroma_project.save_qroma_project(cli_info, project_id)
+def has_pio():
+    return which("pio") is not None
 
 
-loaded = qroma_project.load_qroma_project(project_id)
-print("LOADED")
-print(loaded)
+print(has_pio())

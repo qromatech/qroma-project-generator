@@ -1,15 +1,21 @@
 import os
 import typer
-from generate_project import do_generate_project
-from typer_project_generator import typer_validate_new_project_id, typer_validate_existing_project_id
-from compile_protobuf import do_compile_protobuf
 from typing import Optional
 
+from typer_project_generator import typer_validate_new_project_id, typer_validate_existing_project_id
+from generate_project import do_generate_project
+from compile_protobuf import do_compile_protobuf
 from build_project import do_build_project
-from qroma_project import load_current_dir_qroma_project
-
+from run_project import do_run_project
+import env_checks
 
 app = typer.Typer(help="Qroma project manager for the command line")
+
+
+@app.command()
+def env():
+    print("Checking your system for tools used by Qroma to build your project...")
+    env_checks.do_env_checks()
 
 
 @app.command()
@@ -17,26 +23,10 @@ def init(project_id: str = typer.Argument(...,
                                           # prompt="Enter a project ID",
                                           callback=typer_validate_new_project_id
                                           ),
-         # project_root_dir: str = typer.Option("",
-         #                                      prompt="Enter the parent directory for the project",
-         #                                      callback=typer_validate_project_root_dir,
-         #                                      ),
          ):
     """
     Initialize a new Qroma project.
     """
-    # validated_project_id = validate_project_id(project_id)
-    # if validated_project_id == "":
-    #     raise typer.BadParameter(f"Invalid project ID value: {project_id}")
-    #
-    # if project_root_dir.strip() == '.':
-    #     print("USE CWD")
-    #     project_root_dir = os.getcwd()
-    # elif project_root_dir.strip() == '':
-    #     print("USE DEFAULT")
-    #     project_root_dir = QROMA_DEFAULT_PROJECT_ROOT_DIR
-    # validated_project_root_dir = validate_project_root_dir(project_root_dir)
-
     project_root_dir = os.getcwd()
     print(f"PROJECT ROOT DIR: {project_root_dir}")
 
@@ -58,13 +48,28 @@ def pb(project_id: Optional[str] = typer.Argument(None,
 
 
 @app.command()
-def build():
+def build(project_id: Optional[str] = typer.Argument(None,
+                                                     callback=typer_validate_existing_project_id
+                                                     )):
     """
     Build Qroma software associated with this project.
     """
     print("Building Qroma software")
-    do_build_project()
+    pb(project_id)
+    do_build_project(project_id)
     print("Done building Qroma software")
+
+
+@app.command()
+def run(project_id: Optional[str] = typer.Argument(None,
+                                                   callback=typer_validate_existing_project_id
+                                                   )):
+    """
+    Build, install, and run Qroma software associated with this project.
+    """
+    print("Starting up Qroma software")
+    do_run_project(project_id)
+    print("Qroma software is running")
 
 
 @app.command()
@@ -73,6 +78,7 @@ def publish():
     Publish Qroma software for this project.
     """
     print("Publishing Qroma software")
+    exit("Publish has not been implemented")
 
 
 if __name__ == "__main__":

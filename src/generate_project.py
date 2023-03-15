@@ -3,14 +3,12 @@ from pathlib import Path
 
 import env_checks, device_boards, project_template
 from qroma_project import QromaProject, save_qroma_project
+# from constants import EXIT_CODE_INVALID_ENV
 
 
 def do_generate_project(project_id, project_root_dir) -> QromaProject:
-    # make sure you have docker and npm installed
+    # check to see if you have docker, pio, and npm installed
     env_checks.do_env_checks()
-
-    # # ask user for project ID that can also be a directory name
-    # project_id = project_template.get_project_id_from_user()
 
     # download and unzip template contents from https://github.com/qromatech/qroma-project-template
     project_dir = project_template.setup_project_directory(project_id, project_root_dir)
