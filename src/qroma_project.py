@@ -1,23 +1,34 @@
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import yaml
 
 
 class QromaProject:
+    project_root_dir: str
     project_dir: str
     project_id: str
 
-    def __init__(self, project_dir, project_id):
-        self.project_dir = project_dir
+    def __init__(self, project_root_dir, project_id):
+        self.project_root_dir = project_root_dir
         self.project_id = project_id
+        self.project_dir = os.path.join(self.project_root_dir, self.project_id)
 
 
-def get_yaml_location(project_id: str):
-    project_dir = os.path.join(os.getcwd(), project_id)
-    qroma_yaml_path = Path(os.path.join(project_dir, "qroma.yaml"))
-    return qroma_yaml_path
+def does_qroma_project_dir_exist(qroma_project: QromaProject):
+    return os.path.exists(qroma_project.project_dir)
+
+
+def is_qroma_project_valid(qroma_project: QromaProject):
+    qroma_yaml_path = Path(os.path.join(qroma_project.project_dir, "qroma.yaml"))
+    return os.path.exists(qroma_yaml_path)
+
+#
+# def get_yaml_location(project_id: str):
+#     project_dir = os.path.join(os.getcwd(), project_id)
+#     qroma_yaml_path = Path(os.path.join(project_dir, "qroma.yaml"))
+#     return qroma_yaml_path
 
 
 def save_qroma_project(data: QromaProject, save_location: os.PathLike):
@@ -29,19 +40,23 @@ def save_qroma_project(data: QromaProject, save_location: os.PathLike):
         }, file)
 
 
-def load_qroma_project_from_directory(qroma_dir: os.PathLike) -> Optional[QromaProject]:
+def load_qroma_project(qroma_project: QromaProject) -> Optional[QromaProject]:
+    return load_qroma_project_from_directory(qroma_project.project_dir)
+
+
+def load_qroma_project_from_directory(qroma_dir: Union[str, os.PathLike]) -> Optional[QromaProject]:
     qroma_yaml_path = Path(qroma_dir, "qroma.yaml")
     return load_qroma_project_from_yaml_file(qroma_yaml_path)
 
 
-def load_qroma_project_from_yaml_file(qroma_yaml_file_location: os.PathLike) -> Optional[QromaProject]:
+def load_qroma_project_from_yaml_file(qroma_yaml_file_location: Union[str, os.PathLike]) -> Optional[QromaProject]:
     try:
         with open(qroma_yaml_file_location, 'r') as file:
             qroma_yaml_obj = yaml.safe_load(file)
-            project_dir = os.path.dirname(qroma_yaml_file_location)
+            project_root_dir = os.path.join(os.path.dirname(qroma_yaml_file_location), "..")
 
             qp = QromaProject(
-                project_dir=project_dir,
+                project_root_dir=project_root_dir,
                 project_id=qroma_yaml_obj['projectId']
             )
 

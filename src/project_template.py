@@ -4,49 +4,82 @@ import requests
 import zipfile
 import io
 from pathlib import Path
+from typing import Union
 
 from constants import PROJECT_TEMPLATE_ZIP_URL
 from config import LOCAL_TEMPLATE_DIR
-
+from qroma_project import QromaProject
 
 home_dir = Path.home()
 QROMA_DEFAULT_PROJECT_ROOT_DIR = os.path.join(home_dir, "qroma-projects")
+QROMA_DEFAULT_PROJECT_ID_PREFIX = ":"
 
 VALID_PROJECT_ID_CHARS = "abcdefghijklmnopqrstuvwxyz" + \
                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + \
                          "0123456789-_"
 
 
-def validate_project_id(project_id: str) -> str:
+class NewQromaProjectException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+def get_qroma_project_for_user_supplied_project_id(user_project_id) -> QromaProject:
+    project_id = user_project_id
+    project_root_dir = os.getcwd()
+
+    if user_project_id.startswith(QROMA_DEFAULT_PROJECT_ID_PREFIX):
+        project_id = user_project_id[1:]
+        project_root_dir = QROMA_DEFAULT_PROJECT_ROOT_DIR
+
+    if not is_valid_project_id(project_id):
+        raise NewQromaProjectException(f"Invalid project ID: {project_id}")
+
+    return QromaProject(
+        project_root_dir,
+        project_id,
+    )
+
+
+def is_valid_project_id(project_id: str) -> bool:
     trimmed_project_id = project_id.strip()
     for c in trimmed_project_id:
         if c not in VALID_PROJECT_ID_CHARS:
-            return ""
+            return False
 
-    return trimmed_project_id
-
-
-def validate_project_root_dir(project_root_dir: str) -> os.PathLike:
-    pass
+    return True
 
 
-def get_project_id_from_user() -> str:
-    project_id_complete = False
+# def validate_project_id(project_id: str) -> str:
+#     trimmed_project_id = project_id.strip()
+#     for c in trimmed_project_id:
+#         if c not in VALID_PROJECT_ID_CHARS:
+#             return ""
+#
+#     return trimmed_project_id
 
-    while not project_id_complete:
-        project_id = input("Please enter a project ID >>> ")
-        print(f"You entered projectId: {project_id}")
-        validated_project_id = validate_project_id(project_id)
-        if validated_project_id != "":
-            project_id_complete = True
-        # project_dir = os.path.join(project_root_dir, project_id)
-        # if os.path.exists(project_dir):
-        #     print(f"A directory at '{project_dir}' already exists. Delete this directory or come up with a different "
-        #           "project ID.")
-        # else:
-        #     project_id_complete = True
-
-            return validated_project_id
+#
+# def validate_project_root_dir(project_root_dir: str) -> os.PathLike:
+#     pass
+#
+#
+# def get_project_id_from_user() -> str:
+#     project_id_complete = False
+#
+#     while not project_id_complete:
+#         project_id = input("Please enter a project ID >>> ")
+#         print(f"You entered projectId: {project_id}")
+#         validated_project_id = validate_project_id(project_id)
+#         if validated_project_id != "":
+#             project_id_complete = True
+#         # project_dir = os.path.join(project_root_dir, project_id)
+#         # if os.path.exists(project_dir):
+#         #     print(f"A directory at '{project_dir}' already exists. Delete this directory or come up with a different "
+#         #           "project ID.")
+#         # else:
+#         #     project_id_complete = True
+#
+#             return validated_project_id
 
 
 def get_project_root_dir(project_id: str) -> str:
@@ -123,7 +156,7 @@ def copy_local_template_to_dir(project_dir: Path) -> str:
     return copy_to_dir
 
 
-def setup_project_directory(project_id: str, project_root_dir: os.PathLike) -> os.PathLike:
+def setup_project_directory(project_id: str, project_root_dir: Union[str, os.PathLike]) -> os.PathLike:
     # project_root_dir = get_project_root_dir(project_id)
 
     project_dir = Path(os.path.join(project_root_dir, project_id))

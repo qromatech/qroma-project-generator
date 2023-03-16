@@ -32,8 +32,8 @@ def do_generate_project(project_id, project_root_dir) -> QromaProject:
     else:
         print("RUNNING FROM PYTHON EXECUTABLE, NOT AS CLI APP")
 
-    this_project: QromaProject = QromaProject(project_dir, project_id)
-    save_location = Path(os.path.join(project_dir, "qroma.yaml"))
+    this_project: QromaProject = QromaProject(project_root_dir, project_id)
+    save_location = Path(os.path.join(this_project.project_dir, "qroma.yaml"))
     save_qroma_project(this_project, save_location)
 
     return this_project

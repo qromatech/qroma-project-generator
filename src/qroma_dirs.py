@@ -1,5 +1,6 @@
 import os
 from qroma_project import QromaProject
+from constants import QROMA_PROTOBUFS_DIR_NAME
 
 
 def get_protobufs_dir(qroma_project: QromaProject):
@@ -26,7 +27,7 @@ def get_device_boards_esp_project_dir(qroma_project: QromaProject):
 
 def get_esp_project_pb_dir(qroma_project: QromaProject):
     dev_board_dir = get_device_boards_esp_project_dir(qroma_project)
-    dev_pb_dir = os.path.join(dev_board_dir, "src", "protobufs")
+    dev_pb_dir = os.path.join(dev_board_dir, "src", QROMA_PROTOBUFS_DIR_NAME)
     return dev_pb_dir
 
 
@@ -37,5 +38,5 @@ def get_project_site_www_dir(qroma_project: QromaProject):
 
 def get_site_www_pb_dir(qroma_project: QromaProject):
     project_site_www_dir = get_project_site_www_dir(qroma_project)
-    site_www_pb_dir = os.path.join(project_site_www_dir, "src", "protobufs")
+    site_www_pb_dir = os.path.join(project_site_www_dir, "src", QROMA_PROTOBUFS_DIR_NAME)
     return site_www_pb_dir
