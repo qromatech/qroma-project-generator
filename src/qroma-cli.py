@@ -32,7 +32,7 @@ def new(project_id: str = typer.Argument(...,
     logging.info(f"PROJECT ROOT DIR: {new_qp.project_root_dir}")
 
     typer_show_to_user(f"Initializing Qroma project: {project_id}")
-    do_generate_project(new_qp.project_id, new_qp.project_root_dir)
+    do_generate_project(new_qp)
     typer_show_to_user(f"Done initializing Qroma project: {project_id}")
 
 

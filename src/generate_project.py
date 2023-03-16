@@ -1,12 +1,14 @@
 import sys, os
 from pathlib import Path
 
-import env_checks, device_boards, project_template
+import env_checks, device_boards, project_template, www_sites
 from qroma_project import QromaProject, save_qroma_project
 # from constants import EXIT_CODE_INVALID_ENV
 
 
-def do_generate_project(project_id, project_root_dir) -> QromaProject:
+def do_generate_project(qroma_project: QromaProject) -> QromaProject:
+    project_id, project_root_dir = qroma_project.project_id, qroma_project.project_root_dir
+
     # check to see if you have docker, pio, and npm installed
     env_checks.do_env_checks()
 
@@ -18,6 +20,7 @@ def do_generate_project(project_id, project_root_dir) -> QromaProject:
 
     # setup web sites for interacting with project installed on board
     # www_sites.do_docusaurus_setup(project_dir, project_id)
+    www_sites.setup_site_project(qroma_project)
 
     if getattr(sys, 'frozen', False):
         # If the application is run as a bundle, the PyInstaller bootloader
