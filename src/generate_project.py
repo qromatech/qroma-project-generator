@@ -3,20 +3,20 @@ from pathlib import Path
 
 import env_checks, device_boards, project_template, www_sites
 from qroma_project import QromaProject, save_qroma_project
-# from constants import EXIT_CODE_INVALID_ENV
+from qroma_types import GenerateProjectOptions
 
 
-def do_generate_project(qroma_project: QromaProject) -> QromaProject:
+def do_generate_project(qroma_project: QromaProject, generate_project_options: GenerateProjectOptions) -> QromaProject:
     project_id, project_root_dir = qroma_project.project_id, qroma_project.project_root_dir
 
     # check to see if you have docker, pio, and npm installed
     env_checks.do_env_checks()
 
     # download and unzip template contents from https://github.com/qromatech/qroma-project-template
-    project_dir = project_template.setup_project_directory(project_id, project_root_dir)
+    project_dir = project_template.setup_project_directory(qroma_project, generate_project_options)
 
     # use project ID to name Arduino project directory
-    device_boards.setup_device_project(project_dir, project_id)
+    device_boards.setup_device_project(qroma_project, generate_project_options)
 
     # setup web sites for interacting with project installed on board
     # www_sites.do_docusaurus_setup(project_dir, project_id)

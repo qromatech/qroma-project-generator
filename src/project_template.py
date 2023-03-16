@@ -4,11 +4,11 @@ import requests
 import zipfile
 import io
 from pathlib import Path
-from typing import Union
 
 from constants import PROJECT_TEMPLATE_ZIP_URL
 from config import LOCAL_TEMPLATE_DIR
 from qroma_project import QromaProject
+from generate_project import GenerateProjectOptions
 
 home_dir = Path.home()
 QROMA_DEFAULT_PROJECT_ROOT_DIR = os.path.join(home_dir, "qroma-projects")
@@ -121,7 +121,7 @@ def get_project_root_dir(project_id: str) -> str:
     return project_root_dir
 
 
-def download_template_to_dir(project_dir: Path) -> str:
+def download_template_to_dir(project_dir: os.PathLike) -> str:
     response = requests.get(PROJECT_TEMPLATE_ZIP_URL)
 
     # Create a ZipFile object from the content of the response
@@ -140,7 +140,7 @@ def download_template_to_dir(project_dir: Path) -> str:
     return template_dir
 
 
-def copy_local_template_to_dir(project_dir: Path) -> str:
+def copy_local_template_to_dir(project_dir: os.PathLike) -> str:
     copy_to_dir = os.path.join(project_dir, "template-copy")
     shutil.copytree(os.path.join(os.getcwd(), LOCAL_TEMPLATE_DIR),
                     copy_to_dir)
@@ -156,10 +156,10 @@ def copy_local_template_to_dir(project_dir: Path) -> str:
     return copy_to_dir
 
 
-def setup_project_directory(project_id: str, project_root_dir: Union[str, os.PathLike]) -> os.PathLike:
-    # project_root_dir = get_project_root_dir(project_id)
+# def setup_project_directory(project_id: str, project_root_dir: Union[str, os.PathLike]) -> os.PathLike:
+def setup_project_directory(qroma_project: QromaProject, project_options: GenerateProjectOptions) -> os.PathLike:
 
-    project_dir = Path(os.path.join(project_root_dir, project_id))
+    project_dir = qroma_project.project_dir
 
     if os.path.exists(project_dir):
         shutil.rmtree(project_dir)

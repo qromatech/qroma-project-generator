@@ -6,9 +6,9 @@ import yaml
 
 
 class QromaProject:
-    project_root_dir: str
-    project_dir: str
-    project_id: str
+    project_root_dir: Union[str, os.PathLike]
+    project_dir: Union[str, os.PathLike]
+    project_id: Union[str, os.PathLike]
 
     def __init__(self, project_root_dir, project_id):
         self.project_root_dir = project_root_dir
@@ -23,12 +23,6 @@ def does_qroma_project_dir_exist(qroma_project: QromaProject):
 def is_qroma_project_valid(qroma_project: QromaProject):
     qroma_yaml_path = Path(os.path.join(qroma_project.project_dir, "qroma.yaml"))
     return os.path.exists(qroma_yaml_path)
-
-#
-# def get_yaml_location(project_id: str):
-#     project_dir = os.path.join(os.getcwd(), project_id)
-#     qroma_yaml_path = Path(os.path.join(project_dir, "qroma.yaml"))
-#     return qroma_yaml_path
 
 
 def save_qroma_project(data: QromaProject, save_location: os.PathLike):

@@ -59,12 +59,6 @@ def copy_typescriptpb_to_site_www_dir(qroma_project: QromaProject):
 
 
 def do_compile_protobuf(qroma_project: QromaProject):
-    # if project_id is None:
-    #     qroma_project = load_current_dir_qroma_project()
-    # else:
-    #     project_dir = os.path.join(os.getcwd(), project_id)
-    #     qroma_project = load_qroma_project_from_directory(project_dir)
-
     run_pb_compile(qroma_project)
 
     clean_esp32_protobuf_dirs(qroma_project)

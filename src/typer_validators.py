@@ -12,8 +12,8 @@ def typer_validate_new_project_id(user_project_id: str):
     logging.info("VALIDATING PROJECT ID FOR TYPER: " + user_project_id)
     try:
         qp = project_template.get_qroma_project_for_user_supplied_project_id(user_project_id)
-        if does_qroma_project_dir_exist(qp):
-            raise typer.BadParameter(f"Project ID {qp.project_id} already created. See {qp.project_dir}.")
+        # if does_qroma_project_dir_exist(qp):
+        #     raise typer.BadParameter(f"Project ID {qp.project_id} already created. See {qp.project_dir}.")
 
     except project_template.NewQromaProjectException as e:
         raise typer.BadParameter(f"Invalid project ID value: {user_project_id}")
