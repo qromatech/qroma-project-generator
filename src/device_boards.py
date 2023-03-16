@@ -49,13 +49,7 @@ def update_board_dir_with_project_options(qroma_project: QromaProject, project_o
         devboard_build_platformio.remove_platformio_from_project_dir(qroma_project)
 
 
-def install_firmware_onto_pio_device_board():
-    pass
-    # run --target upload --environment esp32dev
 
-
-def install_firmware_onto_arduino_device_board():
-    pass
 
 
 def setup_device_project(qroma_project: QromaProject, project_options: GenerateProjectOptions):

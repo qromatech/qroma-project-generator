@@ -31,5 +31,5 @@ def do_run_project(project_id: Optional[str]):
 
     print("EXECUTING RUN ALL PROJECTS")
     run_and_install_platformio_project(qroma_project)
-    run_dev_site_www_project(project_dir)
+    run_dev_site_www_project(qroma_project)
     print("DONE EXECUTING RUN ALL PROJECTS")

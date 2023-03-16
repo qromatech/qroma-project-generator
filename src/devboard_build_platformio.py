@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from qroma_project import QromaProject
 import qroma_dirs
@@ -23,3 +24,12 @@ def move_files_from_main_dir_into_src_main_project_dir(qroma_project: QromaProje
 
     qroma_os_move_file_to_dir(os.path.join(esp32_device_src_dir, "qroma-project.h"), esp32_device_src_project_dir)
     qroma_os_move_file_to_dir(os.path.join(esp32_device_src_dir, "qroma-project.cpp"), esp32_device_src_project_dir)
+
+
+def install_firmware_onto_pio_device_board(qroma_project: QromaProject):
+    cwd_dir = qroma_dirs.get_device_boards_esp_project_dir(qroma_project)
+    print("RUNNING BUILD ESP 32 PROJECT SUBPROCESS")
+    subprocess.run(["pio", "run"], shell=True, cwd=cwd_dir)
+    print("DONE RUNNING BUILD PROJECT SUBPROCESS")
+
+    # run --target upload --environment esp32dev
