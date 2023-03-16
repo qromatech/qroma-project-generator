@@ -31,9 +31,15 @@ def get_device_boards_esp_project_dir(qroma_project: QromaProject):
     return esp_project_dir
 
 
-def get_esp_project_pb_dir(qroma_project: QromaProject):
-    dev_board_dir = get_device_boards_esp_project_dir(qroma_project)
-    dev_pb_dir = os.path.join(dev_board_dir, "src", QROMA_PROTOBUFS_DIR_NAME)
+def get_device_boards_esp_project_src_dir(qroma_project: QromaProject):
+    esp_boards_dir = get_device_boards_esp_project_dir(qroma_project)
+    esp_project_dir = os.path.join(esp_boards_dir, "src")
+    return esp_project_dir
+
+
+def get_device_boards_esp_project_pb_dir(qroma_project: QromaProject):
+    project_src_dir = get_device_boards_esp_project_src_dir(qroma_project)
+    dev_pb_dir = os.path.join(project_src_dir, QROMA_PROTOBUFS_DIR_NAME)
     return dev_pb_dir
 
 

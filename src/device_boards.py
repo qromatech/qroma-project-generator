@@ -1,10 +1,11 @@
 import os.path
 
-from utils import qroma_os_rename, qroma_os_remove
+from utils import qroma_os_rename
 from qroma_project import QromaProject
 from qroma_types import GenerateProjectOptions
 from qroma_enums import DeviceBoardPlatform
 import qroma_dirs
+import devboard_build_arduino, devboard_build_platformio, include_header_generators
 
 
 def convert_qroma_file_references(fpath, project_id):
@@ -19,14 +20,6 @@ def convert_qroma_file_references(fpath, project_id):
         file.write(filedata)
 
 
-def remove_platformio_from_project_dir(qroma_project: QromaProject):
-    esp32_device_board_dir = qroma_dirs.get_device_boards_esp_project_dir(qroma_project)
-    print("REMOVING PLATFORMIO FROM ESP32 DEVICE BOARD DIR: " + esp32_device_board_dir)
-
-    qroma_os_remove(os.path.join(esp32_device_board_dir, "platformio.ini"))
-    qroma_os_remove(os.path.join(esp32_device_board_dir, "src", "main.cpp"))
-
-
 def update_board_dir_with_project_options(qroma_project: QromaProject, project_options: GenerateProjectOptions):
     project_dir, project_id = qroma_project.project_dir, qroma_project.project_id
 
@@ -34,31 +27,34 @@ def update_board_dir_with_project_options(qroma_project: QromaProject, project_o
     print(f"ESP32 {esp32_device_boards_dir}")
 
     project_template_board_dir = os.path.join(esp32_device_boards_dir, "qroma-project")
-    new_board_dir = os.path.join(esp32_device_boards_dir, project_id)
+    new_board_dir = qroma_dirs.get_device_boards_esp_project_dir(qroma_project)
     qroma_os_rename(project_template_board_dir, new_board_dir)
 
     project_template_ino_file_path = os.path.join(new_board_dir, "qroma-project.ino")
     new_project_ino_file_path = os.path.join(new_board_dir, f"{project_id}.ino")
     qroma_os_rename(project_template_ino_file_path, new_project_ino_file_path)
 
+    project_template_src_project_id_path = os.path.join(new_board_dir, "src", "qroma-project")
+    new_src_project_id_path = os.path.join(new_board_dir, "src", project_id)
+    qroma_os_rename(project_template_src_project_id_path, new_src_project_id_path)
+
+    include_header_generators.update_all_header_includes(qroma_project)
+
     if DeviceBoardPlatform.arduino in project_options.project_config.dev_board_platforms:
-        print("RENAMING INO")
-        new_ino_file_path = os.path.join(new_board_dir, f"{project_id}.ino")
-        qroma_os_rename(new_project_ino_file_path, new_ino_file_path)
+        include_header_generators.update_include_for_arduino_ino(qroma_project)
     else:
-        print("REMOVING INO")
-        qroma_os_remove(new_project_ino_file_path)
+        devboard_build_arduino.remove_arduino_from_project_dir(qroma_project)
 
     if DeviceBoardPlatform.platformio not in project_options.project_config.dev_board_platforms:
-        remove_platformio_from_project_dir(qroma_project)
+        devboard_build_platformio.remove_platformio_from_project_dir(qroma_project)
 
 
-def install_to_pio_device_board():
+def install_firmware_onto_pio_device_board():
     pass
     # run --target upload --environment esp32dev
 
 
-def install_to_arduino_device_board():
+def install_firmware_onto_arduino_device_board():
     pass
 
 

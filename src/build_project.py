@@ -61,6 +61,6 @@ def run_build_projects(qroma_project: QromaProject, build_parameters: BuildParam
 
 
 def do_build_project(qroma_project: QromaProject,
-                     build_parameters: BuildParameters = create_build_parameters_with_all_steps_enabled()
+                     build_parameters: BuildParameters = create_build_parameters_with_all_steps_enabled(),
                      ):
     run_build_projects(qroma_project, build_parameters)

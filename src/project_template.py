@@ -50,75 +50,43 @@ def is_valid_project_id(project_id: str) -> bool:
     return True
 
 
-# def validate_project_id(project_id: str) -> str:
-#     trimmed_project_id = project_id.strip()
-#     for c in trimmed_project_id:
-#         if c not in VALID_PROJECT_ID_CHARS:
-#             return ""
+# def get_project_root_dir(project_id: str) -> str:
+#     print("GETTING PROJECT DIR 2")
+#     project_root_dir = ""
+#     project_dir_complete = False
+#     x = 1
 #
-#     return trimmed_project_id
-
+#     # while not os.path.isdir(project_root_dir):
+#     while not project_dir_complete:
+#         user_entered_project_dir = input(
+#             f"{x}: Enter a period (.) to create your project in the current " +
+#             f"directory or leave blank to use '{QROMA_DEFAULT_PROJECT_ROOT_DIR}' >>> "
+#         )
+#         print(f">>> {user_entered_project_dir}")
 #
-# def validate_project_root_dir(project_root_dir: str) -> os.PathLike:
-#     pass
+#         if user_entered_project_dir.strip() == '.':
+#             print("USE CWD")
+#             project_root_dir = os.getcwd()
+#         elif user_entered_project_dir.strip() == '':
+#             print("USE DEFAULT")
+#             project_root_dir = QROMA_DEFAULT_PROJECT_ROOT_DIR
+#             # if not os.path.exists(QROMA_PROJECT_ROOT_DIR):
+#             #     os.makedirs(QROMA_PROJECT_ROOT_DIR)
 #
+#         print("USER ENTERED: " + user_entered_project_dir)
 #
-# def get_project_id_from_user() -> str:
-#     project_id_complete = False
+#         project_dir = os.path.join(project_root_dir, project_id)
+#         if not os.path.exists(project_dir):
+#             os.makedirs(project_dir)
+#             project_dir_complete = True
+#         else:
+#             print(
+#                 f"A directory at '{project_dir}' already exists. Delete this directory or come up with a different "
+#                 "project ID.")
 #
-#     while not project_id_complete:
-#         project_id = input("Please enter a project ID >>> ")
-#         print(f"You entered projectId: {project_id}")
-#         validated_project_id = validate_project_id(project_id)
-#         if validated_project_id != "":
-#             project_id_complete = True
-#         # project_dir = os.path.join(project_root_dir, project_id)
-#         # if os.path.exists(project_dir):
-#         #     print(f"A directory at '{project_dir}' already exists. Delete this directory or come up with a different "
-#         #           "project ID.")
-#         # else:
-#         #     project_id_complete = True
+#         x += 1
 #
-#             return validated_project_id
-
-
-def get_project_root_dir(project_id: str) -> str:
-    print("GETTING PROJECT DIR 2")
-    project_root_dir = ""
-    project_dir_complete = False
-    x = 1
-
-    # while not os.path.isdir(project_root_dir):
-    while not project_dir_complete:
-        user_entered_project_dir = input(
-            f"{x}: Enter a period (.) to create your project in the current " +
-            f"directory or leave blank to use '{QROMA_DEFAULT_PROJECT_ROOT_DIR}' >>> "
-        )
-        print(f">>> {user_entered_project_dir}")
-
-        if user_entered_project_dir.strip() == '.':
-            print("USE CWD")
-            project_root_dir = os.getcwd()
-        elif user_entered_project_dir.strip() == '':
-            print("USE DEFAULT")
-            project_root_dir = QROMA_DEFAULT_PROJECT_ROOT_DIR
-            # if not os.path.exists(QROMA_PROJECT_ROOT_DIR):
-            #     os.makedirs(QROMA_PROJECT_ROOT_DIR)
-
-        print("USER ENTERED: " + user_entered_project_dir)
-
-        project_dir = os.path.join(project_root_dir, project_id)
-        if not os.path.exists(project_dir):
-            os.makedirs(project_dir)
-            project_dir_complete = True
-        else:
-            print(
-                f"A directory at '{project_dir}' already exists. Delete this directory or come up with a different "
-                "project ID.")
-
-        x += 1
-
-    return project_root_dir
+#     return project_root_dir
 
 
 def download_template_to_dir(project_dir: os.PathLike) -> str:

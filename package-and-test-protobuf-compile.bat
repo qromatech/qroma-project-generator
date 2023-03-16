@@ -3,8 +3,7 @@ pyinstaller qroma-cli.spec
 copy dist\qroma.exe test
 
 cd test
-cd abc
 
-CALL ..\qroma pb
+CALL qroma protobuf :abc
 
 cd "%~dp0"

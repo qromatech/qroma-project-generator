@@ -8,12 +8,12 @@ from qroma_enums import DeviceBoardPlatform
 from qroma_project import does_qroma_project_dir_exist
 from typer_validators import typer_validate_new_project_id, typer_validate_existing_project_id
 from generate_project import do_generate_project
-from build_project import do_build_project, create_build_parameters_with_all_steps_disabled,\
-    create_build_parameters_with_all_steps_enabled
+from build_project import do_build_project, create_build_parameters_with_all_steps_disabled, \
+    create_build_parameters_with_all_steps_enabled, BuildParameters
 from run_project import do_run_project
 import env_checks
 import project_template
-from utils import typer_show_to_user, qroma_os_remove
+from utils import typer_show_to_user, qroma_os_remove, qroma_os_rmdir
 
 # from device_boards import DeviceBoardPlatform, DEFAULT_PLATFORMS
 
@@ -22,6 +22,9 @@ app = typer.Typer(help="Qroma project manager for the command line")
 
 @app.command()
 def env():
+    """
+    Check your environment for tools that the Qroma CLI might require.
+    """
     typer_show_to_user("Checking your system for tools used by Qroma to build your project...")
     env_checks.do_env_checks()
 
@@ -33,6 +36,8 @@ def new(project_id: str = typer.Argument(...,
                                          ),
         dev_board_platforms: Optional[List[DeviceBoardPlatform]] = typer.Option(None),
         replace_existing: bool = typer.Option(False),
+        do_build: bool = typer.Option(False),
+        build_ignore_www: bool = typer.Option(True),
         ):
     """
     Initialize a new Qroma project. Give a project ID to create a new project in this directory. If you
@@ -41,9 +46,10 @@ def new(project_id: str = typer.Argument(...,
     new_qp = project_template.get_qroma_project_for_user_supplied_project_id(project_id)
     if does_qroma_project_dir_exist(new_qp):
         if not replace_existing:
-            typer_show_to_user(f"Project ID {new_qp.project_id} already created. See {new_qp.project_dir}.")
+            typer_show_to_user(f"Project ID {new_qp.project_id} already created. See {new_qp.project_dir}.\n"
+                               "  Add --replace-existing if you want to delete the existing project.")
             raise typer.Exit()
-        qroma_os_remove(new_qp.project_dir)
+        qroma_os_rmdir(new_qp.project_dir)
 
     logging.info(f"PROJECT ROOT DIR: {new_qp.project_root_dir}")
 
@@ -53,7 +59,17 @@ def new(project_id: str = typer.Argument(...,
         dev_board_platforms=dev_board_platforms
     )
 
-    generate_project_options = GenerateProjectOptions(project_config=project_config)
+    build_parameters = BuildParameters(
+        include_pb=do_build,
+        include_device=do_build,
+        include_site=do_build and not build_ignore_www,
+    )
+
+    generate_project_options = GenerateProjectOptions(
+        project_config=project_config,
+        build_parameters=build_parameters,
+    )
+
     do_generate_project(new_qp, generate_project_options)
 
     typer_show_to_user(f"Done initializing Qroma project: {project_id}")

@@ -8,6 +8,12 @@ copy dist\qroma.exe test
 
 cd test
 
-CALL qroma init abc
+CALL qroma new :abc --replace-existing --do-build --build-ignore-www --dev-board-platforms platformio --dev-board-platforms arduino
 
+cd /D %UserProfile%
+cd qroma-projects
+cd abc
+cd device-boards\esp32\abc
+
+CALL code .
 cd "%~dp0"

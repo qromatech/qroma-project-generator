@@ -4,6 +4,7 @@ from pathlib import Path
 import env_checks, device_boards, project_template, www_sites
 from qroma_project import QromaProject, save_qroma_project
 from qroma_types import GenerateProjectOptions
+from build_project import do_build_project
 
 
 def do_generate_project(qroma_project: QromaProject, generate_project_options: GenerateProjectOptions) -> QromaProject:
@@ -30,7 +31,6 @@ def do_generate_project(qroma_project: QromaProject, generate_project_options: G
         print(sys.executable)
         project_app_path = os.path.join(project_dir, "qroma.exe")
         print(project_app_path)
-        # shutil.copy(application_path, project_app_path)
 
     else:
         print("RUNNING FROM PYTHON EXECUTABLE, NOT AS CLI APP")
@@ -38,5 +38,9 @@ def do_generate_project(qroma_project: QromaProject, generate_project_options: G
     this_project: QromaProject = QromaProject(project_root_dir, project_id)
     save_location = Path(os.path.join(this_project.project_dir, "qroma.yaml"))
     save_qroma_project(this_project, save_location)
+
+    do_build_project(qroma_project=this_project,
+                     build_parameters=generate_project_options.build_parameters,
+                     )
 
     return this_project

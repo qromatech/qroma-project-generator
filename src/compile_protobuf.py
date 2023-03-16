@@ -25,7 +25,7 @@ def run_pb_compile(qroma_project: QromaProject):
 
 
 def clean_esp32_protobuf_dirs(qroma_project: QromaProject):
-    esp_project_pb_dir = qroma_dirs.get_esp_project_pb_dir(qroma_project)
+    esp_project_pb_dir = qroma_dirs.get_device_boards_esp_project_pb_dir(qroma_project)
     print(f"CHECKING FOR ESP PROJECT PROTOBUF DIR: {esp_project_pb_dir}")
     if os.path.exists(esp_project_pb_dir):
         print("CLEANING OUT ESP PROJECT PROTOBUF DIR")
@@ -35,7 +35,7 @@ def clean_esp32_protobuf_dirs(qroma_project: QromaProject):
 
 def copy_nanopb_to_esp32_dir(qroma_project: QromaProject):
     copy_from_dir = qroma_dirs.get_protobufs_out_nanopb_dir(qroma_project)
-    copy_to_dir = qroma_dirs.get_esp_project_pb_dir(qroma_project)
+    copy_to_dir = qroma_dirs.get_device_boards_esp_project_pb_dir(qroma_project)
     print(f"COPYING NANOPB PROTOBUFS FROM {copy_from_dir} TO {copy_to_dir}")
     shutil.copytree(copy_from_dir, copy_to_dir)
     print("DONE COPYING NANOPB PROTOBUFS")

@@ -1,6 +1,7 @@
 from typing import List
 
 from qroma_enums import DeviceBoardPlatform
+from build_project import BuildParameters
 
 
 class QromaProjectConfig:
@@ -14,8 +15,11 @@ class QromaProjectConfig:
 
 class GenerateProjectOptions:
     project_config: QromaProjectConfig
+    build_parameters: BuildParameters
 
     def __init__(self, *,
                  project_config: QromaProjectConfig,
+                 build_parameters: BuildParameters,
                  ):
         self.project_config = project_config
+        self.build_parameters = build_parameters
