@@ -1,11 +1,13 @@
 import typer
 
 import mod1.imp1
+import mod2.m2_imp1
 
 
 app = typer.Typer(help="Pyinstaller test - Qroma project manager for the command line")
 
 mod1.imp1.imp1_exe("xyz")
+mod2.m2_imp1.m2_imp1_exe("a1")
 
 
 @app.command()

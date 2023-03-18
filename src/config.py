@@ -1,2 +1,2 @@
 
-LOCAL_TEMPLATE_DIR = "../qroma-project-template"
+LOCAL_TEMPLATE_DIR = "./qroma-project-template"

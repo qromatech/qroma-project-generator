@@ -5,7 +5,9 @@
 /build
 /dist
 
-/.idea
+**/.idea
+
+**/venv
 
 **/__pycache__/
 /src/a

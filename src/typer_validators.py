@@ -1,11 +1,9 @@
-import os
 import logging
 from typing import Optional
 import typer
 
-import project_template
-from qroma_project import load_current_dir_qroma_project, load_qroma_project_from_directory, \
-    does_qroma_project_dir_exist, is_qroma_project_valid
+from qp_new import project_template
+from qroma_project import load_current_dir_qroma_project, does_qroma_project_dir_exist, is_qroma_project_valid
 
 
 def typer_validate_new_project_id(user_project_id: str):

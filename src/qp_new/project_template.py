@@ -8,7 +8,7 @@ from pathlib import Path
 from constants import PROJECT_TEMPLATE_ZIP_URL
 from config import LOCAL_TEMPLATE_DIR
 from qroma_project import QromaProject
-from generate_project import GenerateProjectOptions
+from qp_new.generate_project import GenerateProjectOptions
 
 home_dir = Path.home()
 QROMA_DEFAULT_PROJECT_ROOT_DIR = os.path.join(home_dir, "qroma-projects")

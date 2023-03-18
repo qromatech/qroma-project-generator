@@ -41,6 +41,23 @@ def copy_nanopb_to_esp32_dir(qroma_project: QromaProject):
     print("DONE COPYING NANOPB PROTOBUFS")
 
 
+def clean_python_protobuf_dirs(qroma_project: QromaProject):
+    python_project_pb_dir = qroma_dirs.get_apps_python_pb_dir(qroma_project)
+    print(f"CHECKING FOR PYTHON PROJECT PROTOBUF DIR: {python_project_pb_dir}")
+    if os.path.exists(python_project_pb_dir):
+        print("CLEANING OUT PYTHON PROJECT PROTOBUF DIR")
+        shutil.rmtree(python_project_pb_dir)
+        print("DONE CLEANING OUT PYTHON PROJECT PROTOBUF DIR")
+
+
+def copy_pythonpb_to_python_dir(qroma_project: QromaProject):
+    copy_from_dir = qroma_dirs.get_protobufs_out_python_dir(qroma_project)
+    copy_to_dir = qroma_dirs.get_apps_python_pb_dir(qroma_project)
+    print(f"COPYING PYTHON PROTOBUFS FROM {copy_from_dir} TO {copy_to_dir}")
+    shutil.copytree(copy_from_dir, copy_to_dir)
+    print("DONE COPYING PYTHON PROTOBUFS")
+
+
 def clean_site_www_protobuf_dirs(qroma_project: QromaProject):
     site_www_pb_dir = qroma_dirs.get_site_www_pb_dir(qroma_project)
     print(f"CHECKING FOR SITE WWW PROTOBUF DIR: {site_www_pb_dir}")

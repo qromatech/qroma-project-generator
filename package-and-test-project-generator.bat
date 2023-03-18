@@ -8,7 +8,8 @@ copy dist\qroma.exe test
 
 cd test
 
-CALL qroma new :abc --replace-existing --do-build --build-ignore-www --dev-board-platforms platformio --dev-board-platforms arduino
+CALL qroma new :abc --do-build --build-ignore-www --dev-board-platforms platformio --dev-board-platforms arduino
+REM --replace-existing
 
 cd /D %UserProfile%
 cd qroma-projects

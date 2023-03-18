@@ -5,7 +5,7 @@ from qroma_project import QromaProject
 from qroma_types import GenerateProjectOptions
 from qroma_enums import DeviceBoardPlatform
 import qroma_dirs
-import devboard_build_arduino, devboard_build_platformio, include_header_generators
+from build_frameworks import build_arduino, build_platformio, include_header_generators
 
 
 def convert_qroma_file_references(fpath, project_id):
@@ -43,10 +43,10 @@ def update_board_dir_with_project_options(qroma_project: QromaProject, project_o
     if DeviceBoardPlatform.arduino in project_options.project_config.dev_board_platforms:
         include_header_generators.update_include_for_arduino_ino(qroma_project)
     else:
-        devboard_build_arduino.remove_arduino_from_project_dir(qroma_project)
+        build_arduino.remove_arduino_from_project_dir(qroma_project)
 
     if DeviceBoardPlatform.platformio not in project_options.project_config.dev_board_platforms:
-        devboard_build_platformio.remove_platformio_from_project_dir(qroma_project)
+        build_platformio.remove_platformio_from_project_dir(qroma_project)
 
 
 

@@ -4,16 +4,27 @@ from typing import Optional, Union
 
 import yaml
 
+from qp_config import QromaProjectConfig
+
 
 class QromaProject:
     project_root_dir: Union[str, os.PathLike]
     project_dir: Union[str, os.PathLike]
     project_id: Union[str, os.PathLike]
 
+    _config: QromaProjectConfig
+
+    @property
+    def config(self):
+        return self._config
+
     def __init__(self, project_root_dir, project_id):
         self.project_root_dir = project_root_dir
         self.project_id = project_id
         self.project_dir = os.path.join(self.project_root_dir, self.project_id)
+
+    def set_config(self, config: QromaProjectConfig):
+        self._config = config
 
 
 def does_qroma_project_dir_exist(qroma_project: QromaProject):

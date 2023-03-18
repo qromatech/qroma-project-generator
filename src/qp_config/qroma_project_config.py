@@ -1,9 +1,12 @@
+# from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
 from typing import List, Optional
 
 from qroma_enums import DeviceBoardPlatform
 from qroma_defaults import DEFAULT_DEV_BOARD_PLATFORMS
 
 
+@dataclass
 class QromaProjectConfig:
     dev_board_platforms: List[DeviceBoardPlatform]
 

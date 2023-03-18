@@ -1,3 +1,5 @@
+# from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
 import subprocess
 
 import qroma_dirs
@@ -5,6 +7,7 @@ from qroma_project import QromaProject
 import compile_protobuf
 
 
+@dataclass
 class BuildParameters:
     include_pb: bool = False
     include_device: bool = False

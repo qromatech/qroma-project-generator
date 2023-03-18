@@ -4,7 +4,7 @@ from constants import QROMA_PROTOBUFS_DIR_NAME
 
 
 def get_protobufs_dir(qroma_project: QromaProject):
-    protobufs_dir = os.path.join(qroma_project.project_dir, "device-io", "protobufs")
+    protobufs_dir = os.path.join(qroma_project.project_dir, "dev-io", "protobufs")
     return protobufs_dir
 
 
@@ -14,6 +14,12 @@ def get_protobufs_out_nanopb_dir(qroma_project: QromaProject):
     return pb_out_nanopb_dir
 
 
+def get_protobufs_out_python_dir(qroma_project: QromaProject):
+    pb_dir = get_protobufs_dir(qroma_project)
+    pb_out_python_dir = os.path.join(pb_dir, "protofiles-out", "python")
+    return pb_out_python_dir
+
+
 def get_protobufs_out_typescriptpb_dir(qroma_project: QromaProject):
     pb_dir = get_protobufs_dir(qroma_project)
     pb_out_dir = os.path.join(pb_dir, "protofiles-out", "typescript")
@@ -21,7 +27,7 @@ def get_protobufs_out_typescriptpb_dir(qroma_project: QromaProject):
 
 
 def get_device_boards_esp_dir(qroma_project: QromaProject):
-    esp_boards_dir = os.path.join(qroma_project.project_dir, "device-boards", "esp32")
+    esp_boards_dir = os.path.join(qroma_project.project_dir, "dev-boards", "esp32")
     return esp_boards_dir
 
 
@@ -41,6 +47,17 @@ def get_device_boards_esp_project_pb_dir(qroma_project: QromaProject):
     project_src_dir = get_device_boards_esp_project_src_dir(qroma_project)
     dev_pb_dir = os.path.join(project_src_dir, QROMA_PROTOBUFS_DIR_NAME)
     return dev_pb_dir
+
+
+def get_apps_dir(qroma_project: QromaProject):
+    apps_dir = os.path.join(qroma_project.project_dir, "apps")
+    return apps_dir
+
+
+def get_apps_python_pb_dir(qroma_project: QromaProject):
+    apps_dir = get_apps_dir(qroma_project)
+    apps_python_dir = os.path.join(apps_dir, "py-qroma-io")
+    return apps_python_dir
 
 
 def get_project_site_www_dir(qroma_project: QromaProject):

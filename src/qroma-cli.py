@@ -2,18 +2,18 @@ import logging
 import typer
 from typing import Optional, List
 
-from qroma_project_config import QromaProjectConfig
+from qp_config import QromaProjectConfig, save_qroma_project
 from qroma_types import GenerateProjectOptions
 from qroma_enums import DeviceBoardPlatform
 from qroma_project import does_qroma_project_dir_exist
 from typer_validators import typer_validate_new_project_id, typer_validate_existing_project_id
-from generate_project import do_generate_project
+from qp_new.generate_project import do_generate_project
 from build_project import do_build_project, create_build_parameters_with_all_steps_disabled, \
     create_build_parameters_with_all_steps_enabled, BuildParameters
 from run_project import do_run_project
 import env_checks
-import project_template
-from utils import typer_show_to_user, qroma_os_remove, qroma_os_rmdir
+from qp_new import project_template
+from utils import typer_show_to_user, qroma_os_rmdir
 
 # from device_boards import DeviceBoardPlatform, DEFAULT_PLATFORMS
 
@@ -59,6 +59,8 @@ def new(project_id: str = typer.Argument(...,
         dev_board_platforms=dev_board_platforms
     )
 
+    new_qp.set_config(project_config)
+
     build_parameters = BuildParameters(
         include_pb=do_build,
         include_device=do_build,
@@ -71,6 +73,7 @@ def new(project_id: str = typer.Argument(...,
     )
 
     do_generate_project(new_qp, generate_project_options)
+    save_qroma_project(new_qp)
 
     typer_show_to_user(f"Done initializing Qroma project: {project_id}")
 

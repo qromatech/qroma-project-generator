@@ -1,7 +1,9 @@
 import sys, os
 from pathlib import Path
 
-import env_checks, device_boards, project_template, www_sites
+import env_checks, www_sites
+from qp_new import project_template
+from build_frameworks import device_boards
 from qroma_project import QromaProject, save_qroma_project
 from qroma_types import GenerateProjectOptions
 from build_project import do_build_project
