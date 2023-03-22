@@ -4,7 +4,6 @@ from jinja2 import Environment, FileSystemLoader
 
 from qroma_project.generate.firmware_processor import firmware_processor
 from qroma_project.generate.qroma_project_template_data import QromaProjectTemplateData
-from qroma_project.qroma_project import QromaProject
 from qroma_types import GenerateProjectOptions
 from utils import qroma_copy_file
 

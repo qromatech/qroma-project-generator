@@ -211,13 +211,6 @@ def copy_local_template_to_dir(copy_to_dir: os.PathLike):
 
 
 def setup_project_template_directory() -> tempfile.TemporaryDirectory:
-
-    # project_dir = qroma_project.project_dir
-    #
-    # if os.path.exists(project_dir):
-    #     shutil.rmtree(project_dir)
-    #
-    # os.makedirs(project_dir)
     temp_directory = tempfile.TemporaryDirectory(prefix="qroma-template-copy-dir-")
 
     if LOCAL_TEMPLATE_DIR:
@@ -226,8 +219,6 @@ def setup_project_template_directory() -> tempfile.TemporaryDirectory:
         template_dir = download_template_to_dir(temp_directory.name)
 
     print("SETUP TEMPLATE DIR: " + template_dir)
-
-    # shutil.rmtree(template_dir)
 
     return temp_directory
 

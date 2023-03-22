@@ -2,10 +2,7 @@ import os
 
 import env_checks
 from qroma_project.generate import template_processor, project_template
-from qroma_project.qroma_project import QromaProject
 from qroma_types import GenerateProjectOptions
-from build_project import do_build_project
-# from qp_config import save_qroma_project
 from utils import qroma_os_rmdir, typer_show_to_user
 
 
@@ -34,10 +31,7 @@ def init_project_directory_from_project_template_directory(generate_project_opti
 
 
 def do_generate_project_structure(generate_project_options: GenerateProjectOptions):
-    # project_id, project_root_dir = qroma_project.project_id, qroma_project.project_root_dir
-    # project_id = generate_project_options.project_config_user_inputs.project_info.project_id
-
-    # check to see if you have docker, pio, and npm installed
+    # check to see if tools installed (e.g. docker, pio, npm, etc.)
     env_checks.do_env_checks()
 
     # download and unzip template contents from https://github.com/qromatech/qroma-project-template
@@ -47,5 +41,3 @@ def do_generate_project_structure(generate_project_options: GenerateProjectOptio
         generate_project_options, template_directory.name)
 
     project_template.remove_project_template_directory(template_directory)
-
-    # return this_project

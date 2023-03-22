@@ -34,23 +34,14 @@ def get_protobufs_dir(qroma_project: QromaProject):
 
 def get_protobufs_out_nanopb_dir(qroma_project: QromaProject):
     return compute_dir_from_project(qroma_project, PROTOBUFS_OUT_NANOPB_DIR_CHAIN)
-    # pb_dir = get_protobufs_dir(qroma_project)
-    # pb_out_nanopb_dir = os.path.join(pb_dir, "protofiles-out", "nanopb")
-    # return pb_out_nanopb_dir
 
 
 def get_protobufs_out_python_dir(qroma_project: QromaProject):
     return compute_dir_from_project(qroma_project, PROTOBUFS_OUT_PYTHON_DIR_CHAIN)
-    # pb_dir = get_protobufs_dir(qroma_project)
-    # pb_out_python_dir = os.path.join(pb_dir, "protofiles-out", "python")
-    # return pb_out_python_dir
 
 
 def get_protobufs_out_typescriptpb_dir(qroma_project: QromaProject):
     return compute_dir_from_project(qroma_project, PROTOBUFS_OUT_TYPESCRIPT_DIR_CHAIN)
-    # pb_dir = get_protobufs_dir(qroma_project)
-    # pb_out_dir = os.path.join(pb_dir, "protofiles-out", "typescript")
-    # return pb_out_dir
 
 
 def get_device_boards_esp_dir(qroma_project: QromaProject):
@@ -77,15 +68,10 @@ def get_device_boards_esp_project_pb_dir(qroma_project: QromaProject):
 
 def get_apps_dir(qroma_project: QromaProject):
     return compute_dir_from_project(qroma_project, APPS_ROOT_DIR_CHAIN)
-    # apps_dir = os.path.join(qroma_project.project_dir, "apps")
-    # return apps_dir
 
 
 def get_apps_python_pb_dir(qroma_project: QromaProject):
     return compute_dir_from_project(qroma_project, APPS_PYTHON_QROMA_IO_PROTO_DIR_CHAIN)
-    # apps_dir = get_apps_dir(qroma_project)
-    # apps_python_dir = os.path.join(apps_dir, "py-qroma-io", "qroma_proto")
-    # return apps_python_dir
 
 
 def get_project_site_www_dir(qroma_project: QromaProject):

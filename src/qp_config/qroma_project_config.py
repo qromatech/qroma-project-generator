@@ -11,18 +11,6 @@ from qroma_defaults import DEFAULT_FIRMWARE_FRAMEWORKS
 class QromaProjectConfig:
     firmware: QromaFirmwareConfig
 
-    # active_com_port: str
-
-    # def __init__(self, *,
-    #              dev_board_platforms: Optional[List[FirmwareFramework]],
-    #              ):
-    #     if not dev_board_platforms:
-    #         self.dev_board_platforms = DEFAULT_FIRMWARE_FRAMEWORKS
-    #     else:
-    #         self.dev_board_platforms = dev_board_platforms
-
-        # self.active_com_port = "TBD"
-
 
 def create_project_config(qroma_config_file_dict: dict) -> QromaProjectConfig:
     firmware = QromaFirmwareConfig(
@@ -33,11 +21,3 @@ def create_project_config(qroma_config_file_dict: dict) -> QromaProjectConfig:
         firmware=firmware,
     )
     return project_config
-
-#
-# def create_project_config_from_user_inputs(user_inputs: QromaProjectConfigUserInputs) -> QromaProjectConfig:
-#     firmware = QromaFirmwareConfig()
-#     project_config = QromaProjectConfig(
-#         # dev_board_platforms=qroma_config_file_dict["qroma"]["project"]["dev_board"]["build_frameworks"]
-#     )
-#     return project_config

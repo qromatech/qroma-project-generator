@@ -2,12 +2,10 @@ import os
 
 import typer
 
-# from qp_new.project_template import NewQromaProjectException, calculate_project_dir
 from qroma_enums import QromaProjectLocation
-from qroma_project.qroma_project import load_current_dir_qroma_project, QROMA_PROJECTS_ROOT_DIR, calculate_project_dir, \
-    QromaProjectException, QromaProject, load_qroma_project_from_file, load_qroma_project_from_directory, \
-    is_qroma_project_valid, is_qroma_project_dir_valid
-
+from qroma_project.qp_loader import load_qroma_project_from_directory, load_current_dir_qroma_project
+from qroma_project.qroma_project import calculate_project_dir, QromaProjectException,\
+    QromaProject, is_qroma_project_dir_valid
 from qroma_types import NewQromaProjectInfoFromUserInput
 
 

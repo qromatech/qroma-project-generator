@@ -3,7 +3,7 @@ import subprocess
 from typing import Optional
 
 import qroma_dirs
-from qroma_project.qroma_project import QromaProject, load_current_dir_qroma_project, load_qroma_project_from_directory
+from qroma_project.qroma_project import QromaProject
 
 
 def run_and_install_platformio_project(qroma_project: QromaProject):
@@ -22,13 +22,7 @@ def run_dev_site_www_project(qroma_project: QromaProject):
     print("DONE EXECUTING START WWW SITE SUBPROCESS")
 
 
-def do_run_project(project_id: Optional[str]):
-    if project_id is None:
-        qroma_project = load_current_dir_qroma_project()
-    else:
-        project_dir = os.path.join(os.getcwd(), project_id)
-        qroma_project = load_qroma_project_from_directory(project_dir)
-
+def do_run_project(qroma_project: QromaProject):
     print("EXECUTING RUN ALL PROJECTS")
     run_and_install_platformio_project(qroma_project)
     run_dev_site_www_project(qroma_project)
