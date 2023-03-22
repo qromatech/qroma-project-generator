@@ -5,6 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 from qp_new.dev_boards_processor import dev_boards_processor
 from qroma_project.qroma_project import QromaProject
 from qroma_types import GenerateProjectOptions
+from utils import qroma_copy_file
 
 
 def process_qroma_project_template_dir(qroma_project: QromaProject,
@@ -16,7 +17,6 @@ def process_qroma_project_template_dir(qroma_project: QromaProject,
     )
 
     def do_template_work(path, directories, files):
-        # new_dir = path.replace(project_template_dir, qroma_project.project_dir)
         template_file_path = path.replace(project_template_dir, "")[1:].replace("\\", "/")
         rendered_file_path = template_file_path.replace("qroma-project", qroma_project.project_id)
         rendered_file_dir = os.path.join(qroma_project.project_dir, rendered_file_path)
@@ -32,11 +32,12 @@ def process_qroma_project_template_dir(qroma_project: QromaProject,
                     qroma_project=qroma_project,
                     dev_boards=dev_boards_processor(qroma_project),
                 )
-                with open(rendered_file, 'w') as f:
-                    f.write(rendered_content)
+                with open(rendered_file, 'w') as file_to_render:
+                    file_to_render.write(rendered_content)
             except Exception as e:
                 print(f"ERROR RENDERING TEMPLATE {template_file}")
                 print(e)
+                qroma_copy_file(os.path.join(path, f), rendered_file)
 
     print(project_template_dir)
 
