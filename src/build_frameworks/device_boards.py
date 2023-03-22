@@ -1,7 +1,7 @@
 import os.path
 
+from qroma_project.qroma_project import QromaProject
 from utils import qroma_os_rename
-from qroma_project import QromaProject
 from qroma_types import GenerateProjectOptions
 from qroma_enums import DeviceBoardPlatform
 import qroma_dirs

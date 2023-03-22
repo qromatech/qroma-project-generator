@@ -3,7 +3,7 @@ import subprocess
 from typing import Optional
 
 import qroma_dirs
-from qroma_project import load_current_dir_qroma_project, QromaProject, load_qroma_project_from_directory
+from qroma_project.qroma_project import QromaProject, load_current_dir_qroma_project, load_qroma_project_from_directory
 
 
 def run_and_install_platformio_project(qroma_project: QromaProject):

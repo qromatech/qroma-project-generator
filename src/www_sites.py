@@ -2,7 +2,7 @@ import subprocess
 import os
 
 import qroma_dirs
-from qroma_project import QromaProject
+from qroma_project.qroma_project import QromaProject
 
 
 def setup_site_project(qroma_project: QromaProject):
@@ -14,7 +14,7 @@ def setup_site_project(qroma_project: QromaProject):
 def do_docusaurus_setup(project_dir, project_id):
     device_sites_dir = os.path.join(project_dir, "sites")
     subprocess.run(["npx",
-                    "create-docusaurus@latest",
+                    "generate-docusaurus@latest",
                     project_id,
                     "classic"], shell=True, cwd=device_sites_dir)
     print("DONE RUNNING SUBPROCESS")

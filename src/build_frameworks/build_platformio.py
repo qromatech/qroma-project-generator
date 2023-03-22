@@ -1,8 +1,8 @@
 import os
 import subprocess
 
-from qroma_project import QromaProject
 import qroma_dirs
+from qroma_project.qroma_project import QromaProject
 from utils import qroma_os_remove, qroma_os_move_file_to_dir, typer_show_to_user
 
 

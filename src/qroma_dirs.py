@@ -1,6 +1,7 @@
 import os
-from qroma_project import QromaProject
+
 from constants import QROMA_PROTOBUFS_DIR_NAME
+from qroma_project.qroma_project import QromaProject
 
 
 def get_protobufs_dir(qroma_project: QromaProject):
@@ -56,7 +57,7 @@ def get_apps_dir(qroma_project: QromaProject):
 
 def get_apps_python_pb_dir(qroma_project: QromaProject):
     apps_dir = get_apps_dir(qroma_project)
-    apps_python_dir = os.path.join(apps_dir, "py-qroma-io")
+    apps_python_dir = os.path.join(apps_dir, "py-qroma-io", "qroma_proto")
     return apps_python_dir
 
 

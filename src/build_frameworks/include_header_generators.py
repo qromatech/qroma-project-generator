@@ -1,7 +1,7 @@
 import os
 
-from qroma_project import QromaProject
 import qroma_dirs
+from qroma_project.qroma_project import QromaProject
 
 PROJECT_HEADER_INCLUDE_REF = "#REPLACE_WITH_PROJECT_REF_HEADER_INCLUDE"
 PROJECT_PROTO_HEADER_INCLUDE_REF = "#REPLACE_WITH_PROJECT_PROTO_REF_HEADER_INCLUDE"
@@ -41,7 +41,15 @@ def update_include_for_src_project_h(qroma_project: QromaProject):
     _replace_file_text(src_project_header_file, PROJECT_PROTO_HEADER_INCLUDE_REF, proto_header_include_text)
 
 
+def update_include_for_src_project_config_h(qroma_project: QromaProject):
+    src_dir = qroma_dirs.get_device_boards_esp_project_src_dir(qroma_project)
+    src_project_header_file = os.path.join(src_dir, qroma_project.project_id, "qroma-project-config.h")
+    proto_header_include_text = f'#include "../qroma-proto/hello-qroma.pb.h"'
+    _replace_file_text(src_project_header_file, PROJECT_PROTO_HEADER_INCLUDE_REF, proto_header_include_text)
+
+
 def update_all_header_includes(qroma_project: QromaProject):
     update_include_for_arduino_ino(qroma_project)
     update_include_for_src_main_cpp(qroma_project)
     update_include_for_src_project_h(qroma_project)
+    update_include_for_src_project_config_h(qroma_project)

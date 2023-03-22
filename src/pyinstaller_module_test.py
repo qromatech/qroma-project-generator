@@ -21,8 +21,8 @@ def env():
 @app.command()
 def new(project_id: str):
     """
-    Initialize a new Qroma project. Give a project ID to create a new project in this directory. If you
-    prefix the project ID with ':', it will create your project in a global 'qroma-projects' directory.
+    Initialize a new Qroma project. Give a project ID to generate a new project in this directory. If you
+    prefix the project ID with ':', it will generate your project in a global 'qroma-projects' directory.
     """
     print(f"Initializing {project_id}")
 

@@ -1,9 +1,25 @@
+import sys
+import os
 from shutil import which
 from collections import namedtuple
 from typing import Optional, List
 
 MissingToolSummary = namedtuple("MissingToolSummary",
                                 ['tool_name', 'install_link', 'description'])
+
+
+def check_cli():
+    if getattr(sys, 'frozen', False):
+        # If the application is run as a bundle, the PyInstaller bootloader
+        # extends the sys module by a flag frozen=True and sets the app
+        # path into variable _MEIPASS'.
+        print("QROMA-CLI PATH")
+        print(sys.executable)
+        # project_app_path = os.path.join(project_dir, "qroma.exe")
+        # print(project_app_path)
+
+    else:
+        print("RUNNING FROM PYTHON EXECUTABLE, NOT AS CLI APP")
 
 
 def check_for_docker() -> Optional[MissingToolSummary]:

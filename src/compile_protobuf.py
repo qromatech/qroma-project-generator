@@ -1,12 +1,11 @@
 import os
 import shutil
 import subprocess
-from typing import Optional
 
 import qroma_dirs
 import env_checks
 import constants
-from qroma_project import load_current_dir_qroma_project, QromaProject, load_qroma_project_from_directory
+from qroma_project.qroma_project import QromaProject
 
 
 def run_pb_compile(qroma_project: QromaProject):
@@ -80,6 +79,9 @@ def do_compile_protobuf(qroma_project: QromaProject):
 
     clean_esp32_protobuf_dirs(qroma_project)
     copy_nanopb_to_esp32_dir(qroma_project)
+
+    clean_python_protobuf_dirs(qroma_project)
+    copy_pythonpb_to_python_dir(qroma_project)
 
     clean_site_www_protobuf_dirs(qroma_project)
     copy_typescriptpb_to_site_www_dir(qroma_project)

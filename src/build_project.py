@@ -3,8 +3,8 @@ from pydantic.dataclasses import dataclass
 import subprocess
 
 import qroma_dirs
-from qroma_project import QromaProject
 import compile_protobuf
+from qroma_project.qroma_project import QromaProject
 
 
 @dataclass
@@ -37,7 +37,7 @@ def create_build_parameters_with_all_steps_enabled():
 
 def build_esp32_project_with_platformio(qroma_project: QromaProject):
     esp_project_dir = qroma_dirs.get_device_boards_esp_project_dir(qroma_project)
-    print("RUNNING BUILD ESP 32 PROJECT SUBPROCESS")
+    print("RUNNING BUILD ESP 32 PROJECT SUBPROCESS IN " + esp_project_dir)
     subprocess.run(["pio", "run"], shell=True, cwd=esp_project_dir)
     print("DONE RUNNING BUILD PROJECT SUBPROCESS")
 
