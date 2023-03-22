@@ -28,7 +28,7 @@ def get_protobufs_out_typescriptpb_dir(qroma_project: QromaProject):
 
 
 def get_device_boards_esp_dir(qroma_project: QromaProject):
-    esp_boards_dir = os.path.join(qroma_project.project_dir, "dev-boards", "esp32")
+    esp_boards_dir = os.path.join(qroma_project.project_dir, "firmware", "esp32")
     return esp_boards_dir
 
 

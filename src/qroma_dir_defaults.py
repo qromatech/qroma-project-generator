@@ -15,8 +15,8 @@ PROTOBUFS_OUT_PYTHON_DIR_CHAIN = extend_dir_chain(PROTOBUFS_ROOT_DIR_CHAIN, ["pr
 PROTOBUFS_OUT_TYPESCRIPT_DIR_CHAIN = extend_dir_chain(PROTOBUFS_ROOT_DIR_CHAIN, ["protofiles-out", "typescript"])
 PROTOBUFS_OUT_DART_DIR_CHAIN = extend_dir_chain(PROTOBUFS_ROOT_DIR_CHAIN, ["protofiles-out", "dart"])
 
-DEVICE_BOARDS_ROOT_DIR_CHAIN = ["dev-boards"]
-DEVICE_BOARDS_ESP32_DIR_CHAIN = extend_dir_chain(DEVICE_BOARDS_ROOT_DIR_CHAIN, "esp32")
+FIRMWARE_ROOT_DIR_CHAIN = ["firmware"]
+FIRMWARE_ESP32_DIR_CHAIN = extend_dir_chain(FIRMWARE_ROOT_DIR_CHAIN, "esp32")
 
 APPS_ROOT_DIR_CHAIN = ["apps"]
 APPS_PYTHON_QROMA_IO_DIR_CHAIN = extend_dir_chain(APPS_ROOT_DIR_CHAIN, ["py-qroma-io"])
@@ -54,9 +54,7 @@ def get_protobufs_out_typescriptpb_dir(qroma_project: QromaProject):
 
 
 def get_device_boards_esp_dir(qroma_project: QromaProject):
-    return compute_dir_from_project(qroma_project, DEVICE_BOARDS_ESP32_DIR_CHAIN)
-    # esp_boards_dir = os.path.join(qroma_project.project_dir, "dev-boards", "esp32")
-    # return esp_boards_dir
+    return compute_dir_from_project(qroma_project, FIRMWARE_ESP32_DIR_CHAIN)
 
 
 def get_device_boards_esp_project_dir(qroma_project: QromaProject):
