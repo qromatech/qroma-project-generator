@@ -1,12 +1,24 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+print("IN PYINSTALLER SPEC")
+
+import sys
+print(sys.executable)
+
+import subprocess
+result = subprocess.run(["poetry", "env", "info", "-p"], shell=True, stdout=subprocess.PIPE, text=True)
+poetry_venv = result.stdout.strip()
+print(poetry_venv)
+poetry_venv_site_packages = os.path.join(poetry_venv, "Lib", "site-packages")
+print(poetry_venv_site_packages)
+
 
 block_cipher = None
 
 
 a = Analysis(
     ['src\\qroma-cli.py'],
-    pathex=['venv\\Lib\\site-packages'],
+    pathex=[poetry_venv_site_packages],
     binaries=[],
     datas=[],
     hiddenimports=[],

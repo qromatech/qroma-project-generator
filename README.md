@@ -24,3 +24,6 @@
 * `poetry run python src/qroma-cli.py new :my-qroma-project`
 * `poetry run python src/qroma-cli.py protobuf :my-qroma-project`
 * `poetry run python src/qroma-cli.py build :my-qroma-project`
+
+### To build command line app executable
+* From root directory, run package-and-test-project-generator.bat
