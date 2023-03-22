@@ -1,16 +1,15 @@
 import typer
 from typing import Optional, List
 
-from qp_config import QromaProjectConfig
 from qroma_project import user_input
-from qroma_project.qroma_project import QromaProject, load_qroma_project
-from qroma_types import GenerateProjectOptions
-from qroma_enums import DeviceBoardPlatform
+from qroma_project.qroma_project import QromaProject, load_qroma_project, load_qroma_project_from_directory
+from qroma_types import GenerateProjectOptions, NewQromaProjectInfoFromUserInput, QromaProjectConfigUserInputs
+from qroma_enums import FirmwareFramework
 # from qroma_project import load_qroma_project, QromaProject, user_input
 from typer_validators import \
     typer_validate_new_user_project_id_from_user, \
     typer_validate_existing_project_id_from_user_project_id
-from qp_new.generate_project import do_generate_project
+from qroma_project.generate.generate_project import do_generate_project_structure
 from build_project import do_build_project, create_build_parameters_with_all_steps_disabled, \
     create_build_parameters_with_all_steps_enabled, BuildParameters
 from run_project import do_run_project
@@ -34,10 +33,10 @@ def env():
 
 @app.command()
 def new(project_id: str = typer.Argument(...,
-                                         callback=typer_validate_new_user_project_id_from_user,
+                                         # callback=typer_validate_new_user_project_id_from_user,
                                          # callback=typer_validate_existing_project_id,
                                          ),
-        dev_board_platforms: Optional[List[DeviceBoardPlatform]] = typer.Option(None),
+        firmware_platforms: Optional[List[FirmwareFramework]] = typer.Option(None),
         replace_existing: bool = typer.Option(False),
         do_build: bool = typer.Option(False),
         build_ignore_www: bool = typer.Option(True),
@@ -46,26 +45,23 @@ def new(project_id: str = typer.Argument(...,
     Initialize a new Qroma project. Give a project ID to generate a new project in this directory. If you
     prefix the project ID with ':', it will generate your project in a global 'qroma-projects' directory.
     """
-    # new_qp = project_template.get_qroma_project_for_user_supplied_project_id(project_id)
     project_info = user_input.create_new_qroma_project_info_from_user_input(project_id)
-    # if does_qroma_project_dir_exist(new_qp):
+
     if project_info.project_dir_exists and not replace_existing:
         typer_show_to_user(f"Project ID {project_info.project_id} already created. See {project_info.project_dir}.\n"
                            "  Add --replace-existing if you want to delete the existing project.")
         raise typer.Exit()
-        # qroma_os_rmdir(new_qp.project_dir)
-
-    # qroma_project = QromaProject()
-    # logging.info(f"PROJECT ROOT DIR: {qroma_project.project_root_dir}")
 
     typer_show_to_user(f"Initializing Qroma project: {project_info.project_id}")
 
-    project_config = QromaProjectConfig(
-        dev_board_platforms=dev_board_platforms
+    project_config_user_inputs = QromaProjectConfigUserInputs(
+        project_info,
+        firmware_platforms=firmware_platforms
     )
-
-    new_qp = QromaProject(project_info.project_dir, project_info.project_id)
-    new_qp.set_config(project_config)
+    # project_config = create_project_config_from_user_inputs(project_config_user_inputs)
+    #
+    # new_qp = QromaProject(project_info.project_dir, project_info.project_id)
+    # new_qp.set_config(project_config)
 
     build_parameters = BuildParameters(
         include_pb=do_build,
@@ -74,13 +70,23 @@ def new(project_id: str = typer.Argument(...,
     )
 
     generate_project_options = GenerateProjectOptions(
-        project_config=project_config,
+        project_config_user_inputs=project_config_user_inputs,
         build_parameters=build_parameters,
         replace_existing_project_directory=replace_existing,
     )
 
-    do_generate_project(new_qp, generate_project_options)
-    qroma_show_dir(new_qp.project_dir)
+    do_generate_project_structure(generate_project_options)
+
+    this_project = load_qroma_project_from_directory(project_info.project_dir)
+
+    # this_project: QromaProject = QromaProject(project_info.project_dir, project_id)
+    # this_project.set_config(project_config)
+
+    do_build_project(qroma_project=this_project,
+                     build_parameters=generate_project_options.build_parameters,
+                     )
+
+    qroma_show_dir(this_project.project_dir)
 
     typer_show_to_user(f"Done initializing Qroma project: {project_id}")
 
@@ -95,8 +101,6 @@ def protobuf(project_id: str = typer.Argument(None,
     the current directory. Use '#' before the project_id to compile a project in the global 'qroma-projects' directory.
     """
     qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
-
-    # qroma_project = QromaProject(project_info.project_dir, project_info.project_id)
 
     typer_show_to_user(f"Compiling protocol buffers for {qroma_project.project_id}")
 

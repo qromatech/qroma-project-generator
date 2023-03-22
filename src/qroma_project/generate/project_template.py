@@ -189,20 +189,23 @@ def download_template_to_dir(project_dir: os.PathLike) -> str:
     return template_dir
 
 
-def copy_local_template_to_dir(copy_to_dir: os.PathLike) -> str:
-    DIRS_TO_NOT_COPY = [".git"]
+def copy_local_template_to_dir(copy_to_dir: os.PathLike):
+    DIRS_TO_EXCLUDE = [".git"]
+    FILES_TO_EXCLUDE = [".git", ".gitignore"]
 
     template_source_dir = os.path.join(os.getcwd(), LOCAL_TEMPLATE_DIR)
 
     for c in os.listdir(template_source_dir):
         full_path = os.path.join(template_source_dir, c)
-        copy_to_dir_path = os.path.join(copy_to_dir, c)
         if os.path.isdir(full_path):
-            if c not in DIRS_TO_NOT_COPY:
+            if c not in DIRS_TO_EXCLUDE:
+                copy_to_dir_path = os.path.join(copy_to_dir, c)
                 print(full_path)
                 copy_tree(full_path, copy_to_dir_path)
         else:
-            qroma_copy_file(full_path, copy_to_dir_path)
+            if c not in FILES_TO_EXCLUDE:
+                copy_to_dir_path = os.path.join(copy_to_dir, c)
+                qroma_copy_file(full_path, copy_to_dir_path)
 
     return copy_to_dir
 

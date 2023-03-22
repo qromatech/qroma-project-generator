@@ -7,7 +7,7 @@ class QromaProjectLocation(Enum):
     # does_not_exist = "does_not_exist"
 
 
-class DeviceBoardPlatform(str, Enum):
+class FirmwareFramework(str, Enum):
     platformio = "platformio"
     arduino = "arduino"
     # micropython = "micropython"

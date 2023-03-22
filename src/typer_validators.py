@@ -44,7 +44,8 @@ def typer_validate_new_user_project_id_from_user(user_project_id: str) -> str:
         # if does_qroma_project_dir_exist(qp):
         #     raise typer.BadParameter(f"Project ID {qp.project_id} already created. See {qp.project_dir}.")
         if qroma_project_info.project_dir_exists:
-            raise typer.BadParameter(f"Project ID {qroma_project_info.project_id} already created. See {qroma_project_info.project_dir}.")
+            raise typer.BadParameter(f"Project ID {qroma_project_info.project_id} already created. See {qroma_project_info.project_dir}.\n"
+                                     "  Add --replace-existing if you want to delete the existing project.")
 
     except QromaProjectException as e:
         raise typer.BadParameter(f"Invalid project ID value: {user_project_id}")

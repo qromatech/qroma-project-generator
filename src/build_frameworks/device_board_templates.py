@@ -1,3 +1,0 @@
-
-
-DEV_BOARDS_PROJECT_PATH = []

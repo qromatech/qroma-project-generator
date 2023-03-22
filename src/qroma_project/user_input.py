@@ -52,10 +52,6 @@ def create_new_qroma_project_info_from_user_input(user_project_id: str) -> NewQr
     )
 
 
-# def create_project_info_for_qroma_projects_dir_project_id(project_id: str) -> ExistingQromaProjectInfoFromUserInput:
-#     pass
-
-
 def load_existing_qroma_project_from_user_input(user_project_id: str | None) -> QromaProject:
     if user_project_id is None:
         qroma_project = load_current_dir_qroma_project()
@@ -82,31 +78,3 @@ def load_existing_qroma_project_from_user_input(user_project_id: str | None) -> 
 
     qroma_project = load_qroma_project_from_directory(qroma_project_dir)
     return qroma_project
-    #
-    # project_id = user_project_id
-    #
-    # if not is_valid_project_id(project_id):
-    #     raise QromaProjectException(f"Unable to create project info. Invalid project ID: {project_id}")
-    #
-    # project_location = QromaProjectLocation.current_dir
-    # if project_in_qroma_projects_dir:
-    #     project_dir = os.path.join(QROMA_PROJECTS_ROOT_DIR, project_id)
-    #     project_location = QromaProjectLocation.qroma_project_dir
-    #
-    #
-    #     # project_root_dir = QROMA_PROJECTS_ROOT_DIR
-    #     # project_dir = os.path.join(QROMA_PROJECTS_ROOT_DIR, project_id)
-    # # else:
-    # project_id = user_project_id
-    # project_location = QromaProjectLocation.current_dir
-    # project_dir = os.getcwd()
-    #
-    # project_exists = os.path.exists(project_dir)
-    # if not project_exists:
-    #     project_location = QromaProjectLocation.does_not_exist
-    #
-    # return ExistingQromaProjectInfoFromUserInput(
-    #     project_id,
-    #     project_dir,
-    #     project_location,
-    # )

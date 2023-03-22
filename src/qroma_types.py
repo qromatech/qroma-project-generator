@@ -1,14 +1,12 @@
 # from dataclasses import dataclass
-# from typing import List
-import os
-from enum import Enum
+from typing import List
 from pydantic.dataclasses import dataclass
 
 # from qroma_enums import DeviceBoardPlatform
 from build_project import BuildParameters
-from qp_config import QromaProjectConfig
 # from qp_new.project_template import NewQromaProjectException, is_valid_project_id, QROMA_PROJECTS_DIR_PROJECT_ID_PREFIX
-from qroma_enums import QromaProjectLocation
+# from qroma_project.generate.qroma_project_config_user_inputs import QromaProjectConfigUserInputs
+from qroma_enums import QromaProjectLocation, FirmwareFramework
 
 
 @dataclass
@@ -70,9 +68,14 @@ class NewQromaProjectInfoFromUserInput:
 #         # project_dir: str
 #         # project_location: QromaProjectLocation
 
+@dataclass
+class QromaProjectConfigUserInputs:
+    project_info: NewQromaProjectInfoFromUserInput
+    firmware_platforms: List[FirmwareFramework]
+
 
 @dataclass
 class GenerateProjectOptions:
-    project_config: QromaProjectConfig
+    project_config_user_inputs: QromaProjectConfigUserInputs
     build_parameters: BuildParameters
     replace_existing_project_directory: bool

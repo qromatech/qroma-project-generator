@@ -1,7 +1,7 @@
-from qroma_enums import DeviceBoardPlatform
+from qroma_enums import FirmwareFramework
 
 
-DEFAULT_DEV_BOARD_PLATFORMS = [
-    DeviceBoardPlatform.arduino,
+DEFAULT_FIRMWARE_FRAMEWORKS = [
+    FirmwareFramework.arduino,
     # DeviceBoardPlatform.platformio
 ]
