@@ -17,4 +17,4 @@
 
 **/protofiles-out
 
-build_info.toml
+src/build_info.py
