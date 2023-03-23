@@ -171,5 +171,21 @@ def publish():
 #     typer_show_to_user(f"{qroma_config}")
 
 
+def version_callback(value: bool):
+    if value:
+        import version_info
+        version = version_info.get_version()
+        typer.echo(f"Qroma CLI Version: {version}")
+        raise typer.Exit()
+
+
+@app.callback()
+def common(
+    ctx: typer.Context,
+    version: bool = typer.Option(None, "--version", callback=version_callback),
+):
+    pass
+
+
 if __name__ == "__main__":
     app()

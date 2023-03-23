@@ -2,15 +2,16 @@
 
 print("IN PYINSTALLER SPEC")
 
-import sys
-print(sys.executable)
-
+# PyInstaller should run from poetry
 import subprocess
 result = subprocess.run(["poetry", "env", "info", "-p"], shell=True, stdout=subprocess.PIPE, text=True)
 poetry_venv = result.stdout.strip()
 print(poetry_venv)
 poetry_venv_site_packages = os.path.join(poetry_venv, "Lib", "site-packages")
 print(poetry_venv_site_packages)
+
+
+added_files = [('pyproject.toml', 'pyproject.toml')]
 
 
 block_cipher = None
@@ -20,7 +21,7 @@ a = Analysis(
     ['src\\qroma-cli.py'],
     pathex=[poetry_venv_site_packages],
     binaries=[],
-    datas=[],
+    datas=added_files,
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

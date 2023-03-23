@@ -22,6 +22,17 @@ def check_cli():
         print("RUNNING FROM PYTHON EXECUTABLE, NOT AS CLI APP")
 
 
+def is_running_as_cli_executable():
+    if getattr(sys, 'frozen', False):
+        # If the application is run as a bundle, the PyInstaller bootloader
+        # extends the sys module by a flag frozen=True and sets the app
+        # path into variable _MEIPASS'.
+
+        return True
+    else:
+        return False
+
+
 def check_for_docker() -> Optional[MissingToolSummary]:
     if which("docker") is None:
         return MissingToolSummary('docker',
