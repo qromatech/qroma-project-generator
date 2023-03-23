@@ -13,19 +13,22 @@ print(poetry_venv_site_packages)
 
 import tomllib
 import datetime
-with open("build_info.toml", "w") as build_info_file:
-    pyproject_toml_path = os.path.join(os.getcwd(), 'pyproject.toml')
-    with open(pyproject_toml_path, 'rb') as f:
-        py_project = tomllib.load(f)
-        qroma_app_version = py_project['tool']['poetry']['version']
-        qroma_build_time = datetime.datetime.now().isoformat(timespec="seconds")
 
-    build_info_file.write(
-        f'qroma.version="{qroma_app_version}"\n'
-        f'qroma.build_time="{qroma_build_time}"\n'
-    )
+pyproject_toml_path = os.path.join(os.getcwd(), 'pyproject.toml')
+with open(pyproject_toml_path, 'rb') as f:
+    py_project = tomllib.load(f)
+    qroma_app_version = py_project['tool']['poetry']['version']
+qroma_build_time = datetime.datetime.now().isoformat(timespec="seconds")
 
-added_files = [('build_info.toml', 'build_info.toml')]
+build_info_out_file_path = os.path.join(os.getcwd(), 'src', 'build_info.py')
+with open(build_info_out_file_path, "w") as build_info_file:
+    build_info_str = f'''
+qroma_build_info = {{
+    "app_version": "{qroma_app_version}",
+    "build_time": "{qroma_build_time}",
+}}
+'''
+    build_info_file.write(build_info_str)
 
 
 block_cipher = None
@@ -35,7 +38,7 @@ a = Analysis(
     ['src\\qroma-cli.py'],
     pathex=[poetry_venv_site_packages],
     binaries=[],
-    datas=added_files,
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

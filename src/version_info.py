@@ -1,16 +1,15 @@
 import os
 import tomllib
 import env_checks
+from build_info import qroma_build_info
 
 
 def get_version():
+    version = qroma_build_info['app_version']
+    build_time = qroma_build_info['build_time']
+
     if env_checks.is_running_as_cli_executable():
-        build_info_toml_path = os.path.join(os.getcwd(), 'build_info.toml')
-        with open(build_info_toml_path, 'rb') as f:
-            build_info = tomllib.load(f)
-            version = build_info['qroma']['version']
-            build_time = build_info['qroma']['build_time']
-            qroma_app_version = f"{version} [{build_time}]"
+        qroma_app_version = f"{version} [{build_time}]"
         executable_message = "running from packaged executable"
 
     else:
