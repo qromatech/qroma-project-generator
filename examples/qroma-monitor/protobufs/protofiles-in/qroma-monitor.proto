@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+
+message QromaHeartbeat {
+  string heartbeatMessage = 1;
+  uint32 uptime = 2;
+}

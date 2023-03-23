@@ -190,7 +190,7 @@ def download_template_to_dir(project_dir: os.PathLike) -> str:
 
 
 def copy_local_template_to_dir(copy_to_dir: os.PathLike):
-    DIRS_TO_EXCLUDE = [".git"]
+    DIRS_TO_EXCLUDE = [".git", ".vscode", ".pio"]
     FILES_TO_EXCLUDE = [".git", ".gitignore"]
 
     template_source_dir = os.path.join(os.getcwd(), LOCAL_TEMPLATE_DIR)

@@ -1,0 +1,41 @@
+[qroma.project]
+name = "hello-qroma-with-pb-response"
+version = "0.1.0"
+
+
+[qroma.project.firmware]
+platforms = [
+  "arduino",
+  "platformio",
+]
+
+
+[qroma.project.run.commands.firmware.platformio]
+build = "run"
+install = "run --target upload --environment esp32dev"
+monitor = ""
+
+
+[qroma.project.stages.build.firmware]
+project_dirs = []
+
+
+
+[qroma.project.stages.build.protobuf.inputs]
+input_dirs = []
+
+
+[qroma.project.stages.build.protobuf.nanopb]
+output_dirs = []
+
+
+[qroma.project.stages.build.protobuf.python]
+output_dirs = []
+
+
+[qroma.project.stages.build.protobuf.typescript]
+output_dirs = []
+
+
+[qroma.project.stages.build.protobuf.dart]
+output_dirs = []
