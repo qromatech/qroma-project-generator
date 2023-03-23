@@ -11,7 +11,21 @@ poetry_venv_site_packages = os.path.join(poetry_venv, "Lib", "site-packages")
 print(poetry_venv_site_packages)
 
 
-added_files = [('pyproject.toml', 'pyproject.toml')]
+import tomllib
+import datetime
+with open("build_info.toml", "w") as build_info_file:
+    pyproject_toml_path = os.path.join(os.getcwd(), 'pyproject.toml')
+    with open(pyproject_toml_path, 'rb') as f:
+        py_project = tomllib.load(f)
+        qroma_app_version = py_project['tool']['poetry']['version']
+        qroma_build_time = datetime.datetime.now().isoformat(timespec="seconds")
+
+    build_info_file.write(
+        f'qroma.version="{qroma_app_version}"\n'
+        f'qroma.build_time="{qroma_build_time}"\n'
+    )
+
+added_files = [('build_info.toml', 'build_info.toml')]
 
 
 block_cipher = None

@@ -16,3 +16,5 @@
 **/.pio
 
 **/protofiles-out
+
+build_info.toml
