@@ -7,15 +7,12 @@
 uint8_t _commBuffer[COMM_BUFFER_SIZE];
 QromaCommMemBuffer qcMemBuffer = QromaCommMemBuffer(_commBuffer, COMM_BUFFER_SIZE);
 
-QromaAppConfig _myQromaAppConfig;
-
 
 int counter = 0;
 
 void qromaMonitorSetup()
 {
-  initQromaAppConfigWithDefaults(&_myQromaAppConfig, &qcMemBuffer);
-  startupQroma(&_myQromaAppConfig);
+  startupQroma(&qcMemBuffer);
 
   delay(100);
 }

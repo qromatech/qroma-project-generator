@@ -3,13 +3,9 @@
 #include "qroma/qroma.h"
 
 
-int counter = 0;
-
 void helloQromaWithStrResponseSetup()
 {
-  initQromaAppConfigWithDefaults(&_myQromaAppConfig, &qcMemBuffer, configQromaApp);
-  startupQroma(&_myQromaAppConfig);
-
+  startupQroma(&qcMemBuffer, configQromaApp);
   delay(100);
 }
 
