@@ -5,7 +5,6 @@ from qroma_project.qroma_project import QromaProject
 
 
 def get_protobufs_dir(qroma_project: QromaProject):
-    # protobufs_dir = os.path.join(qroma_project.project_dir, "dev-io", "protobufs")
     protobufs_dir = os.path.join(qroma_project.project_dir, "protobufs")
     return protobufs_dir
 

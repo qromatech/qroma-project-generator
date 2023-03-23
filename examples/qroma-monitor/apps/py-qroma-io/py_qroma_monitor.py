@@ -1,16 +1,28 @@
 import asyncio
+import time
+
 from py_qroma.qroma_comm.qcio_serial import QcioSerial
 from settings import QROMA_ACTIVE_COM_PORT
 
-from qroma_proto import hello_qroma_pb2
+from qroma_proto import qroma_monitor_pb2
 
 
-def create_hello_qroma_message(name):
-    hello_qroma_message = hello_qroma_pb2.HelloQroma()
-    hello_qroma_message.name = name
-    msg_bytes = hello_qroma_message.SerializeToString()
-    return msg_bytes
+async def monitor_for_message(qcio: QcioSerial, give_up_time: float) -> qroma_monitor_pb2.QromaHeartbeat:
+    response_bytes = b''
+    while time.time() < give_up_time:
+        b = await qcio.read_next_byte(0.1)
+        if b is not None:
+            response_bytes += b
 
+        qhb = qroma_monitor_pb2.QromaHeartbeat()
+        try:
+            qhb.ParseFromString(response_bytes)
+            return qhb
+        except:
+            pass
+
+    return None
+    
 
 async def monitor(com_port: str):
     print("STARTING QROMA MONITOR")
@@ -22,14 +34,16 @@ async def monitor(com_port: str):
 
     print("MONITOR READY")
     i = 0
-    while i < 5:
-        if i % 2 == 0:
-            msg_bytes = create_hello_qroma_message(f"Dev World: {i}")
-            await qcio.send_bytes(msg_bytes)
+    while i < 15:
+        give_up_time = time.time() + 0.5
+        message = await monitor_for_message(qcio=qcio, give_up_time=give_up_time)
+        
+        if message:
+            print(message)
+        else:
+            print("TIMED OUT")
 
-        data = await qcio.read_bytes_until_timeout(1.0)
-        print(f"LINE RECEIVED: {data}")
-        i = i + 1
+        i += 1
 
     print("STOPPING MONITOR")
     qcio.stop()

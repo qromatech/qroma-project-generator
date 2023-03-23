@@ -1,6 +1,6 @@
 #include "qroma-project.h"
 #include "qroma/qroma.h"
-#include "../qroma-proto/hello-qroma.pb.h"
+#include "../qroma-proto/qroma-monitor.pb.h"
 
 
 #define COMM_BUFFER_SIZE 100
