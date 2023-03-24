@@ -5,6 +5,7 @@ import typer
 import env_checks
 from build_project import BuildParameters, do_build_project
 from qroma_enums import FirmwareFramework
+from qroma_infra.qroma_infrastructure import load_qroma_user_profile
 from qroma_project import user_input
 from qroma_project.generate.generate_project import do_generate_project_structure
 from qroma_project.qp_loader import load_qroma_project_from_directory
@@ -46,9 +47,17 @@ def new(project_id: str = typer.Argument(...,
 
     typer_show_to_user(f"Initializing Qroma project: {project_info.project_id}")
 
+    user_profile = load_qroma_user_profile()
+
+    if not firmware_platforms:
+        user_firmware_platforms = user_profile.defaults.preferences.firmware_platforms
+        typer_show_to_user(f"No firmware platforms provided. Using user preferences [{user_firmware_platforms}].")
+    else:
+        user_firmware_platforms = firmware_platforms
+
     project_config_user_inputs = QromaProjectConfigUserInputs(
         project_info,
-        firmware_platforms=firmware_platforms
+        firmware_platforms=user_firmware_platforms
     )
 
     build_parameters = BuildParameters(

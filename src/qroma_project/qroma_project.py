@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import Union
 
 from qp_config import QromaProjectConfig
 from qroma_enums import QromaProjectLocation
@@ -8,31 +8,22 @@ from qroma_enums import QromaProjectLocation
 
 QROMA_PROJECT_CONFIG_FILE_NAME = "qroma.toml"
 
-home_dir = Path.home()
-QROMA_PROJECTS_ROOT_DIR = os.path.join(home_dir, "qroma-projects")
+QROMA_PROJECTS_ROOT_DIR = os.path.join(Path.home(), "qroma-projects")
 
 
 class QromaProject:
-    # project_root_dir: Union[str, os.PathLike]
     project_dir: Union[str, os.PathLike]
     project_id: str
 
     _config: QromaProjectConfig
 
     @property
-    def config(self):
+    def config(self) -> QromaProjectConfig:
         return self._config
 
-    # def __init__(self, project_root_dir: str, project_id: str):
-    #     self.project_root_dir = project_root_dir
-    #     self.project_id = project_id
-    #     self.project_dir = os.path.join(project_root_dir, self.project_id)
-
     def __init__(self, project_dir: str, project_id: str):
-        # self.project_root_dir = project_root_dir
         self.project_id = project_id
         self.project_dir = project_dir
-        # self.project_dir = os.path.join(project_root_dir, self.project_id)
 
     def set_config(self, config: QromaProjectConfig):
         self._config = config
@@ -60,4 +51,3 @@ def is_qroma_project_valid(qroma_project: QromaProject):
 def is_qroma_project_dir_valid(qroma_project_dir: str):
     qroma_project_config_file_path = Path(os.path.join(qroma_project_dir, QROMA_PROJECT_CONFIG_FILE_NAME))
     return os.path.exists(qroma_project_config_file_path)
-

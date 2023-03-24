@@ -67,9 +67,10 @@ def load_existing_qroma_project_from_user_input(user_project_id: str | None) -> 
     if not is_valid_project_id(project_id):
         raise QromaProjectException(f"Unable to load - invalid project ID: {project_id}")
 
-    qroma_project_dir = calculate_project_dir(project_id, QromaProjectLocation.current_dir)
     if project_in_qroma_projects_dir:
         qroma_project_dir = calculate_project_dir(project_id, QromaProjectLocation.qroma_project_dir)
+    else:
+        qroma_project_dir = calculate_project_dir(project_id, QromaProjectLocation.current_dir)
 
     if not is_qroma_project_dir_valid(qroma_project_dir):
         raise QromaProjectException(f"Invalid project dir for project ID {project_id}: {qroma_project_dir}")

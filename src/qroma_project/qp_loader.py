@@ -20,7 +20,6 @@ def load_qroma_project_from_file(qroma_project_config_file_location: str | os.Pa
     try:
         with open(qroma_project_config_file_location, 'rb') as file:
             qroma_dict = tomllib.load(file)
-            print(qroma_dict)
 
             qp = QromaProject(
                 project_dir=os.path.dirname(qroma_project_config_file_location),
@@ -28,7 +27,6 @@ def load_qroma_project_from_file(qroma_project_config_file_location: str | os.Pa
             )
 
             qp_config = create_project_config(qroma_dict)
-
             qp.set_config(qp_config)
 
             return qp

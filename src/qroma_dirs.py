@@ -1,53 +1,23 @@
 import os
 
 from constants import QROMA_PROTOBUFS_DIR_NAME
+from qp_config import qp_config_shortcuts
 from qroma_project.qroma_project import QromaProject
 
 
-def get_protobufs_dir(qroma_project: QromaProject):
-    protobufs_dir = os.path.join(qroma_project.project_dir, "protobufs")
+def get_protobufs_root_dir(qroma_project: QromaProject):
+    pb_build_stage = qp_config_shortcuts.get_protobuf_stage_config(qroma_project)
+    dir_from_config = pb_build_stage.root_dir
+    protobufs_dir = os.path.join(qroma_project.project_dir, dir_from_config)
     return protobufs_dir
 
 
-def get_protobufs_out_nanopb_dir(qroma_project: QromaProject):
-    pb_dir = get_protobufs_dir(qroma_project)
-    pb_out_nanopb_dir = os.path.join(pb_dir, "protofiles-out", "nanopb")
-    return pb_out_nanopb_dir
-
-
-def get_protobufs_out_python_dir(qroma_project: QromaProject):
-    pb_dir = get_protobufs_dir(qroma_project)
-    pb_out_python_dir = os.path.join(pb_dir, "protofiles-out", "python")
-    return pb_out_python_dir
-
-
-def get_protobufs_out_typescriptpb_dir(qroma_project: QromaProject):
-    pb_dir = get_protobufs_dir(qroma_project)
-    pb_out_dir = os.path.join(pb_dir, "protofiles-out", "typescript")
-    return pb_out_dir
-
-
-def get_device_boards_esp_dir(qroma_project: QromaProject):
-    esp_boards_dir = os.path.join(qroma_project.project_dir, "firmware", "esp32")
-    return esp_boards_dir
-
-
-def get_device_boards_esp_project_dir(qroma_project: QromaProject):
-    esp_boards_dir = get_device_boards_esp_dir(qroma_project)
-    esp_project_dir = os.path.join(esp_boards_dir, qroma_project.project_id)
-    return esp_project_dir
-
-
-def get_device_boards_esp_project_src_dir(qroma_project: QromaProject):
-    esp_boards_dir = get_device_boards_esp_project_dir(qroma_project)
-    esp_project_dir = os.path.join(esp_boards_dir, "src")
-    return esp_project_dir
-
-
-def get_device_boards_esp_project_pb_dir(qroma_project: QromaProject):
-    project_src_dir = get_device_boards_esp_project_src_dir(qroma_project)
-    dev_pb_dir = os.path.join(project_src_dir, QROMA_PROTOBUFS_DIR_NAME)
-    return dev_pb_dir
+def get_protobufs_build_src_and_dest_dirs(qroma_project: QromaProject):
+    pb_build_stage = qp_config_shortcuts.get_protobuf_stage_config(qroma_project)
+    root_dir = get_protobufs_root_dir(qroma_project)
+    src_and_dest_dirs = [(os.path.join(root_dir, src_dir), os.path.join(root_dir, dest_dir)) for
+                         (src_dir, dest_dir) in pb_build_stage.source_and_dest_dirs]
+    return src_and_dest_dirs
 
 
 def get_apps_dir(qroma_project: QromaProject):

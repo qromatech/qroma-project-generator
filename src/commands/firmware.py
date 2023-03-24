@@ -27,7 +27,7 @@ def upload():
 #           ):
 #     """
 #     Build Qroma software for this project. Provide no arguments to build the Qroma project in
-#     the current directory. Use '#' before the project_id to build a project in the global 'qroma-projects' directory.
+#     the current directory. Use ':' before the project_id to build a project in the global 'qroma-projects' directory.
 #     """
 #     qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
 #

@@ -1,26 +1,26 @@
-# from dataclasses import dataclass
 from pydantic.dataclasses import dataclass
 import subprocess
 
 import qroma_dirs
-import compile_protobuf
+from steps import pb_steps
 from qroma_project.qroma_project import QromaProject
+from utils import typer_progress_message
 
 
 @dataclass
 class BuildParameters:
-    include_pb: bool = False
-    include_device: bool = False
-    include_site: bool = False
+    build_pb: bool = False
+    build_firmware: bool = False
+    build_site: bool = False
 
     def __init__(self, *,
-                 include_pb=False,
-                 include_device=False,
-                 include_site=False,
+                 build_pb=False,
+                 build_firmware=False,
+                 build_site=False,
                  ):
-        self.include_pb = include_pb
-        self.include_device = include_device
-        self.include_site = include_site
+        self.build_pb = build_pb
+        self.build_firmware = build_firmware
+        self.build_site = build_site
 
 
 def create_build_parameters_with_all_steps_disabled():
@@ -29,9 +29,9 @@ def create_build_parameters_with_all_steps_disabled():
 
 def create_build_parameters_with_all_steps_enabled():
     return BuildParameters(
-        include_pb=True,
-        include_device=True,
-        include_site=True,
+        build_pb=True,
+        build_firmware=True,
+        build_site=True,
     )
 
 
@@ -51,16 +51,16 @@ def build_site_www_project(qroma_project: QromaProject):
 
 
 def run_build_projects(qroma_project: QromaProject, build_parameters: BuildParameters):
-    print("RUNNING BUILD ALL PROJECTS")
-    if build_parameters.include_pb:
-        compile_protobuf.do_compile_protobuf(qroma_project)
+    with typer_progress_message("BUILD ALL PROJECTS"):
+        if build_parameters.build_pb:
+            pb_steps.run_pb_build_step(qroma_project)
 
-    if build_parameters.include_device:
-        build_esp32_project_with_platformio(qroma_project)
+        if build_parameters.build_firmware:
+            build_esp32_project_with_platformio(qroma_project)
 
-    if build_parameters.include_site:
-        build_site_www_project(qroma_project)
-    print("DONE RUNNING BUILD ALL PROJECTS")
+        if build_parameters.build_site:
+            build_site_www_project(qroma_project)
+        # print("DONE RUNNING BUILD ALL PROJECTS")
 
 
 def do_build_project(qroma_project: QromaProject,
