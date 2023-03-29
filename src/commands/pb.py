@@ -1,9 +1,11 @@
+import os
 from typing import Optional
 
 import typer
 
 from qroma_project import user_input
 from steps import pb_steps
+from utils import qroma_edit_dir
 
 app = typer.Typer(help="Qroma protocol buffer management commands")
 
@@ -15,8 +17,10 @@ def clean(project_id: Optional[str] = typer.Argument(None)):
 
 
 @app.command()
-def edit():
-    print("In pb edit - not yet implemented")
+def edit(project_id: Optional[str] = typer.Argument(None)):
+    qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
+    pb_edit_root_path = os.path.join(qroma_project.project_dir, "protobufs")
+    qroma_edit_dir(pb_edit_root_path)
 
 
 @app.command(name="compile")

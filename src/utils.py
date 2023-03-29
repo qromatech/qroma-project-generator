@@ -54,6 +54,11 @@ def qroma_show_dir(dir_path: os.PathLike):
         print(f"Unable to show directory {dir_path} on {platform.system()}")
 
 
+def qroma_edit_dir(dir_path: os.PathLike):
+    print(dir_path)
+    subprocess.run(["code", "."], shell=True, cwd=dir_path)
+
+
 @contextmanager
 def qroma_exit_with_work(exit_msg: str, exit_code: ExitReason):
     typer_show_to_user(exit_msg)

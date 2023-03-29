@@ -20,8 +20,11 @@ class ProtobufCompiler(str, Enum):
 
 
 class ExitReason(Enum):
-    UNSPECIFIED             = 1
-    INVALID_ENV             = 1000
-    INVALID_ENV_NO_DOCKER   = 1001
-    INVALID_PROJECT_FILE    = 1002
-    INVALID_USER_PROFILE    = 1003
+    UNSPECIFIED              = 1
+    QROMA_DEV_INCOMPLETE     = 900
+    INVALID_ENV              = 1000
+    INVALID_ENV_NO_DOCKER    = 1001
+    INVALID_PROJECT_FILE     = 1002
+    INVALID_PROJECT_DIR      = 1003
+    INVALID_USER_PROFILE     = 1004
+    INVALID_USER_FW_PLATFORM = 1005
