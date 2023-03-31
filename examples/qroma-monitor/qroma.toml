@@ -16,26 +16,33 @@ install = "run --target upload --environment esp32dev"
 monitor = ""
 
 
-[qroma.project.stages.build.firmware]
+[qroma.project.stages.sw.protobuf]
+root_dir = "protobufs"
+compilers = [
+  "nanopb",
+  "python",
+  "typescript",
+  "dart",
+]
+source_and_dest_dirs = [
+  ["protofiles-in", "protofiles-out"],
+]
+
+
+[qroma.project.stages.sw.protobuf.replication]
+nanopb.dirs = ["firmware/esp32/qroma-monitor/src/qroma-proto", ]
+python.dirs = ["apps/py-qroma-io/qroma_proto", ]
+typescript.dirs = ["sites/site-www-qroma-monitor/src/qroma-proto", ]
+dart.dirs = []
+
+
+[qroma.project.stages.sw.firmware]
 project_dirs = []
 
 
-
-[qroma.project.stages.build.protobuf.inputs]
-input_dirs = []
-
-
-[qroma.project.stages.build.protobuf.nanopb]
-output_dirs = []
+[qroma.project.stages.sw.apps]
+project_dirs = []
 
 
-[qroma.project.stages.build.protobuf.python]
-output_dirs = []
-
-
-[qroma.project.stages.build.protobuf.typescript]
-output_dirs = []
-
-
-[qroma.project.stages.build.protobuf.dart]
-output_dirs = []
+[qroma.project.stages.sw.sites]
+project_dirs = []

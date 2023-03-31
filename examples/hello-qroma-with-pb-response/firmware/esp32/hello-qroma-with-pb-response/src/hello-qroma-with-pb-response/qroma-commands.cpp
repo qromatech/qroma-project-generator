@@ -6,8 +6,11 @@ uint32_t helloQromaCallCount = 0;
 void onHelloQroma(HelloQroma * message, HelloQromaResponse * hqr) {
   helloQromaCallCount++;
 
-  strncat(hqr->response, "Hello qroma: ", sizeof(HelloQromaResponse::response) - 1);
-  strncat(hqr->response, message->name, sizeof(HelloQromaResponse::response) - 1);
+  // logError("RECEIVED NAME");
+  // logError(message->name);
+
+  strncat(hqr->response, "Hello qroma: ", sizeof(HelloQromaResponse::response));
+  strncat(hqr->response, message->name, sizeof(HelloQroma::name));
   hqr->callCount = helloQromaCallCount;
   hqr->nameLength = strnlen(message->name, sizeof(HelloQroma::name));
 }

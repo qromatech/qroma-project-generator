@@ -3,12 +3,9 @@
 QromaBytesProcessor *qromaBytesProcessors[] = { &helloQromaPbProcessor, };
 
 
-#define COMM_BUFFER_SIZE 100
+#define COMM_BUFFER_SIZE 1000
 uint8_t _commBuffer[COMM_BUFFER_SIZE];
 QromaCommMemBuffer qcMemBuffer = QromaCommMemBuffer(_commBuffer, COMM_BUFFER_SIZE);
-
-
-QromaAppConfig _myQromaAppConfig;
 
 
 void configQromaApp(QromaAppConfig * config) {
