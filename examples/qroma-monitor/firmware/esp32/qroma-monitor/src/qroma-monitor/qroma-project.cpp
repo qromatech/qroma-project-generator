@@ -9,10 +9,11 @@ QromaCommMemBuffer qcMemBuffer = QromaCommMemBuffer(_commBuffer, COMM_BUFFER_SIZ
 
 
 int counter = 0;
+QromaSerialCommApp myQromaApp;
 
 void qromaMonitorSetup()
 {
-  startupQroma(&qcMemBuffer);
+  startupQroma(&myQromaApp);
 
   delay(100);
 }
@@ -30,7 +31,7 @@ void qromaMonitorLoop()
   strncat(qhb.heartbeatMessage, tickBuffer, sizeof(QromaHeartbeat::heartbeatMessage) - 1);
   qhb.uptime = millis();
 
-  sendSerialPbMessage<QromaHeartbeat, QromaHeartbeat_fields>(&qhb);
+  sendSerialPbMessage<QromaHeartbeat, QromaHeartbeat_fields>(&qhb, &myQromaApp);
 
   delay(1000);
 }
