@@ -5,14 +5,14 @@
   Copyright (c) 2021  Albert Boehmler 
 */
 
-#include "monitor-pb/qroma-project.h"
+#include "qroma-math-async-response/qroma-project.h"
 
 
 void setup() {
-  qromaMonitorPbSetup();
+  qromaMathAsyncResponseSetup();
 }
 
 
 void loop() {
-  qromaMonitorPbLoop();
+  qromaMathAsyncResponseLoop();
 }
