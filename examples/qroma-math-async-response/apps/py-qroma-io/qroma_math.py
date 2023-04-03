@@ -1,5 +1,5 @@
 import asyncio
-from py_qroma.qroma_comm.qcio_serial import QcioSerial
+from py_qroma.qroma_comm.qcio_serial_b64 import QcioSerial
 from settings import QROMA_ACTIVE_COM_PORT
 
 from qroma_proto import qroma_math_async_response_pb2
@@ -66,7 +66,7 @@ async def do_math_queries(com_port: str):
 
         # await asyncio.sleep(2.0)
 
-    await qcio.read_n_bytes(200, 5.0)
+    # await qcio.read_n_bytes(200, 5.0)
 
     print("STOPPING MONITOR")
     qcio.stop()

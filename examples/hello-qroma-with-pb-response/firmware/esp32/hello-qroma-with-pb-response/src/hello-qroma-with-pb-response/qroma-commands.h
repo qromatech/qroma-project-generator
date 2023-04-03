@@ -1,9 +1,10 @@
 #ifndef QROMA_PROJECT_CONFIG_H
 #define QROMA_PROJECT_CONFIG_H
 
-#include "qroma/qroma.h"
 #include "../qroma-proto/hello-qroma-with-pb-response.pb.h"
 
-extern PbCommandWithResponseProcessor<HelloQroma, HelloQroma_fields, HelloQromaResponse, HelloQromaResponse_fields> helloQromaPbProcessor;
+void onHelloQroma(HelloQroma * message, HelloQromaResponse * hqr);
+
+// extern PbCommandWithResponseProcessor<HelloQroma, HelloQroma_fields, HelloQromaResponse, HelloQromaResponse_fields> helloQromaPbProcessor;
 
 #endif

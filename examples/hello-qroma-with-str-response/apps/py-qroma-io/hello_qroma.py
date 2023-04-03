@@ -1,6 +1,6 @@
 import sys
 import asyncio
-from py_qroma.qroma_comm.qcio_serial import QcioSerial
+from py_qroma.qroma_comm.qcio_serial_b64 import QcioSerial
 from settings import QROMA_ACTIVE_COM_PORT
 
 from qroma_proto import hello_qroma_with_str_response_pb2
@@ -26,7 +26,7 @@ async def monitor(com_port: str, message: str):
     while i < 10:
         if i % 2 == 0:
             msg_bytes = create_hello_qroma_message(f"{message} ({i})")
-            await qcio.send_bytes(msg_bytes)
+            await qcio.send_bytes_base64_with_newline(msg_bytes)
 
         data = await qcio.read_bytes_until_timeout(1.0)
         print(f"LINE RECEIVED: {data}")

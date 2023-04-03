@@ -3,13 +3,9 @@
 #include "../qroma-proto/qroma-monitor.pb.h"
 
 
-#define COMM_BUFFER_SIZE 100
-uint8_t _commBuffer[COMM_BUFFER_SIZE];
-QromaCommMemBuffer qcMemBuffer = QromaCommMemBuffer(_commBuffer, COMM_BUFFER_SIZE);
-
-
 int counter = 0;
 QromaSerialCommApp myQromaApp;
+
 
 void qromaMonitorSetup()
 {
@@ -31,7 +27,7 @@ void qromaMonitorLoop()
   strncat(qhb.heartbeatMessage, tickBuffer, sizeof(QromaHeartbeat::heartbeatMessage) - 1);
   qhb.uptime = millis();
 
-  sendSerialPbMessage<QromaHeartbeat, QromaHeartbeat_fields>(&qhb, &myQromaApp);
+  sendSerialPb64LineMessage<QromaHeartbeat, QromaHeartbeat_fields>(&qhb, &myQromaApp);
 
   delay(1000);
 }

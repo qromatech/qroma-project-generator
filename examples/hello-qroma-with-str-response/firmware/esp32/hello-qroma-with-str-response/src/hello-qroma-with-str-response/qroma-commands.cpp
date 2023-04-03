@@ -1,10 +1,8 @@
 #include "qroma-commands.h"
-#include "qroma-project.h"
 
+extern QromaSerialCommApp myQromaApp;
 
 void onHelloQroma(HelloQroma * message) {
-  qSerialPrint("Hello ");
-  qSerialPrintln(message->name);
+  qromaAppSerialPrint("Hello ", &myQromaApp);
+  qromaAppSerialPrintln(message->name, &myQromaApp);
 }
-
-PbCommandProcessor<HelloQroma, HelloQroma_fields> helloQromaPbProcessor = PbCommandProcessor<HelloQroma, HelloQroma_fields>(onHelloQroma);

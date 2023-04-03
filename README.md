@@ -28,3 +28,7 @@
 ### To build command line app executable
 * From root directory, run `package-qroma-project-generator.bat`
 * Alternatively, run commands `poetry run python -m PyInstaller src/qroma-cli.py`
+
+### Dev Notes
+#### Editing py-qroma
+`poetry add -e C:\Users\ajb\Projects\qromatech\py-qroma`
