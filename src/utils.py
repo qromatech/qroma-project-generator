@@ -4,6 +4,8 @@ import subprocess
 import platform
 from contextlib import contextmanager
 
+import typer
+
 from qroma_enums import ExitReason
 
 
@@ -55,7 +57,7 @@ def qroma_show_dir(dir_path: os.PathLike):
 
 
 def qroma_edit_dir(dir_path: os.PathLike):
-    print(dir_path)
+    print(f"qroma_edit_dir: {dir_path}")
     subprocess.run(["code", "."], shell=True, cwd=dir_path)
 
 
@@ -81,3 +83,24 @@ def typer_progress_message(message: str):
 
     indent_level = indent_level - 2
     typer_show_to_user(f"COMPLETED: {message}")
+
+
+def prompt_user_for_dir_choice(root_dir):
+    candidate_dirs = [x for x in os.listdir(root_dir)
+                      if os.path.isdir(os.path.join(root_dir, x))]
+    if len(candidate_dirs) == 1:
+        return os.path.join(root_dir, candidate_dirs[0])
+
+    sorted_candidate_dirs = sorted(candidate_dirs)
+    for i, d in enumerate(sorted_candidate_dirs):
+        print(f"[{i + 1}] {d}")
+
+    d = typer.prompt("Choose the directory to open >> ")
+    d_index = int(d) - 1
+
+    if 0 <= d_index < len(sorted_candidate_dirs):
+        dir_choice = os.path.join(root_dir, sorted_candidate_dirs[d_index])
+        print("CHOSE " + dir_choice)
+        return dir_choice
+
+    return None

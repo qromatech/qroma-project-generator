@@ -9,6 +9,7 @@ import tempfile
 
 import typer
 
+import env_checks
 from constants import PROJECT_TEMPLATE_ZIP_URL
 from config import LOCAL_TEMPLATE_DIR, JINJA_TEST_TEMPLATE_DIR
 from qroma_enums import QromaProjectLocation
@@ -213,10 +214,10 @@ def copy_local_template_to_dir(copy_to_dir: os.PathLike):
 def setup_project_template_directory() -> tempfile.TemporaryDirectory:
     temp_directory = tempfile.TemporaryDirectory(prefix="qroma-template-copy-dir-")
 
-    if LOCAL_TEMPLATE_DIR:
-        template_dir = copy_local_template_to_dir(temp_directory.name)
-    else:
+    if env_checks.is_running_as_cli_executable():
         template_dir = download_template_to_dir(temp_directory.name)
+    else:
+        template_dir = copy_local_template_to_dir(temp_directory.name)
 
     print("SETUP TEMPLATE DIR: " + template_dir)
 

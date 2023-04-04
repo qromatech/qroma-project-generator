@@ -33,10 +33,21 @@ def process_qroma_project_template_dir(generate_project_options: GenerateProject
         rendered_file_dir = os.path.join(project_dir, rendered_file_path)
         os.makedirs(rendered_file_dir)
 
+        NON_TEMPLATE_FILE_EXTENSIONS = [".png", ".jpg", ".ico", ".jpeg"]
+
+        template_files = []
         for f in files:
+            is_ntfx = False
+            for ntfx in NON_TEMPLATE_FILE_EXTENSIONS:
+                if f.lower().endswith(ntfx):
+                    is_ntfx = True
+            if not is_ntfx:
+                template_files.append(f)
+
+        for f in template_files:
             template_file = f"{template_file_path}/{f}"
             rendered_file = os.path.join(rendered_file_dir, f)
-            # print(f"PATH: {path}\nDIR:{directories}\nFILE:{files}\nTEMPLATE_FILE:{template_file}\nRENDERED FILE:{rendered_file}")
+
             try:
                 template = qroma_project_env.get_template(template_file)
                 rendered_content = template.render(
