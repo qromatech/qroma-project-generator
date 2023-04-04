@@ -5,6 +5,4 @@
 
 void onHelloQroma(HelloQroma * message, HelloQromaResponse * hqr);
 
-// extern PbCommandWithResponseProcessor<HelloQroma, HelloQroma_fields, HelloQromaResponse, HelloQromaResponse_fields> helloQromaPbProcessor;
-
 #endif
