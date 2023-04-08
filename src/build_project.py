@@ -47,8 +47,6 @@ def run_build_projects(qroma_project: QromaProject, user_profile: QromaUserProfi
             site_steps.run_site_bundle_step(qroma_project)
             site_steps.run_site_npm_install_step(qroma_project)
 
-        print("DONE RUNNING BUILD ALL PROJECTS")
-
 
 def do_build_project(qroma_project: QromaProject,
                      user_profile: QromaUserProfile,
