@@ -35,10 +35,17 @@ class ProtobufReplicationStage:
 
 
 @dataclass
+class ProtobufSource:
+    source_path: str
+    dest_path: str
+    site_path: str
+
+
+@dataclass
 class MakeProtobufStage:
     compilers: List[ProtobufCompiler]
     root_dir: str
-    source_and_dest_dirs: list[list[str]]
+    sources: list[ProtobufSource]
     replication: ProtobufReplicationStage
 
 

@@ -15,9 +15,17 @@ def get_protobufs_root_dir(qroma_project: QromaProject):
 def get_protobufs_build_src_and_dest_dirs(qroma_project: QromaProject):
     pb_build_stage = qp_config_shortcuts.get_protobuf_stage_config(qroma_project)
     root_dir = get_protobufs_root_dir(qroma_project)
-    src_and_dest_dirs = [(os.path.join(root_dir, src_dir), os.path.join(root_dir, dest_dir)) for
-                         (src_dir, dest_dir) in pb_build_stage.source_and_dest_dirs]
+    src_and_dest_dirs = [(os.path.join(root_dir, s.source_path), os.path.join(root_dir, s.dest_path)) for
+                         s in pb_build_stage.sources]
     return src_and_dest_dirs
+
+
+def get_protobufs_build_dest_and_publish_dirs(qroma_project: QromaProject) -> (str, str):
+    pb_build_stage = qp_config_shortcuts.get_protobuf_stage_config(qroma_project)
+    root_dir = get_protobufs_root_dir(qroma_project)
+    dest_and_publish_dirs = [(os.path.join(root_dir, s.dest_path), s.site_path) for
+                             s in pb_build_stage.sources]
+    return dest_and_publish_dirs
 
 
 def get_apps_dir(qroma_project: QromaProject):

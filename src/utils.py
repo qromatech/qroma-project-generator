@@ -44,6 +44,11 @@ def qroma_copy_file(from_path, to_fpath):
     shutil.copy(from_path, to_fpath)
 
 
+def qroma_copy_dir(from_dir, to_dir):
+    typer_show_to_user(f"COPYING DIR CONTENTS FROM {from_dir} TO {to_dir}")
+    shutil.copytree(from_dir, to_dir)
+
+
 def qroma_os_move_file_to_dir(fpath, newdir):
     typer_show_to_user(f"MOVING FILE {fpath} TO DIR {newdir}")
     shutil.move(fpath, newdir)
@@ -104,3 +109,15 @@ def prompt_user_for_dir_choice(root_dir):
         return dir_choice
 
     return None
+
+
+def ensure_dir_exists(dir_path):
+    if os.path.exists(dir_path) and os.path.isdir(dir_path):
+        return
+    os.makedirs(dir_path)
+
+
+def ensure_file_exists(file_path, default_contents=""):
+    if not os.path.isfile(file_path):
+        with open(file_path, "w") as f:
+            f.write(default_contents)

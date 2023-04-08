@@ -51,3 +51,7 @@ def is_qroma_project_valid(qroma_project: QromaProject):
 def is_qroma_project_dir_valid(qroma_project_dir: str):
     qroma_project_config_file_path = Path(os.path.join(qroma_project_dir, QROMA_PROJECT_CONFIG_FILE_NAME))
     return os.path.exists(qroma_project_config_file_path)
+
+
+def get_qroma_project_version(qroma_project: QromaProject):
+    return qroma_project.config.qroma.project.version

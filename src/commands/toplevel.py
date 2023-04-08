@@ -5,6 +5,7 @@ import typer
 import env_checks
 from build_project import BuildParameters, do_build_project
 from qroma_enums import FirmwareFramework
+from qroma_infra.qroma_editor import QromaEditorTypes, qroma_open_editor
 from qroma_infra.qroma_infrastructure import load_qroma_user_profile
 from qroma_project import user_input
 from qroma_project.generate.generate_project import do_generate_project_structure
@@ -30,9 +31,11 @@ def new(project_id: str = typer.Argument(...,
                                          # callback=typer_validate_existing_project_id,
                                          ),
         firmware_platforms: List[FirmwareFramework] | None = typer.Option(None),
+        editor: QromaEditorTypes = typer.Option(QromaEditorTypes.root),
         replace_existing: bool = typer.Option(False),
         do_build: bool = typer.Option(False),
         build_ignore_www: bool = typer.Option(True),
+        full_build: bool = typer.Option(False),
         ):
     """
     Initialize a new Qroma project. Give a project ID to generate a new project in this directory. If you
@@ -61,9 +64,9 @@ def new(project_id: str = typer.Argument(...,
     )
 
     build_parameters = BuildParameters(
-        include_pb=do_build,
-        include_device=do_build,
-        include_site=do_build and not build_ignore_www,
+        build_pb=do_build or full_build,
+        build_firmware=do_build or full_build,
+        build_site=(do_build and not build_ignore_www) or full_build,
     )
 
     generate_project_options = GenerateProjectOptions(
@@ -75,12 +78,14 @@ def new(project_id: str = typer.Argument(...,
     do_generate_project_structure(generate_project_options)
 
     this_project = load_qroma_project_from_directory(project_info.project_dir)
+    user_profile = load_qroma_user_profile()
 
     do_build_project(qroma_project=this_project,
+                     user_profile=user_profile,
                      build_parameters=generate_project_options.build_parameters,
                      )
 
-    qroma_show_dir(this_project.project_dir)
+    qroma_open_editor(this_project, editor)
 
     typer_show_to_user(f"Done initializing Qroma project: {project_id}")
 

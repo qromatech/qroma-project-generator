@@ -36,12 +36,15 @@ def process_qroma_project_template_dir(generate_project_options: GenerateProject
         NON_TEMPLATE_FILE_EXTENSIONS = [".png", ".jpg", ".ico", ".jpeg"]
 
         template_files = []
+        non_template_files = []
         for f in files:
             is_ntfx = False
             for ntfx in NON_TEMPLATE_FILE_EXTENSIONS:
                 if f.lower().endswith(ntfx):
                     is_ntfx = True
-            if not is_ntfx:
+            if is_ntfx:
+                non_template_files.append(f)
+            else:
                 template_files.append(f)
 
         for f in template_files:
@@ -61,7 +64,9 @@ def process_qroma_project_template_dir(generate_project_options: GenerateProject
                 print(e)
                 qroma_copy_file(os.path.join(path, f), rendered_file)
 
-    print(project_template_dir)
+        for f in non_template_files:
+            dest_file = os.path.join(rendered_file_dir, f)
+            qroma_copy_file(os.path.join(path, f), dest_file)
 
     for path, directories, files in os.walk(project_template_dir):
         do_template_work(path, directories, files)
