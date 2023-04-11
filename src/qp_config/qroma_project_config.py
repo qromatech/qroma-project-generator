@@ -60,8 +60,41 @@ class MakeAppsStage:
 
 
 @dataclass
+class ReplicatedFirmwareFilesItem:
+    source_filepath: str
+    publication_filepath: str
+
+
+@dataclass
+class ZippedDirItem:
+    source_dir: str
+    publication_zip_file: str
+
+
+@dataclass
+class GeneratedFileItem:
+    publication_filepath: str
+    template_str: str
+
+
+@dataclass
+class BundleVersionPublication:
+    firmware_file_replications: list[ReplicatedFirmwareFilesItem]
+    zipped_dirs: list[ZippedDirItem]
+    generated_files: list[GeneratedFileItem]
+
+
+@dataclass
+class BundleStage:
+    bundle_static_dir: str
+    bundle_version_content_root_dir_template: str
+    publish_version: BundleVersionPublication
+
+
+@dataclass
 class MakeSitesStage:
     project_dirs: list[str]
+    bundle: BundleStage
 
 
 @dataclass

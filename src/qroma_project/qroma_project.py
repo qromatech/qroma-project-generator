@@ -21,6 +21,10 @@ class QromaProject:
     def config(self) -> QromaProjectConfig:
         return self._config
 
+    @property
+    def project_version(self) -> str:
+        return self._config.qroma.project.version
+
     def __init__(self, project_dir: str, project_id: str):
         self.project_id = project_id
         self.project_dir = project_dir

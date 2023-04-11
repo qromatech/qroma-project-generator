@@ -34,11 +34,11 @@ def upload_platformio(user_profile: QromaUserProfile, qroma_project: QromaProjec
         subprocess.run([platformio_exe, *upload_command_parts], shell=True, cwd=dir_path)
 
 
-def get_firmware_file_path(qroma_project):
-    dir_path = os.path.join(qroma_project.project_dir, "firmware", "esp32", qroma_project.project_id)
-    build_dir = os.path.join(dir_path, ".pio", "build", "esp32dev")
-    firmware_file = os.path.join(build_dir, "firmware.bin")
-    print(f"FIRMWARE FILE PATH: {firmware_file}")
-    if os.path.exists(firmware_file) and os.path.isfile(firmware_file):
-        return firmware_file
-    return None
+# def get_firmware_file_path(qroma_project):
+#     dir_path = os.path.join(qroma_project.project_dir, "firmware", "esp32", qroma_project.project_id)
+#     build_dir = os.path.join(dir_path, ".pio", "build", "esp32dev")
+#     firmware_file = os.path.join(build_dir, "firmware.bin")
+#     print(f"FIRMWARE FILE PATH: {firmware_file}")
+#     if os.path.exists(firmware_file) and os.path.isfile(firmware_file):
+#         return firmware_file
+#     return None

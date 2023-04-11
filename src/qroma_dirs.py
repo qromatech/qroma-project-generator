@@ -39,12 +39,18 @@ def get_apps_python_pb_dir(qroma_project: QromaProject):
     return apps_python_dir
 
 
-def get_project_site_www_dir(qroma_project: QromaProject):
-    project_site_www_dir = os.path.join(qroma_project.project_dir, "sites", "site-www-" + qroma_project.project_id)
-    return project_site_www_dir
+def get_project_site_static_dir(qroma_project: QromaProject):
+    project_site_static_dir = os.path.join(qroma_project.project_dir,
+                                           qroma_project.config.qroma.project.stages.sw.sites.bundle.bundle_static_dir)
+    return project_site_static_dir
+
+
+# def get_project_site_www_dir(qroma_project: QromaProject):
+#     project_site_www_dir = os.path.join(qroma_project.project_dir, "sites", "site-www-" + qroma_project.project_id)
+#     return project_site_www_dir
 
 
 def get_site_www_pb_dir(qroma_project: QromaProject):
-    project_site_www_dir = get_project_site_www_dir(qroma_project)
+    project_site_www_dir = get_project_site_static_dir(qroma_project)
     site_www_pb_dir = os.path.join(project_site_www_dir, "src", QROMA_PROTOBUFS_DIR_NAME)
     return site_www_pb_dir

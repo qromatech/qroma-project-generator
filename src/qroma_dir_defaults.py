@@ -1,6 +1,7 @@
 import os
-from qroma_project import QromaProject
+# from qroma_project import QromaProject
 from constants import QROMA_PROTOBUFS_DIR_NAME
+from qroma_project.qroma_project import QromaProject
 
 
 def extend_dir_chain(root: list, to_extend: list):
@@ -75,7 +76,9 @@ def get_apps_python_pb_dir(qroma_project: QromaProject):
 
 
 def get_project_site_www_dir(qroma_project: QromaProject):
-    project_site_www_dir = os.path.join(qroma_project.project_dir, "sites", "site-www-" + qroma_project.project_id)
+    # project_site_www_dir = os.path.join(qroma_project.project_dir, "sites", "site-www-" + qroma_project.project_id)
+    bundle_root_dir = qroma_project.config.qroma.project.stages.sw.sites.bundle.bundle_root_dir
+    project_site_www_dir = os.path.join(qroma_project.project_dir, bundle_root_dir)
     return project_site_www_dir
 
 
