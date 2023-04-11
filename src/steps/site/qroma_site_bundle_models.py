@@ -15,10 +15,6 @@ class QromaSiteProtoFileDetails(BaseModel):
     protoPath: str
 
 
-# class QromaSiteProtoDetails(BaseModel):
-#     protofileDetails: list[QromaSiteProtoFileDetails]
-
-
 class QromaEsp32LoaderManifest(BaseModel):
     name: str
     manifestPath: str
@@ -29,7 +25,6 @@ class QromaFirmwareBuildManifest(BaseModel):
     version: str
 
     qromaEsp32LoaderManifests: list[QromaEsp32LoaderManifest]
-    # protoDetails: QromaSiteProtoDetails
 
 
 class QromaSiteManifest(BaseModel):

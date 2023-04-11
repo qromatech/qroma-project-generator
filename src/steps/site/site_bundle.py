@@ -316,5 +316,3 @@ def do_site_bundle_work(qroma_project: QromaProject):
     _copy_bundle_version_dir_to_site_dir(tmp_bundle_root_dir, site_bundle_version_dir)
 
     _update_qroma_site_manifests_json(qroma_project, manifest)
-
-    input("FINISHING SITE BUNDLE WORK")
