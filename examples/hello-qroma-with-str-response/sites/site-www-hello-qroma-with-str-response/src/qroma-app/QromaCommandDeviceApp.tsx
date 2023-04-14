@@ -19,11 +19,6 @@ export const QromaCommandDeviceApp = <T extends object, U extends object>(props:
       <QromaRequestForm
         requestMessageType={props.requestMessageType}
         />
-        
-      {/* <QromaAppRequestForm
-        requestMessageType={props.requestMessageType}
-        /> */}
-
 
       <QromaStrMonitor
         />
