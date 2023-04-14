@@ -10,7 +10,7 @@ QromaSerialCommApp myQromaApp;
 void helloQromaWithPbResponseSetup()
 {
   registerPbCommandFunction<
-    HelloQroma, HelloQroma_fields,
+    HelloQromaRequest, HelloQromaRequest_fields,
     HelloQromaResponse, HelloQromaResponse_fields
   >(onHelloQroma, &myQromaApp);
 

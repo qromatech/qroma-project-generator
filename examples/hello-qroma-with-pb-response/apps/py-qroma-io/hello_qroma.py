@@ -8,39 +8,10 @@ from qroma_proto import hello_qroma_with_pb_response_pb2
 
 
 def create_hello_qroma_message(name):
-    hello_qroma_message = hello_qroma_with_pb_response_pb2.HelloQroma()
+    hello_qroma_message = hello_qroma_with_pb_response_pb2.HelloQromaRequest()
     hello_qroma_message.name = name
     msg_bytes = hello_qroma_message.SerializeToString()
-    # print("CREATED")
-    # print(hello_qroma_message)
-    # print(msg_bytes)
     return msg_bytes
-
-
-# def test_parse(msg_bytes):
-#     hello_qroma_message = hello_qroma_with_pb_response_pb2.HelloQroma()
-#     hello_qroma_message.ParseFromString(msg_bytes)
-#     print("TEST PARSE")
-#     print(hello_qroma_message)
-#
-#
-# async def monitor_for_message(qcio: QcioSerial, give_up_time: float) -> hello_qroma_with_pb_response_pb2.HelloQromaResponse:
-#     response_bytes = b''
-#     while time.time() < give_up_time:
-#         # b = await qcio.read_next_byte(0.1)
-#         b = await qcio.read_n_bytes(100, 0.3)
-#         if b is not None:
-#             response_bytes += b
-#
-#         qhb = hello_qroma_with_pb_response_pb2.HelloQromaResponse()
-#         try:
-#             qhb.ParseFromString(response_bytes)
-#             return qhb
-#         except:
-#             # print(f"PARSE FAILURE: {response_bytes}")
-#             pass
-#
-#     return None
 
 
 async def monitor(com_port: str):
@@ -55,15 +26,8 @@ async def monitor(com_port: str):
     i = 0
     while i < 10:
         if i % 2 == 0:
-            # msg_bytes = create_hello_qroma_message(f"Dev World: {i}\x00")
             msg_bytes = create_hello_qroma_message(f"Dev World: {i}")
-            # test_parse(msg_bytes)
-            # print(f"SENDING {msg_bytes} [{len(msg_bytes)}]")
             await qcio.send_bytes_base64_with_newline(msg_bytes)
-
-        # data = await qcio.read_bytes_until_timeout(1.0)
-        # print(f"LINE RECEIVED: {data}")
-        # i = i + 1
 
         qhr = hello_qroma_with_pb_response_pb2.HelloQromaResponse()
         message = await qcio.read_until_base64_newline_pb_parsed(qhr, 1.5)

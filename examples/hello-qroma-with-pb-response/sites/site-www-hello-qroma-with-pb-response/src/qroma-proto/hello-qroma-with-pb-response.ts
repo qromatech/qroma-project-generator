@@ -12,9 +12,9 @@ import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MESSAGE_TYPE } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
 /**
- * @generated from protobuf message HelloQroma
+ * @generated from protobuf message HelloQromaRequest
  */
-export interface HelloQroma {
+export interface HelloQromaRequest {
     /**
      * @generated from protobuf field: string name = 1;
      */
@@ -38,20 +38,20 @@ export interface HelloQromaResponse {
     nameLength: number;
 }
 // @generated message type with reflection information, may provide speed optimized methods
-class HelloQroma$Type extends MessageType<HelloQroma> {
+class HelloQromaRequest$Type extends MessageType<HelloQromaRequest> {
     constructor() {
-        super("HelloQroma", [
+        super("HelloQromaRequest", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
-    create(value?: PartialMessage<HelloQroma>): HelloQroma {
+    create(value?: PartialMessage<HelloQromaRequest>): HelloQromaRequest {
         const message = { name: "" };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
-            reflectionMergePartial<HelloQroma>(this, message, value);
+            reflectionMergePartial<HelloQromaRequest>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: HelloQroma): HelloQroma {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: HelloQromaRequest): HelloQromaRequest {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -70,7 +70,7 @@ class HelloQroma$Type extends MessageType<HelloQroma> {
         }
         return message;
     }
-    internalBinaryWrite(message: HelloQroma, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: HelloQromaRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string name = 1; */
         if (message.name !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.name);
@@ -81,9 +81,9 @@ class HelloQroma$Type extends MessageType<HelloQroma> {
     }
 }
 /**
- * @generated MessageType for protobuf message HelloQroma
+ * @generated MessageType for protobuf message HelloQromaRequest
  */
-export const HelloQroma = new HelloQroma$Type();
+export const HelloQromaRequest = new HelloQromaRequest$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class HelloQromaResponse$Type extends MessageType<HelloQromaResponse> {
     constructor() {

@@ -19,22 +19,22 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\"hello-qroma-with-pb-response.proto\"\x1a\n\nHelloQroma\x12\x0c\n\x04name\x18\x01 \x01(\t\"M\n\x12HelloQromaResponse\x12\x10\n\x08response\x18\x01 \x01(\t\x12\x11\n\tcallCount\x18\x02 \x01(\r\x12\x12\n\nnameLength\x18\x03 \x01(\rb\x06proto3'
+  serialized_pb=b'\n\"hello-qroma-with-pb-response.proto\"!\n\x11HelloQromaRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"M\n\x12HelloQromaResponse\x12\x10\n\x08response\x18\x01 \x01(\t\x12\x11\n\tcallCount\x18\x02 \x01(\r\x12\x12\n\nnameLength\x18\x03 \x01(\rb\x06proto3'
 )
 
 
 
 
-_HELLOQROMA = _descriptor.Descriptor(
-  name='HelloQroma',
-  full_name='HelloQroma',
+_HELLOQROMAREQUEST = _descriptor.Descriptor(
+  name='HelloQromaRequest',
+  full_name='HelloQromaRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='HelloQroma.name', index=0,
+      name='name', full_name='HelloQromaRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -53,7 +53,7 @@ _HELLOQROMA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=38,
-  serialized_end=64,
+  serialized_end=71,
 )
 
 
@@ -98,20 +98,20 @@ _HELLOQROMARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=66,
-  serialized_end=143,
+  serialized_start=73,
+  serialized_end=150,
 )
 
-DESCRIPTOR.message_types_by_name['HelloQroma'] = _HELLOQROMA
+DESCRIPTOR.message_types_by_name['HelloQromaRequest'] = _HELLOQROMAREQUEST
 DESCRIPTOR.message_types_by_name['HelloQromaResponse'] = _HELLOQROMARESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-HelloQroma = _reflection.GeneratedProtocolMessageType('HelloQroma', (_message.Message,), {
-  'DESCRIPTOR' : _HELLOQROMA,
+HelloQromaRequest = _reflection.GeneratedProtocolMessageType('HelloQromaRequest', (_message.Message,), {
+  'DESCRIPTOR' : _HELLOQROMAREQUEST,
   '__module__' : 'hello_qroma_with_pb_response_pb2'
-  # @@protoc_insertion_point(class_scope:HelloQroma)
+  # @@protoc_insertion_point(class_scope:HelloQromaRequest)
   })
-_sym_db.RegisterMessage(HelloQroma)
+_sym_db.RegisterMessage(HelloQromaRequest)
 
 HelloQromaResponse = _reflection.GeneratedProtocolMessageType('HelloQromaResponse', (_message.Message,), {
   'DESCRIPTOR' : _HELLOQROMARESPONSE,

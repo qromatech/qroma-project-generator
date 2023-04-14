@@ -6,7 +6,7 @@
 #error Regenerate this file with the current version of nanopb generator.
 #endif
 
-PB_BIND(HelloQroma, HelloQroma, AUTO)
+PB_BIND(HelloQromaRequest, HelloQromaRequest, AUTO)
 
 
 PB_BIND(HelloQromaResponse, HelloQromaResponse, AUTO)

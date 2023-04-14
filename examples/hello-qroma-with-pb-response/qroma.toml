@@ -1,5 +1,8 @@
+# all directories in this file are located relative to the project root
+
 [qroma.project]
 name = "hello-qroma-with-pb-response"
+# use semantic versioning - see https://en.wikipedia.org/wiki/Software_versioning [Semantic versioning]
 version = "0.1.0"
 
 
@@ -24,9 +27,11 @@ compilers = [
   "typescript",
   "dart",
 ]
-source_and_dest_dirs = [
-  ["protofiles-in", "protofiles-out"],
-]
+
+[[qroma.project.stages.sw.protobuf.sources]]
+source_path = "protofiles-in"
+dest_path = "protofiles-out"
+site_path = "proto"
 
 
 [qroma.project.stages.sw.protobuf.replication]
@@ -46,3 +51,53 @@ project_dirs = []
 
 [qroma.project.stages.sw.sites]
 project_dirs = []
+
+
+[qroma.project.stages.sw.sites.bundle]
+bundle_static_dir="sites/site-www-hello-qroma-with-pb-response/static"
+bundle_version_content_root_dir_template="{bundle_root_path}/qroma/versions"
+
+
+[[qroma.project.stages.sw.sites.bundle.publish_version.firmware_file_replications]]
+source_filepath="firmware/esp32/hello-qroma-with-pb-response/.pio/build/esp32dev/firmware.bin"
+publication_filepath="firmware/firmware.bin"
+
+
+[[qroma.project.stages.sw.sites.bundle.publish_version.firmware_file_replications]]
+source_filepath="firmware/esp32/hello-qroma-with-pb-response/.pio/build/esp32dev/bootloader.bin"
+publication_filepath="firmware/bootloader.bin"
+
+
+[[qroma.project.stages.sw.sites.bundle.publish_version.firmware_file_replications]]
+source_filepath="firmware/esp32/hello-qroma-with-pb-response/.pio/build/esp32dev/partitions.bin"
+publication_filepath="firmware/partitions.bin"
+
+
+[[qroma.project.stages.sw.sites.bundle.publish_version.firmware_file_replications]]
+source_filepath="C:/Users/ajb/.platformio/packages/framework-arduinoespressif32/tools/partitions/boot_app0.bin"
+publication_filepath="firmware/boot_app0.bin"
+
+
+[[qroma.project.stages.sw.sites.bundle.publish_version.zipped_dirs]]
+source_dir="protobufs/protofiles-out"
+publication_zip_file="protobufs.zip"
+
+
+[[qroma.project.stages.sw.sites.bundle.publish_version.generated_files]]
+publication_filepath="firmware/manifest-firmware.json"
+template_str="""{
+  "name": "hello-qroma-with-pb-response",
+  "version": "esp32",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "bootloader.bin", "offset": 4096 },
+        { "path": "partitions.bin", "offset": 32768 },
+        { "path": "boot_app0.bin", "offset": 57344 },
+        { "path": "firmware.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}
+"""

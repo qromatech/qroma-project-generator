@@ -10,9 +10,9 @@
 #endif
 
 /* Struct definitions */
-typedef struct _HelloQroma { 
+typedef struct _HelloQromaRequest { 
     char name[20]; 
-} HelloQroma;
+} HelloQromaRequest;
 
 typedef struct _HelloQromaResponse { 
     char response[30]; 
@@ -26,22 +26,22 @@ extern "C" {
 #endif
 
 /* Initializer values for message structs */
-#define HelloQroma_init_default                  {""}
+#define HelloQromaRequest_init_default           {""}
 #define HelloQromaResponse_init_default          {"", 0, 0}
-#define HelloQroma_init_zero                     {""}
+#define HelloQromaRequest_init_zero              {""}
 #define HelloQromaResponse_init_zero             {"", 0, 0}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define HelloQroma_name_tag                      1
+#define HelloQromaRequest_name_tag               1
 #define HelloQromaResponse_response_tag          1
 #define HelloQromaResponse_callCount_tag         2
 #define HelloQromaResponse_nameLength_tag        3
 
 /* Struct field encoding specification for nanopb */
-#define HelloQroma_FIELDLIST(X, a) \
+#define HelloQromaRequest_FIELDLIST(X, a) \
 X(a, STATIC,   SINGULAR, STRING,   name,              1)
-#define HelloQroma_CALLBACK NULL
-#define HelloQroma_DEFAULT NULL
+#define HelloQromaRequest_CALLBACK NULL
+#define HelloQromaRequest_DEFAULT NULL
 
 #define HelloQromaResponse_FIELDLIST(X, a) \
 X(a, STATIC,   SINGULAR, STRING,   response,          1) \
@@ -50,16 +50,16 @@ X(a, STATIC,   SINGULAR, UINT32,   nameLength,        3)
 #define HelloQromaResponse_CALLBACK NULL
 #define HelloQromaResponse_DEFAULT NULL
 
-extern const pb_msgdesc_t HelloQroma_msg;
+extern const pb_msgdesc_t HelloQromaRequest_msg;
 extern const pb_msgdesc_t HelloQromaResponse_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
-#define HelloQroma_fields &HelloQroma_msg
+#define HelloQromaRequest_fields &HelloQromaRequest_msg
 #define HelloQromaResponse_fields &HelloQromaResponse_msg
 
 /* Maximum encoded size of messages (where known) */
+#define HelloQromaRequest_size                   21
 #define HelloQromaResponse_size                  43
-#define HelloQroma_size                          21
 
 #ifdef __cplusplus
 } /* extern "C" */

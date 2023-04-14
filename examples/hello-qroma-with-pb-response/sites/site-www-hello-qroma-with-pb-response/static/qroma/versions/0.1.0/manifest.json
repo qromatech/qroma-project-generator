@@ -1,0 +1,10 @@
+{
+  "project_id": "hello-qroma-with-pb-response",
+  "version": "0.1.0",
+  "qromaEsp32LoaderManifests": [
+    {
+      "name": "hello-qroma-with-pb-response",
+      "manifestPath": "/qroma/versions/0.1.0/firmware/manifest-firmware.json"
+    }
+  ]
+}
