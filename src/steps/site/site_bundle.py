@@ -62,7 +62,8 @@ def _get_site_bundle_root_dir_parameter(qroma_project: QromaProject) -> str:
 
 def _get_site_bundle_version_content_dir_parameter(qroma_project: QromaProject) -> str:
     bundle_root_dir = _get_site_bundle_root_dir_parameter(qroma_project)
-    return bundle_root_dir
+    version_content_root = qroma_project.config.qroma.project.stages.sw.sites.bundle.bundle_version_content_root_dir_template.format(bundle_root_path=bundle_root_dir)
+    return version_content_root
 
 
 def _get_site_bundle_version_dir(qroma_project: QromaProject, root_type: QromaSiteRootType):
@@ -236,7 +237,8 @@ def _create_temp_bundle_contents(qroma_project: QromaProject, temp_version_conte
 
 def _copy_bundle_version_dir_to_site_dir(bundle_contents_dir, site_bundle_version_dir):
     print(f"COPYING BUNDLE VERSION DIR {bundle_contents_dir} TO {site_bundle_version_dir}")
-    qroma_os_rmdir(site_bundle_version_dir)
+    if os.path.exists(site_bundle_version_dir):
+        qroma_os_rmdir(site_bundle_version_dir)
     qroma_copy_dir(bundle_contents_dir, site_bundle_version_dir)
 
 
