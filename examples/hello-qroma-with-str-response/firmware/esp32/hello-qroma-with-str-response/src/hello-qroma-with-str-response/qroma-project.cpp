@@ -1,8 +1,6 @@
 #include "qroma-project.h"
 #include "qroma-commands.h"
 #include "qroma/qroma.h"
-#include "qroma/startup/configure/configureQromaApp.h"
-#include "qroma/startup/configure/configureQromaSerialCommApp.h"
 
 QromaSerialCommApp myQromaApp;
 

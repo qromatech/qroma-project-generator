@@ -27,7 +27,7 @@ void qromaMonitorLoop()
   strncat(qhb.heartbeatMessage, tickBuffer, sizeof(QromaHeartbeat::heartbeatMessage) - 1);
   qhb.uptime = millis();
 
-  sendSerialPb64LineMessage<QromaHeartbeat, QromaHeartbeat_fields>(&qhb, &myQromaApp);
+  sendSerialPb64NewLineMessage<QromaHeartbeat, QromaHeartbeat_fields>(&qhb, &myQromaApp);
 
   delay(1000);
 }
