@@ -1,0 +1,79 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+
+ @import url('https://fonts.googleapis.com/css?family=Exo:400,300,700');
+
+/* You can override the default Infima variables here. */
+:root {
+  /* --ifm-color-primary: #2e8555;
+  --ifm-color-primary-dark: #29784c;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #33925d;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e; */
+  --ifm-color-primary: rgb(111, 204, 220);
+  --ifm-color-primary-dark: rgb(111, 204, 220);
+  --ifm-color-primary-darker: rgb(111, 204, 220);
+  --ifm-color-primary-darkest: rgb(111, 204, 220);
+  --ifm-color-primary-light: rgb(111, 204, 220);
+  --ifm-color-primary-lighter: rgb(111, 204, 220);
+  --ifm-color-primary-lightest: rgb(111, 204, 220);
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+
+.navbar {
+  background-color: rgb(50, 85, 164);
+}
+
+.navbar-sidebar__brand {
+  background-color: rgb(50, 85, 164);
+}
+
+.navbar__item {
+  font-family: 'Exo';
+  font-weight: bold;
+  color: white;
+}
+
+.navbar__link--active {
+  color: rgb(111, 204, 220);
+}
+
+.navbar__title {
+  font-family: 'Exo';
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: white;
+}
+
+.hero__title {
+  font-family: 'Exo';
+  font-weight: bold;
+  color: white;
+  /* font-size: 40px; */
+}
+
+.hero__subtitle {
+  font-family: 'Exo';
+  font-weight: bold;
+  color: rgb(183, 81, 158);
+}

@@ -10,7 +10,7 @@ from qroma_project.qroma_project import QromaProject
 # from steps.firmware.fw_files import get_firmware_file_path
 from steps.site.qroma_site_bundle_models import QromaFirmwareBuildManifest, QromaEsp32LoaderManifest, \
     QromaSiteManifests, QromaSiteManifest, QromaSiteManifestType
-from utils import qroma_os_remove, qroma_copy_file, qroma_copy_dir, ensure_file_exists
+from utils import qroma_os_remove, qroma_copy_file, qroma_copy_dir, ensure_file_exists, qroma_os_rmdir
 
 
 class QromaSiteRootType(str, Enum):
@@ -236,11 +236,11 @@ def _create_temp_bundle_contents(qroma_project: QromaProject, temp_version_conte
 
 def _copy_bundle_version_dir_to_site_dir(bundle_contents_dir, site_bundle_version_dir):
     print(f"COPYING BUNDLE VERSION DIR {bundle_contents_dir} TO {site_bundle_version_dir}")
+    qroma_os_rmdir(site_bundle_version_dir)
     qroma_copy_dir(bundle_contents_dir, site_bundle_version_dir)
 
 
 def _get_qroma_site_manifests_file_path(qroma_project: QromaProject):
-    # site_qroma_root_dir = _get_site_qroma_root_dir(qroma_project, QromaSiteRootType.dest)
     site_qroma_root_dir = os.path.join(get_project_site_static_dir(qroma_project), "qroma")
     qroma_site_manifests_path = os.path.join(site_qroma_root_dir, "manifests.json")
     return qroma_site_manifests_path
