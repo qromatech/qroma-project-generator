@@ -67,7 +67,6 @@ def _get_site_bundle_version_content_dir_parameter(qroma_project: QromaProject) 
 
 
 def _get_site_bundle_version_dir(qroma_project: QromaProject, root_type: QromaSiteRootType):
-    # project_version = get_qroma_project_version(qroma_project)
     qroma_versions_root_dir = _get_site_qroma_versions_root_dir(qroma_project, root_type)
     qroma_version_dir = os.path.join(qroma_versions_root_dir, qroma_project.project_version)
     return qroma_version_dir

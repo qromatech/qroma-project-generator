@@ -187,6 +187,9 @@ def download_template_to_dir(project_dir: os.PathLike) -> str:
         print(f"{td_content}")
         shutil.move(os.path.join(template_dir, td_content), project_dir)
 
+    print(f"REMOVING TEMPLATE DIR: {template_dir}")
+    qroma_os_rmdir(template_dir)
+
     return template_dir
 
 

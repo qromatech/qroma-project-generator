@@ -7,7 +7,6 @@ firmware_platform = "platformio"
 
 [qroma.user.profile.defaults.preferences]
 firmware_platforms = [
-    "arduino",
     "platformio",
 ]
 
