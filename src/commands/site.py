@@ -1,7 +1,9 @@
+import subprocess
 from typing import Optional
 
 import typer
 
+import qroma_dirs
 from qroma_infra.qroma_editor import open_site_editor
 from qroma_infra.qroma_infrastructure import load_qroma_user_profile
 from qroma_project import user_input
@@ -25,7 +27,9 @@ def bundle(project_id: Optional[str] = typer.Argument(None)):
 
 @app.command()
 def run(project_id: Optional[str] = typer.Argument(None)):
-    print("In site run - not yet implemented")
+    qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
+    site_www_dir = qroma_dirs.get_project_site_www_dir(qroma_project)
+    subprocess.run(["npm", "run", "start"], shell=True, cwd=site_www_dir)
 
 
 @app.command()
