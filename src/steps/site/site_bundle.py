@@ -3,11 +3,10 @@ import shutil
 import tempfile
 from enum import Enum
 
-from jinja2 import Environment, FileSystemLoader, BaseLoader
+from jinja2 import Environment, BaseLoader
 
-from qroma_dirs import get_project_site_static_dir, get_protobufs_build_dest_and_publish_dirs
+from qroma_dirs import get_project_site_static_dir
 from qroma_project.qroma_project import QromaProject
-# from steps.firmware.fw_files import get_firmware_file_path
 from steps.site.qroma_site_bundle_models import QromaFirmwareBuildManifest, QromaEsp32LoaderManifest, \
     QromaSiteManifests, QromaSiteManifest, QromaSiteManifestType
 from utils import qroma_os_remove, qroma_copy_file, qroma_copy_dir, ensure_file_exists, qroma_os_rmdir
@@ -54,8 +53,6 @@ def _get_site_qroma_versions_root_dir(qroma_project: QromaProject, root_type: Qr
     return site_qroma_versions_root_dir
 
 
-
-
 def _get_site_bundle_root_dir_parameter(qroma_project: QromaProject) -> str:
     return qroma_project.config.qroma.project.stages.sw.sites.bundle.bundle_static_dir
 
@@ -74,71 +71,25 @@ def _get_site_bundle_version_dir(qroma_project: QromaProject, root_type: QromaSi
 
 def _clean_site_bundle_version_dir(qroma_project: QromaProject, root_type: QromaSiteRootType):
     qroma_version_dir = _get_site_bundle_version_content_dir_parameter(qroma_project)
-    # qroma_version_dir = os.path.join(qroma_project.project_dir, QromaSiteRootType.dest)
-    # qroma_version_dir = _get_site_bundle_version_dir(qroma_project, QromaSiteRootType.dest)
-    if os.path.exists(qroma_version_dir) and os.path.isdir(qroma_version_dir):
-        print("TO REMOVE: " + qroma_version_dir)
-        qroma_os_remove(qroma_version_dir)
-
-
-#
-# def _add_protofiles_to_content_dir(qroma_project: QromaProject, version_content_root_dir: str) -> QromaSiteProtoDetails:
-#     protofile_dest_and_publish_dirs = get_protobufs_build_dest_and_publish_dirs(qroma_project)
-#
-#     input_bundle_version_path_chain = _get_site_qroma_bundle_version_path_chain(qroma_project, QromaSiteRootType.manifest)
-#     site_bundle_version_path = "/".join(input_bundle_version_path_chain)
-#
-#     all_protofile_details = []
-#
-#     for from_dir, to_dir in protofile_dest_and_publish_dirs:
-#         full_from_dir = os.path.join(from_dir, "proto")
-#         full_to_dir = os.path.join(version_content_root_dir, to_dir)
-#         qroma_copy_dir(full_from_dir, full_to_dir)
-#
-#         for path, directories, files in os.walk(full_to_dir):
-#             rel_path = path.replace(version_content_root_dir, "")
-#             rel_path = rel_path.replace("\\", "/")
-#             for f in files:
-#                 pdpp = f"/{site_bundle_version_path}{rel_path}/{f}"
-#                 protofile_details = QromaSiteProtoFileDetails(
-#                     protoPath=pdpp
-#                 )
-#                 all_protofile_details.append(protofile_details)
-#
-#     return QromaSiteProtoDetails(protofileDetails=all_protofile_details)
+    qroma_version_dir_chain = qroma_version_dir.split("/")
+    site_bundle_version_dir = os.path.join(qroma_project.project_dir, *qroma_version_dir_chain)
+    if os.path.exists(site_bundle_version_dir) and os.path.isdir(site_bundle_version_dir):
+        print("REMOVE SITE BUNDLE VERSION DIR: " + site_bundle_version_dir)
+        qroma_os_remove(site_bundle_version_dir)
 
 
 def _zip_dirs_and_add_to_content_dir(qroma_project: QromaProject, bundle_version_content_dir: str):
     to_zip_dirs = qroma_project.config.qroma.project.stages.sw.sites.bundle.publish_version.zipped_dirs
     for to_zip_dir in to_zip_dirs:
         source_dir = os.path.join(qroma_project.project_dir, to_zip_dir.source_dir)
-        # dest_zip_file_template = os.path.join(bundle_version_content_dir, to_zip_dir.dest_zip_file)
-        # firmware_file_to_path = ffr.dest_filepath.format(bundle_version_root_dir=bundle_version_root_dir)
         dest_zip_file_path = to_zip_dir.publication_zip_file.format(bundle_version_content_dir=bundle_version_content_dir)
         dest_zip_file = os.path.join(bundle_version_content_dir, dest_zip_file_path)
         print(f"ZIPPING {source_dir} INTO {dest_zip_file}")
         shutil.make_archive(source_dir, 'zip', dest_zip_file)
 
 
-# def _add_firmware_files_to_content_dir(qroma_project: QromaProject, content_root_dir: str) -> list[QromaEsp32LoaderManifest]:
-#     firmware_file_path = get_firmware_file_path(qroma_project)
-#     firmware_file_to_path = os.path.join(content_root_dir, "firmware")
-#     os.makedirs(firmware_file_to_path)
-#     qroma_copy_file(firmware_file_path, firmware_file_to_path)
-#
-#     manifest_path = f"/qroma/versions/{qroma_project.config.qroma.project.version}/firmware/manifest-firmware.json"
-#     esp32_loader_manifest = QromaEsp32LoaderManifest(
-#         name=qroma_project.project_id,
-#         manifestPath=manifest_path,
-#     )
-#
-#     return [esp32_loader_manifest]
-
-
 def _add_firmware_files_to_content_dir(qroma_project: QromaProject, bundle_version_content_dir: str) -> list[QromaEsp32LoaderManifest]:
     firmware_file_replications = qroma_project.config.qroma.project.stages.sw.sites.bundle.publish_version.firmware_file_replications
-    # firmware_file_path = get_firmware_file_path(qroma_project)
-    # firmware_file_to_path = os.path.join(content_root_dir, "firmware")
 
     for ffr in firmware_file_replications:
         print("FFR")
@@ -148,28 +99,14 @@ def _add_firmware_files_to_content_dir(qroma_project: QromaProject, bundle_versi
         else:
             firmware_file_from_path = ffr.source_filepath
 
-        # firmware_file_to_path_template = os.path.join(content_root_dir, ffr.dest_filepath)
-        # firmware_file_to_path = firmware_file_to_path_template.format(qroma_project=qroma_project)
         firmware_file_to_path = os.path.join(bundle_version_content_dir,
                                              *(ffr.publication_filepath.format(bundle_version_content_dir=bundle_version_content_dir).split("/")))
-
-        # dest_zip_file_template = os.path.join(content_root_dir, to_zip_dir.dest_zip_file)
-        # dest_zip_file = dest_zip_file_template.format(qroma_project=qroma_project)
 
         print(f"REPLICATING FIRMWARE FILE {firmware_file_from_path} TO {firmware_file_to_path}")
         firmware_file_to_dir = os.path.dirname(firmware_file_to_path)
         if not os.path.exists(firmware_file_to_dir):
             os.makedirs(firmware_file_to_dir)
         qroma_copy_file(firmware_file_from_path, firmware_file_to_path)
-
-    # qroma_project_env = Environment(
-    #     loader=FileSystemLoader(project_template_dir)
-    # )
-    # template = qroma_project_env.get_template(template_file)
-    # rendered_content = template.render(
-    #     qroma_project=qroma_project_data,
-    #     firmware=firmware_processor(qroma_project_data),
-    # )
 
     esp32_loader_manifests = []
     files_to_generate = qroma_project.config.qroma.project.stages.sw.sites.bundle.publish_version.generated_files
@@ -206,7 +143,6 @@ def _create_bundle_version_manifest(qroma_project: QromaProject,
         project_id=qroma_project.project_id,
         version=qroma_project.config.qroma.project.version,
         qromaEsp32LoaderManifests=esp32_loader_manifests,
-        # protoDetails=proto_details,
     )
 
     return manifest
