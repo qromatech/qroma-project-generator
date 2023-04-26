@@ -1,16 +1,7 @@
 # qroma-project-generator
 
-
-### Prompts
->>> Set your project ID
->>> Choose the platform for your project:
-     - Arduino CLI (see https://arduino.github.io/arduino-cli to get started)
-     - Platform IO (see https://platformio.org/ to get started)
-     - I will set up my own projects
->>> Do you want to generate a device-hosted website (Y/N)?
->>> Do you want to generate an Internet based website (Y/N)?
->>> Do you want to generate a smart phone app (Y/N)?
-
+### Download
+Compiled Windows executables are available in [/downloads](/downloads)
 
 ### To Run qroma-project-generator locally
 * `git clone https://github.com/qromatech/qroma-project-generator`
@@ -25,10 +16,24 @@
 * `poetry run python src/qroma-cli.py protobuf :my-qroma-project`
 * `poetry run python src/qroma-cli.py build :my-qroma-project`
 
-### To build command line app executable
-* From root directory, run `package-qroma-project-generator.bat`
-* Alternatively, run commands `poetry run python -m PyInstaller src/qroma-cli.py`
 
 ### Dev Notes
+#### To build command line executable [Windows]
+* From root directory, run `package-qroma-project-generator.bat`
+* Alternatively, run command `poetry run python -m PyInstaller src/qroma-cli.py`
+
 #### Editing py-qroma
 `poetry add -e C:\Users\ajb\Projects\qromatech\py-qroma`
+
+
+#### Prompts
+```
+>>> Set your project ID
+>>> Choose the platform for your project:
+     - Arduino CLI (see https://arduino.github.io/arduino-cli to get started)
+     - Platform IO (see https://platformio.org/ to get started)
+     - I will set up my own projects
+>>> Do you want to generate a device-hosted website (Y/N)?
+>>> Do you want to generate an Internet based website (Y/N)?
+>>> Do you want to generate a smart phone app (Y/N)?
+```

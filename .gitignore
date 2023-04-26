@@ -18,3 +18,5 @@
 **/protofiles-out
 
 src/build_info.py
+
+!downloads/**/qroma.exe
