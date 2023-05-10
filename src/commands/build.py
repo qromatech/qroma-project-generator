@@ -26,16 +26,58 @@ def build_all(project_id: Optional[str] = typer.Argument(None)):
                      )
 
 
+
 @app.command()
-def firmware():
-    print("In build firmware - not yet implemented")
+def pb(project_id: Optional[str] = typer.Argument(None)):
+    qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
+    user_profile = load_qroma_user_profile()
+
+    build_parameters = BuildParameters(
+        build_pb=True,
+        build_firmware=False,
+        build_site=False,
+    )
+
+    do_build_project(qroma_project=qroma_project,
+                     user_profile=user_profile,
+                     build_parameters=build_parameters,
+                     )
+
+
+@app.command()
+def firmware(project_id: Optional[str] = typer.Argument(None)):
+    qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
+    user_profile = load_qroma_user_profile()
+
+    build_parameters = BuildParameters(
+        build_pb=False,
+        build_firmware=True,
+        build_site=False,
+    )
+
+    do_build_project(qroma_project=qroma_project,
+                     user_profile=user_profile,
+                     build_parameters=build_parameters,
+                     )
 
 
 @app.command(name="app")
-def build_app():
+def build_app(project_id: Optional[str] = typer.Argument(None)):
     print("In build app - not yet implemented")
 
 
 @app.command()
-def site():
-    print("In build site - not yet implemented")
+def site(project_id: Optional[str] = typer.Argument(None)):
+    qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
+    user_profile = load_qroma_user_profile()
+
+    build_parameters = BuildParameters(
+        build_pb=False,
+        build_firmware=False,
+        build_site=True,
+    )
+
+    do_build_project(qroma_project=qroma_project,
+                     user_profile=user_profile,
+                     build_parameters=build_parameters,
+                     )

@@ -8,7 +8,8 @@ class QromaProjectLocation(Enum):
 
 class FirmwareFramework(str, Enum):
     platformio = "platformio"
-    arduino = "arduino"
+    user_handled = "user_handled"
+    # arduino = "arduino"
     # micropython = "micropython"
 
 

@@ -23,6 +23,6 @@ def upload_arduino(user_profile: QromaUserProfile, qroma_project: QromaProject):
     subprocess.run([arduino_exe, upload_command], shell=True, cwd=dir_path)
 
 
-def get_firmware_file_path(qroma_project):
-    return "Not implemented yet"
-    return None
+# def get_firmware_file_path(qroma_project):
+#     return "Not implemented yet"
+#     return None
