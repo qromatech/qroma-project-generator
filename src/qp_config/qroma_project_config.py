@@ -38,7 +38,7 @@ class ProtobufReplicationStage:
 class ProtobufSource:
     source_path: str
     dest_path: str
-    site_path: str
+    # site_path: str
 
 
 @dataclass
@@ -62,19 +62,21 @@ class MakeAppsStage:
 @dataclass
 class ReplicatedFirmwareFilesItem:
     source_filepath: str
-    publication_filepath: str
+    local_publication_filepath: str
+    hosted_publication_filepath: str
 
 
 @dataclass
 class ZippedDirItem:
     source_dir: str
-    publication_zip_file: str
+    local_publication_zip_file: str
 
 
 @dataclass
 class GeneratedFileItem:
-    publication_filepath: str
+    local_publication_filepath: str
     template_str: str
+    hosted_publication_filepath: str
 
 
 @dataclass
@@ -86,8 +88,13 @@ class BundleVersionPublication:
 
 @dataclass
 class BundleStage:
-    bundle_static_dir: str
-    bundle_version_content_root_dir_template: str
+    local_bundle_static_dir: str
+    local_bundle_version_content_root_dir: str
+
+    hosted_qroma_bundle_root: str
+    hosted_qroma_bundle_versions_root: str
+    hosted_bundle_version_path: str
+
     publish_version: BundleVersionPublication
 
 
@@ -116,9 +123,19 @@ class QromaProjectFirmware:
 
 
 @dataclass
+class QromaProjectDirs:
+    pb_root: str
+    firmware_root: str
+    app_root: str
+    site_root: str
+    
+
+@dataclass
 class QromaProjectDict:
+    id: str
     name: str
     version: str
+    dirs: QromaProjectDirs
     firmware: QromaProjectFirmware
     stages: QromaProjectStages
 
@@ -129,11 +146,8 @@ class QromaRoot:
 
 
 @dataclass
-# class QromaProjectConfigDict:
 class QromaProjectConfig:
     qroma: QromaRoot
-    blah: Optional[str] = "notset"
-    # number: StrictInt
 
 
 def create_project_config(qroma_config_file_dict: dict) -> QromaProjectConfig:

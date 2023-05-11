@@ -3,16 +3,16 @@ import typer
 from qroma_enums import FirmwareFramework, ExitReason
 from qroma_project.qroma_project import QromaProject
 from qroma_user_profile.qroma_user_profile import QromaUserProfile
-from steps.firmware import fw_platformio, fw_arduino, fw_user_handled
+from steps.firmware import fw_platformio, fw_user_managed
 
 
 def get_firmware_platform_for_framework(framework: FirmwareFramework):
     if framework == FirmwareFramework.platformio:
         return fw_platformio
-    elif framework == FirmwareFramework.user_handled:
-        return fw_user_handled
+    elif framework == FirmwareFramework.user_managed:
+        return fw_user_managed
     else:
-        print("Unrecognized framwork: " + framework)
+        print("Unrecognized framework: " + framework)
         typer.Exit(ExitReason.INVALID_USER_FW_PLATFORM.value)
 
     # user_default_firmware_platform = user_profile.defaults.tools.firmware_platform

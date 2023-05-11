@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from pydantic.dataclasses import dataclass
 
@@ -22,7 +22,6 @@ class FirmwarePlatformIo:
     platformio_exe: str
     build_command: str
     upload_command: str
-    monitor_command: str
 
 
 @dataclass
@@ -30,13 +29,19 @@ class FirmwareArduino:
     arduino_exe: str
     build_command: str
     upload_command: str
-    monitor_command: str
+    
+    
+@dataclass
+class FirmwareUserManaged:
+    build_command: str
+    upload_command: str
 
 
 @dataclass
 class FirmwareCommands:
-    platformio: FirmwarePlatformIo
-    arduino: FirmwareArduino
+    # platformio: FirmwarePlatformIo
+    # arduino: FirmwareArduino
+    user_managed: FirmwareUserManaged
 
 
 @dataclass
@@ -54,3 +59,4 @@ class QromaUserProfileDefaults:
 class QromaUserProfile:
     defaults: QromaUserProfileDefaults
     commands: QromaUserProfileCommands
+    dirs: Dict[str, str]
