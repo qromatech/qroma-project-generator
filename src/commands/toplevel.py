@@ -4,7 +4,6 @@ import typer
 
 import env_checks
 from build_project import BuildParameters, do_build_project
-from qroma_enums import FirmwareFramework
 from qroma_infra.qroma_editor import QromaEditorTypes, qroma_open_editor
 from qroma_infra.qroma_infrastructure import load_qroma_user_profile
 from qroma_project import user_input
@@ -30,7 +29,7 @@ def new(project_id: str = typer.Argument(...,
                                          # callback=typer_validate_new_user_project_id_from_user,
                                          # callback=typer_validate_existing_project_id,
                                          ),
-        firmware_platforms: List[FirmwareFramework] | None = typer.Option(None),
+        # firmware_platforms: List[FirmwareFramework] | None = typer.Option(None),
         editor: QromaEditorTypes = typer.Option(QromaEditorTypes.root),
         replace_existing: bool = typer.Option(False),
         do_build: bool = typer.Option(False),
@@ -52,15 +51,12 @@ def new(project_id: str = typer.Argument(...,
 
     user_profile = load_qroma_user_profile()
 
-    if not firmware_platforms:
-        user_firmware_platforms = user_profile.defaults.preferences.firmware_platforms
-        typer_show_to_user(f"No firmware platforms provided. Using user preferences [{user_firmware_platforms}].")
-    else:
-        user_firmware_platforms = firmware_platforms
+    user_firmware_platform = user_profile.defaults.new_project_firmware_platform
+    typer_show_to_user(f"Using user preference to create firmware framework: {user_firmware_platform}.")
 
     project_config_user_inputs = QromaProjectConfigUserInputs(
         project_info,
-        firmware_platforms=user_firmware_platforms
+        firmware_platform=user_firmware_platform
     )
 
     build_parameters = BuildParameters(

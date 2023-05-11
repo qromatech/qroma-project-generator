@@ -89,6 +89,7 @@ class BundleVersionPublication:
 @dataclass
 class BundleStage:
     local_bundle_static_dir: str
+    local_bundle_static_qroma_dir: str
     local_bundle_version_content_root_dir: str
 
     hosted_qroma_bundle_root: str

@@ -10,6 +10,7 @@ class FirmwareFramework(str, Enum):
     user_managed = "user_managed"
     platformio = "platformio"
     # arduino = "arduino"
+    # arduino_cli = "arduino_cli
     # micropython = "micropython"
 
 

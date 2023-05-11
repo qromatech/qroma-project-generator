@@ -21,7 +21,7 @@ def process_qroma_project_template_dir(generate_project_options: GenerateProject
     qroma_project_data = QromaProjectTemplateData(
         project_id=project_id,
         project_dir=project_dir,
-        firmware_platforms=generate_project_options.project_config_user_inputs.firmware_platforms,
+        firmware_platforms=[generate_project_options.project_config_user_inputs.firmware_platform],
     )
 
     print("TEMPLATE DATA")

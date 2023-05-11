@@ -16,7 +16,7 @@ class NewQromaProjectInfoFromUserInput:
 @dataclass
 class QromaProjectConfigUserInputs:
     project_info: NewQromaProjectInfoFromUserInput
-    firmware_platforms: List[FirmwareFramework]
+    firmware_platform: FirmwareFramework
 
 
 @dataclass
