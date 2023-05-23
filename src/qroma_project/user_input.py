@@ -34,7 +34,7 @@ def create_new_qroma_project_info_from_user_input(user_project_id: str) -> NewQr
         project_location = QromaProjectLocation.qroma_project_dir
 
     if not is_valid_project_id(project_id):
-        raise QromaProjectException(f"Invalid project ID: {project_id}")
+        raise QromaProjectException(f"Invalid project ID: {project_id} - project ID can only use the following characters: {VALID_PROJECT_ID_CHARS}")
 
     project_dir = calculate_project_dir(project_id, project_location)
 

@@ -1,7 +1,7 @@
 from qroma_enums import FirmwareFramework
 from qroma_project.qroma_project import QromaProject
 from qroma_user_profile.qroma_user_profile import QromaUserProfile
-import command_handler
+from steps.firmware import command_handler
 
 
 def do_build(user_profile: QromaUserProfile, qroma_project: QromaProject):

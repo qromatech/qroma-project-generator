@@ -97,6 +97,7 @@ def prompt_user_for_dir_choice(root_dir):
         return os.path.join(root_dir, candidate_dirs[0])
 
     sorted_candidate_dirs = sorted(candidate_dirs)
+    sorted_candidate_dirs.insert(0, ".")
     for i, d in enumerate(sorted_candidate_dirs):
         print(f"[{i + 1}] {d}")
 

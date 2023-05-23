@@ -1,5 +1,5 @@
-import command_handler
-import prompt_handler
+from steps.firmware import command_handler
+from steps.firmware import prompt_handler
 from qroma_enums import FirmwareFramework
 from qroma_project.qroma_project import QromaProject
 from qroma_user_profile.qroma_user_profile import QromaUserProfile
