@@ -1,44 +1,16 @@
-import os.path
-import subprocess
-
+from qroma_enums import FirmwareFramework
 from qroma_project.qroma_project import QromaProject
 from qroma_user_profile.qroma_user_profile import QromaUserProfile
-from utils import typer_progress_message, typer_show_to_user
+from steps.firmware import command_handler
 
 
-def build_platformio(user_profile: QromaUserProfile, qroma_project: QromaProject):
-    platformio_exe = user_profile.commands.firmware.platformio.platformio_exe
-    build_command = user_profile.commands.firmware.platformio.build_command
-
-    dir_path = os.path.join(qroma_project.project_dir, "firmware", "esp32", qroma_project.project_id)
-
-    with typer_progress_message("RUNNING PLATFORMIO BUILD"):
-        typer_show_to_user("EXEC: " + platformio_exe)
-        typer_show_to_user("ARGS: " + user_profile.commands.firmware.platformio.build_command)
-        typer_show_to_user("PATH: " + dir_path)
-
-        subprocess.run([platformio_exe, build_command], shell=True, cwd=dir_path)
+def do_build(user_profile: QromaUserProfile, qroma_project: QromaProject):
+    build_command = user_profile.tools.firmware_platforms.platformio.build_command
+    dir_path = qroma_project.config.qroma.project.dirs.firmware_root
+    command_handler.do_firmware_build(FirmwareFramework.platformio, build_command, dir_path)
 
 
-def upload_platformio(user_profile: QromaUserProfile, qroma_project: QromaProject):
-    platformio_exe = user_profile.commands.firmware.platformio.platformio_exe
-    upload_command_parts = user_profile.commands.firmware.platformio.upload_command.split(' ')
-
-    dir_path = os.path.join(qroma_project.project_dir, "firmware", "esp32", qroma_project.project_id)
-
-    with typer_progress_message("RUNNING PLATFORMIO UPLOAD"):
-        typer_show_to_user("EXEC: " + platformio_exe)
-        typer_show_to_user("ARGS: " + user_profile.commands.firmware.platformio.upload_command)
-        typer_show_to_user("PATH: " + dir_path)
-
-        subprocess.run([platformio_exe, *upload_command_parts], shell=True, cwd=dir_path)
-
-
-# def get_firmware_file_path(qroma_project):
-#     dir_path = os.path.join(qroma_project.project_dir, "firmware", "esp32", qroma_project.project_id)
-#     build_dir = os.path.join(dir_path, ".pio", "build", "esp32dev")
-#     firmware_file = os.path.join(build_dir, "firmware.bin")
-#     print(f"FIRMWARE FILE PATH: {firmware_file}")
-#     if os.path.exists(firmware_file) and os.path.isfile(firmware_file):
-#         return firmware_file
-#     return None
+def do_upload(user_profile: QromaUserProfile, qroma_project: QromaProject):
+    upload_command = user_profile.tools.firmware_platforms.platformio.upload_command
+    dir_path = qroma_project.config.qroma.project.dirs.firmware_root
+    command_handler.do_firmware_upload(FirmwareFramework.platformio, upload_command, dir_path)
