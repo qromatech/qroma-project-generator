@@ -13,7 +13,7 @@ QROMA_PROJECTS_DIR_PROJECT_ID_PREFIX = ":"
 
 VALID_PROJECT_ID_CHARS = "abcdefghijklmnopqrstuvwxyz" + \
                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + \
-                         "0123456789-_"
+                         "0123456789-_."
 
 
 def is_valid_project_id(project_id: str) -> bool:

@@ -15,7 +15,7 @@ def do_docker_container_cmd(cmd_args: list[str]) -> list[str]:
 
 
 def docker_container_run(image_name: str, container_name: str, arg_list: list[str]) -> list[str]:
-    docker_command_args = ["run", "-it",
+    docker_command_args = ["run", "-i",
                            *arg_list,
                            "--name", container_name,
                            image_name]

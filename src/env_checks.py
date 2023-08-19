@@ -3,6 +3,9 @@ import os
 from shutil import which
 from collections import namedtuple
 from typing import Optional, List
+from pathlib import Path
+
+from config import LOCAL_TEMPLATE_DIR
 
 MissingToolSummary = namedtuple("MissingToolSummary",
                                 ['tool_name', 'install_link', 'description'])
@@ -31,6 +34,13 @@ def is_running_as_cli_executable():
         return True
     else:
         return False
+
+
+def get_local_template_source_dir():
+    this_file = Path(__file__)
+    parent_dir = this_file.parent.parent
+    template_source_dir = os.path.join(parent_dir, LOCAL_TEMPLATE_DIR)
+    return template_source_dir
 
 
 def check_for_docker() -> Optional[MissingToolSummary]:

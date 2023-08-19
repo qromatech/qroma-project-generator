@@ -8,7 +8,6 @@ import tempfile
 
 import env_checks
 from constants import PROJECT_TEMPLATE_ZIP_URL
-from config import LOCAL_TEMPLATE_DIR
 from qroma_project.qroma_project import QromaProject
 from utils import qroma_os_remove, qroma_os_rmdir, qroma_copy_file
 
@@ -39,7 +38,7 @@ def copy_local_template_to_dir(copy_to_dir: os.PathLike):
     DIRS_TO_EXCLUDE = [".git", ".vscode", ".pio"]
     FILES_TO_EXCLUDE = [".git", ".gitignore"]
 
-    template_source_dir = os.path.join(os.getcwd(), LOCAL_TEMPLATE_DIR)
+    template_source_dir = env_checks.get_local_template_source_dir()
 
     for c in os.listdir(template_source_dir):
         full_path = os.path.join(template_source_dir, c)
