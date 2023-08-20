@@ -35,7 +35,12 @@ def get_firmware_build_output_bin_file_locations(project_id):
     return [esp32dev_location, qtpy_location]
 
 
-def check_file_contains_string(file_location, expected_str):
-    with open(file_location) as f:
-        return expected_str in f.read()
+def get_site_build_output_node_modules_dir_location(project_id):
+    user_qroma_dir = get_test_user_qroma_dir()
+    expected_site_node_modules_location = os.path.join(user_qroma_dir, project_id,
+                                                       "sites", f"site-www-{project_id}", "node_modules")
+    return expected_site_node_modules_location
 
+
+def start_http_server_thread(project_id):
+    assert False

@@ -1,3 +1,6 @@
 [submodule "qroma-project-template"]
 	path = qroma-project-template
 	url = https://github.com/qromatech/qroma-project-template
+[submodule "sites/site-www-qroma-project/src/react-qroma-lib"]
+	path = sites/site-www-qroma-project/src/react-qroma-lib
+	url = git@github.com:qromatech/react-qroma-lib.git
