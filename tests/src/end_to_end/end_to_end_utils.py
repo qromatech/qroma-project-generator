@@ -1,6 +1,10 @@
 import datetime
 import random
 import os
+import threading
+import subprocess
+import time
+import requests
 
 
 def create_project_id():
@@ -42,5 +46,78 @@ def get_site_build_output_node_modules_dir_location(project_id):
     return expected_site_node_modules_location
 
 
-def start_http_server_thread(project_id):
-    assert False
+class WebServerTestHost:
+    _project_id: str
+    _thread: threading.Thread
+    _keep_server_running: False
+    _is_server_running: False
+    server_root: str
+    _server_port: int
+
+    def init(self, project_id, server_port):
+        self._project_id = project_id
+        self._thread = threading.Thread(target=self.run_thread)
+        self._keep_server_running = False
+        self._is_server_running = False
+        self._server_port = server_port
+        self.server_root = f"http://localhost:{server_port}"
+
+    def run_thread(self):
+        self._is_server_running = False
+        self._keep_server_running = True
+
+        user_qroma_dir = get_test_user_qroma_dir()
+        site_www_dir = os.path.join(user_qroma_dir, self._project_id, "sites", f"site-www-{self._project_id}")
+
+        # start cmd / npm run serve
+        # process = subprocess.run(["npm", "run", "serve"], shell=True, cwd=site_www_dir)
+        process = subprocess.Popen(f"npm start -- --port {self._server_port}", shell=True, cwd=site_www_dir)
+
+        # # wait until serving
+        # server_startup_max_seconds = 30
+        # startup_wait = 0
+        # startup_complete = False
+        # while startup_wait < server_startup_max_seconds and not startup_complete:
+        #     response = requests.get(self._server_root, timeout=1.0)
+        #     startup_wait = startup_wait + 1
+        #     if response.ok:
+        #         startup_complete = True
+        #
+        # if not startup_complete:
+        #     raise Exception(f"Unable to get server started within {server_startup_max_seconds} seconds")
+
+        self._is_server_running = True
+
+        # wait until told to stop
+        while self._keep_server_running:
+            time.sleep(1)
+        subprocess.Popen(f"TASKKILL /F /PID {process.pid} /T")
+
+        # wait until stopped
+        self._thread.join()
+
+    def wait_for_responsiveness(self, max_seconds):
+        # wait until serving
+        responsiveness_wait = 0
+        is_responsive = False
+        while responsiveness_wait < max_seconds and not is_responsive:
+            try:
+                response = requests.get(self.server_root, timeout=1.0)
+                if response.ok:
+                    is_responsive = True
+            except Exception as e:
+                print(e)
+
+            responsiveness_wait = responsiveness_wait + 1
+
+        if not is_responsive:
+            raise Exception(f"Unable to get server response within {is_responsive} seconds")
+
+    def start_server(self):
+        self._thread.start()
+        while not self._is_server_running:
+            time.sleep(1)
+
+    def stop_server(self):
+        self._keep_server_running = False
+        self._thread.join()

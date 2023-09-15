@@ -1,4 +1,5 @@
 import os
+import pytest
 from typer.testing import CliRunner
 
 import end_to_end_utils
@@ -42,15 +43,48 @@ def _assert_has_node_modules_directory(project_id):
 
 
 def _assert_http_server_is_running(server_url, project_id):
-    return end_to_end_checks.check_url_content_has_strings(server_url, ["Docusaurus", project_id])
+    has_strings = end_to_end_checks.check_url_content_has_strings(server_url, ["Docusaurus", project_id])
+    assert has_strings
 
 
-def _assert_has_static_dir_qroma_firmware_files(project_id):
-    assert False
+def _assert_has_static_dir_qroma_firmware_files(server_url, project_id):
+    firmware_files_and_sizes = [
+        ("boot_app0.bin", 5000),
+        ("bootloader.bin", 15000),
+        ("firmware.bin", 300000),
+        ("partitions.bin", 2000),
+    ]
+
+    firmware_url_root = f"{server_url}/qroma/versions/0.1.0/firmware"
+    for ff, f_size in firmware_files_and_sizes:
+        firmware_url = f"{firmware_url_root}/{ff}"
+        content_and_size_check = end_to_end_checks.check_url_content_exists_with_size(firmware_url, f_size)
+        assert content_and_size_check
+
+    manifest_url = f"{firmware_url_root}/manifest-firmware.json"
+    manifest_content_check = end_to_end_checks.check_url_content_has_strings(manifest_url, [
+        '"chipFamily": "ESP32"',
+        f'"name": "{project_id}"',
+    ])
+    assert manifest_content_check
 
 
-def _assert_qroma_firmware_can_be_downloaded_from_localhost_server(project_id):
-    assert False
+def _assert_has_qroma_loader_manifest(server_url, project_id):
+    manifest_url = f"{server_url}/qroma/versions/manifest.json"
+    manifest_content_check = end_to_end_checks.check_url_json_matches_dict(
+        manifest_url,
+        {
+            "project_id": project_id,
+            "version": "0.1.0",
+            "qromaEsp32LoaderManifests": [
+                {
+                    "name": project_id,
+                    "manifestPath": "/qroma/versions/0.1.0/firmware/manifest-firmware.json"
+                }
+            ]
+        })
+
+    assert manifest_content_check
 
 
 
@@ -113,21 +147,47 @@ def xtest_create_project_with_full_build_and_get_it_running_in_browser():
 
     _assert_has_node_modules_directory(project_id)
     _assert_has_static_dir_qroma_firmware_files(project_id)
-    _assert_qroma_firmware_can_be_downloaded_from_localhost_server(project_id)
+    _assert_has_qroma_loader_manifest(project_id)
 
 
+_test_server_host = None
+
+
+@pytest.fixture
+def server_fixture():
+    global _test_server_host
+
+    # startup code
+    _test_server_host = end_to_end_utils.WebServerTestHost()
+
+    yield
+
+    # cleanup code
+    _test_server_host.stop_server()
+
+
+@pytest.mark.usefixtures('server_fixture')
 def test_create_project_by_steps_and_get_it_running_in_browser():
     # arrange
-    # project_id = end_to_end_utils.create_project_id()
-    project_id = "test-project-2023-08-19.114045.190"
+    project_id = end_to_end_utils.create_project_id()
+    # project_id = "test-project-2023-09-02.104849.774"
     project_handle = ":" + project_id
+    server_port = 8722
 
     # act
-    # runner.invoke(qroma_app, ["new", project_handle])
-    # runner.invoke(qroma_app, ["pb", "build", project_handle])
-    # runner.invoke(qroma_app, ["firmware", "build", project_handle])
-    # runner.invoke(qroma_app, ["site", "build", project_handle])
-    server_thread = end_to_end_utils.start_http_server_thread(project_id)
+    runner.invoke(qroma_app, ["new", project_handle])
+    runner.invoke(qroma_app, ["pb", "build", project_handle])
+    runner.invoke(qroma_app, ["firmware", "build", project_handle])
+    runner.invoke(qroma_app, ["site", "build", project_handle])
+
+    if _test_server_host is None:
+        raise Exception("Fixture didn't set up host for test")
+
+    _test_server_host.init(project_id, server_port)
+    _test_server_host.start_server()
+    _test_server_host.wait_for_responsiveness(30)
+
+    server_root = _test_server_host.server_root
 
     # assert
     _assert_project_created(project_id)
@@ -135,10 +195,10 @@ def test_create_project_by_steps_and_get_it_running_in_browser():
     _assert_project_has_compiled_firmware(project_id)
 
     _assert_has_node_modules_directory(project_id)
-    _assert_http_server_is_running("http://localhost:3000/", project_id)
+    _assert_http_server_is_running(server_root, project_id)
 
-    _assert_has_static_dir_qroma_firmware_files(project_id)
-    _assert_qroma_firmware_can_be_downloaded_from_localhost_server(project_id)
+    _assert_has_static_dir_qroma_firmware_files(server_root, project_id)
+    _assert_has_qroma_loader_manifest(server_root, project_id)
 
     # cleanup
-    server_thread.stop()
+    _test_server_host.stop_server()
