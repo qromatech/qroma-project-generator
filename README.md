@@ -22,6 +22,10 @@ Compiled Windows executables are available in [/downloads](/downloads)
 * From root directory, run `package-qroma-project-generator.bat`
 * Alternatively, run command `poetry run python -m PyInstaller src/qroma-cli.py`
 
+#### To run tests that emulate a product demo to create, build, and run a new project
+* (still needs a little tweaking, probably about making sure the right directories are on the Python path) `poetry run python -m pytest tests/src/end_to_end/project_demo_tests.py` 
+
+
 #### Editing py-qroma
 `poetry add -e C:\Users\ajb\Projects\qromatech\py-qroma`
 
