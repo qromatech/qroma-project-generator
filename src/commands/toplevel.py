@@ -5,14 +5,17 @@ import typer
 import env_checks
 from build_project import BuildParameters, do_build_project
 from qroma_infra.qroma_editor import QromaEditorTypes, qroma_open_editor
-from qroma_infra.qroma_infrastructure import load_qroma_user_profile
+from qroma_infra.qroma_infrastructure import ensure_qroma_user_profile_exists, load_qroma_user_profile
 from qroma_project import user_input
 from qroma_project.generate.generate_project import do_generate_project_structure
 from qroma_project.qp_loader import load_qroma_project_from_directory
 from qroma_types import QromaProjectConfigUserInputs, GenerateProjectOptions
 from utils import typer_show_to_user, qroma_show_dir
 
+
 app = typer.Typer(help="Qroma project manager for the command line")
+
+ensure_qroma_user_profile_exists()
 
 
 @app.command()

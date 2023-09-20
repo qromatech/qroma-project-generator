@@ -5,7 +5,19 @@ import threading
 import subprocess
 import time
 import requests
+import signal
+from sys import platform
 
+
+def is_platform_windows():
+    return platform == "win32"
+
+
+def is_platform_mac():
+    return platform == "darwin"
+
+
+# Windows...
 
 def create_project_id():
     now = datetime.datetime.now()
@@ -71,7 +83,17 @@ class WebServerTestHost:
 
         # start cmd / npm run serve
         # process = subprocess.run(["npm", "run", "serve"], shell=True, cwd=site_www_dir)
-        process = subprocess.Popen(f"npm start -- --port {self._server_port}", shell=True, cwd=site_www_dir)
+
+        npm_server = None
+        # Windows
+        if is_platform_windows():
+            npm_server = subprocess.Popen(f"npm start -- --port {self._server_port}", shell=True, cwd=site_www_dir)
+
+        # Mac
+        if is_platform_mac():
+            # npm_server = subprocess.run([f"npm", "start", "-- --port 8722"],
+            #                             shell=False, cwd=site_www_dir)
+            npm_server = subprocess.Popen(f"npm start -- --port {self._server_port}", shell=True, cwd=site_www_dir)
 
         # # wait until serving
         # server_startup_max_seconds = 30
@@ -91,10 +113,21 @@ class WebServerTestHost:
         # wait until told to stop
         while self._keep_server_running:
             time.sleep(1)
-        subprocess.Popen(f"TASKKILL /F /PID {process.pid} /T")
+
+        print("TERMINATING npm_server PROCESS")
+
+        # kill on Windows
+        if is_platform_windows():
+            subprocess.Popen(f"TASKKILL /F /PID {npm_server.pid} /T")
+
+        # kill on Mac
+        if is_platform_mac():
+            # os.kill(os.getpgid(npm_server.pid), signal.SIGTERM)
+            npm_server.kill()
 
         # wait until stopped
-        self._thread.join()
+        # self._thread.join()
+        self._is_server_running = False
 
     def wait_for_responsiveness(self, max_seconds):
         # wait until serving
@@ -111,7 +144,7 @@ class WebServerTestHost:
             responsiveness_wait = responsiveness_wait + 1
 
         if not is_responsive:
-            raise Exception(f"Unable to get server response within {is_responsive} seconds")
+            raise Exception(f"Unable to get server response within {max_seconds} seconds")
 
     def start_server(self):
         self._thread.start()
@@ -121,3 +154,4 @@ class WebServerTestHost:
     def stop_server(self):
         self._keep_server_running = False
         self._thread.join()
+        self._is_server_running = False

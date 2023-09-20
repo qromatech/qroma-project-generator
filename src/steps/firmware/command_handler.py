@@ -11,7 +11,8 @@ def do_firmware_build(platform: FirmwareFramework, build_command: str, firmware_
         typer_show_to_user("ARGS: " + build_command)
         typer_show_to_user("PATH: " + firmware_dir)
 
-    subprocess.run(build_command_parts, shell=True, cwd=firmware_dir)
+    run_result = subprocess.run(build_command_parts, shell=False, cwd=firmware_dir)
+    return run_result
 
 
 def do_firmware_upload(platform: FirmwareFramework, upload_command: str, firmware_dir: str):

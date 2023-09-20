@@ -10,6 +10,9 @@ def do_docker_container_cmd(cmd_args: list[str]) -> list[str]:
                        stderr=subprocess.STDOUT,
                        )
 
+    if p.returncode != 0:
+        raise Exception(f"Error running docker command: {p.stdout}")
+
     result_lines = p.stdout.decode("utf-8").splitlines()
     return result_lines
 

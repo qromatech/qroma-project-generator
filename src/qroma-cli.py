@@ -6,7 +6,7 @@ from commands import site
 from commands import build
 from commands import show
 from commands import edit
-from qroma_infra.qroma_infrastructure import ensure_qroma_user_profile_exists
+# from qroma_infra.qroma_infrastructure import ensure_qroma_user_profile_exists
 
 app = toplevel.app
 
@@ -20,5 +20,5 @@ app.add_typer(edit.app, name="edit")
 
 
 if __name__ == "__main__":
-    ensure_qroma_user_profile_exists()
+    # ensure_qroma_user_profile_exists()
     app()

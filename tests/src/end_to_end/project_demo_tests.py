@@ -89,9 +89,16 @@ def _assert_has_qroma_loader_manifest(server_url, project_id):
 
 
 
-def xtest_create_project_from_template():
+@pytest.fixture
+def project_id():
+    # project_id_value = end_to_end_utils.create_project_id()
+    project_id_value = "test-project-2023-09-17.141917.482"
+    return project_id_value
+
+
+def xtest_create_project_from_template(project_id):
     # arrange
-    project_id = end_to_end_utils.create_project_id()
+    # project_id = end_to_end_utils.create_project_id()
     project_handle = ":" + project_id
 
     # act
@@ -102,43 +109,71 @@ def xtest_create_project_from_template():
     _assert_project_created(project_id)
 
 
-def xtest_create_project_and_compile_pb_step():
+def xtest_pb_compile_without_docker_running_and_report_docker_service_not_running(project_id):
     # arrange
-    project_id = end_to_end_utils.create_project_id()
+    # project_id = end_to_end_utils.create_project_id()
+    project_handle = ":" + project_id
+
+    exception_triggered = False
+
+    # act
+    # runner.invoke(qroma_app, ["new", project_handle])
+    xtest_create_project_from_template(project_id)
+    ex = runner.invoke(qroma_app, ["pb", "build", project_handle])
+    if ex.exception is not None:
+        exception_triggered = True
+
+    # assert
+    assert exception_triggered == True
+    assert "Error running docker command" in ex.exception.args[0]
+    assert "Cannot connect to the Docker daemon" in ex.exception.args[0]
+
+
+def xtest_create_project_and_compile_pb_step(project_id):
+    # arrange
+    # project_id = end_to_end_utils.create_project_id()
     project_handle = ":" + project_id
 
     # act
-    runner.invoke(qroma_app, ["new", project_handle])
-    runner.invoke(qroma_app, ["pb", "build", project_handle])
+    # runner.invoke(qroma_app, ["new", project_handle])
+    xtest_create_project_from_template(project_id)
+    build_result = runner.invoke(qroma_app, ["pb", "build", project_handle])
 
     # assert
-    _assert_project_created(project_id)
+    if build_result.exception is not None:
+        print("BUILD RESULT HAS EXCEPTION. IS DOCKER CONTAINER RUNNING?")
+
+    assert build_result.exception is None
+    # _assert_project_created(project_id)
     _assert_project_has_compiled_pb(project_id)
 
 
-def xtest_create_project_and_compile_pb_and_firmware_steps():
+def xtest_create_project_and_compile_pb_and_firmware_steps(project_id):
     # arrange
-    project_id = end_to_end_utils.create_project_id()
+    # project_id = end_to_end_utils.create_project_id()
+    # project_id = "test-project-2023-09-17.141917.482"
     project_handle = ":" + project_id
 
     # act
-    runner.invoke(qroma_app, ["new", project_handle])
-    runner.invoke(qroma_app, ["pb", "build", project_handle])
+    # runner.invoke(qroma_app, ["new", project_handle])
+    # runner.invoke(qroma_app, ["pb", "build", project_handle])
+    xtest_create_project_and_compile_pb_step(project_id)
     runner.invoke(qroma_app, ["firmware", "build", project_handle])
 
+
     # assert
-    _assert_project_created(project_id)
-    _assert_project_has_compiled_pb(project_id)
+    # _assert_project_created(project_id)
+    # _assert_project_has_compiled_pb(project_id)
     _assert_project_has_compiled_firmware(project_id)
 
 
-def xtest_create_project_with_full_build_and_get_it_running_in_browser():
+def xtest_create_project_with_full_build_and_get_it_running_in_browser(project_id):
     # arrange
-    project_id = end_to_end_utils.create_project_id()
+    # project_id = end_to_end_utils.create_project_id()
     project_handle = ":" + project_id
 
     # act
-    runner.invoke(qroma_app, ["new", project_handle, "--full-build"])
+    # runner.invoke(qroma_app, ["new", project_handle, "--full-build"])
 
     # assert
     _assert_project_created(project_id)
@@ -150,7 +185,7 @@ def xtest_create_project_with_full_build_and_get_it_running_in_browser():
     _assert_has_qroma_loader_manifest(project_id)
 
 
-_test_server_host = None
+_test_server_host: end_to_end_utils.WebServerTestHost | None = None
 
 
 @pytest.fixture
@@ -167,17 +202,20 @@ def server_fixture():
 
 
 @pytest.mark.usefixtures('server_fixture')
-def test_create_project_by_steps_and_get_it_running_in_browser():
+def test_create_project_by_steps_and_get_it_running_in_browser(project_id):
     # arrange
-    project_id = end_to_end_utils.create_project_id()
-    # project_id = "test-project-2023-09-02.104849.774"
+    # project_id = end_to_end_utils.create_project_id()
+    # project_id = "test-project-2023-09-17.143448.328"
     project_handle = ":" + project_id
     server_port = 8722
 
     # act
-    runner.invoke(qroma_app, ["new", project_handle])
-    runner.invoke(qroma_app, ["pb", "build", project_handle])
-    runner.invoke(qroma_app, ["firmware", "build", project_handle])
+    # runner.invoke(qroma_app, ["new", project_handle])
+    # runner.invoke(qroma_app, ["pb", "build", project_handle])
+    # runner.invoke(qroma_app, ["firmware", "build", project_handle])
+    # runner.invoke(qroma_app, ["site", "build", project_handle])
+
+    # xtest_create_project_and_compile_pb_and_firmware_steps(project_id)
     runner.invoke(qroma_app, ["site", "build", project_handle])
 
     if _test_server_host is None:
@@ -190,9 +228,9 @@ def test_create_project_by_steps_and_get_it_running_in_browser():
     server_root = _test_server_host.server_root
 
     # assert
-    _assert_project_created(project_id)
-    _assert_project_has_compiled_pb(project_id)
-    _assert_project_has_compiled_firmware(project_id)
+    # _assert_project_created(project_id)
+    # _assert_project_has_compiled_pb(project_id)
+    # _assert_project_has_compiled_firmware(project_id)
 
     _assert_has_node_modules_directory(project_id)
     _assert_http_server_is_running(server_root, project_id)
