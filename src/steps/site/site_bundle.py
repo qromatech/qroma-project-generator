@@ -1,11 +1,15 @@
 import os
 import shutil
+import logging
+
+import typer
 from jinja2 import Environment, BaseLoader
 
 from qroma_project.qroma_project import QromaProject
 from steps.site.qroma_site_bundle_models import QromaFirmwareBuildManifest, QromaEsp32LoaderManifest, \
     QromaSiteManifests, QromaSiteManifest, QromaSiteManifestType
 from utils import qroma_copy_file, qroma_copy_dir, ensure_file_exists, qroma_os_rmdir
+from qroma_enums import ExitReason
 
 
 def _zip_dirs_and_add_to_content_dir(qroma_project: QromaProject):
@@ -25,6 +29,9 @@ def _add_firmware_files_to_content_dir(qroma_project: QromaProject) -> list[Qrom
     for ffr in firmware_file_replications:
         firmware_file_from_path = ffr.source_filepath
         firmware_file_to_path = ffr.local_publication_filepath
+        if not os.path.exists(firmware_file_from_path):
+            logging.error(f"Unable to find file to bundle at '{firmware_file_from_path}'")
+            raise typer.Exit(ExitReason.BUNDLE_FIRMWARE_MISSING_FILE.value)
 
         print(f"REPLICATING FIRMWARE FILE {firmware_file_from_path} TO {firmware_file_to_path}")
         firmware_file_to_dir = os.path.dirname(firmware_file_to_path)

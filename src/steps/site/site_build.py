@@ -12,7 +12,12 @@ from utils import typer_progress_message
 def do_site_npm_install_step(qroma_project: QromaProject):
     with typer_progress_message("WWW SITE - NPM INSTALL"):
         site_www_dir = qroma_dirs.get_project_site_www_dir(qroma_project)
-        subprocess.run(["npm", "install"], shell=True, cwd=site_www_dir)
+        install_process = subprocess.Popen("npm install",
+                                           stdout=subprocess.PIPE,
+                                           shell=True,
+                                           cwd=site_www_dir)
+        install_process.wait()
+        print(install_process)
 
 
 def do_full_site_build(qroma_project: QromaProject, user_profile: QromaUserProfile):

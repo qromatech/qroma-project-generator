@@ -197,7 +197,21 @@ def test_create_project_by_steps_and_get_it_running_in_browser(project_id):
 
     # act
     xtest_create_project_and_compile_pb_and_firmware_steps(project_id)
-    runner.invoke(qroma_app, ["site", "build", project_handle])
+    build_result = runner.invoke(qroma_app, ["site", "build", project_handle])
+
+    if build_result.exit_code != 0:
+        print("------------------------------------")
+        print("BUILD OUTPUT")
+        print(build_result.output)
+        print("------------------------------------")
+        print("BUILD EXCEPTION")
+        print(build_result.exception)
+        print("------------------------------------")
+        print("BUILD ERROR")
+        print(build_result.stderr)
+        print("------------------------------------")
+
+        assert build_result.exit_code == 0
 
     if _test_server_host is None:
         raise Exception("Fixture didn't set up host for test")
@@ -209,10 +223,6 @@ def test_create_project_by_steps_and_get_it_running_in_browser(project_id):
     server_root = _test_server_host.server_root
 
     # assert
-    # _assert_project_created(project_id)
-    # _assert_project_has_compiled_pb(project_id)
-    # _assert_project_has_compiled_firmware(project_id)
-
     _assert_has_node_modules_directory(project_id)
     _assert_http_server_is_running(server_root, project_id)
 

@@ -5,7 +5,7 @@ import threading
 import subprocess
 import time
 import requests
-import signal
+import psutil
 from sys import platform
 
 
@@ -82,31 +82,23 @@ class WebServerTestHost:
         site_www_dir = os.path.join(user_qroma_dir, self._project_id, "sites", f"site-www-{self._project_id}")
 
         # start cmd / npm run serve
-        # process = subprocess.run(["npm", "run", "serve"], shell=True, cwd=site_www_dir)
-
         npm_server = None
+
         # Windows
         if is_platform_windows():
-            npm_server = subprocess.Popen(f"npm start -- --port {self._server_port}", shell=True, cwd=site_www_dir)
+            npm_server = subprocess.Popen(f"npm start -- --port {self._server_port}",
+                                          shell=True,
+                                          cwd=site_www_dir)
 
         # Mac
         if is_platform_mac():
-            # npm_server = subprocess.run([f"npm", "start", "-- --port 8722"],
-            #                             shell=False, cwd=site_www_dir)
-            npm_server = subprocess.Popen(f"npm start -- --port {self._server_port}", shell=True, cwd=site_www_dir)
-
-        # # wait until serving
-        # server_startup_max_seconds = 30
-        # startup_wait = 0
-        # startup_complete = False
-        # while startup_wait < server_startup_max_seconds and not startup_complete:
-        #     response = requests.get(self._server_root, timeout=1.0)
-        #     startup_wait = startup_wait + 1
-        #     if response.ok:
-        #         startup_complete = True
-        #
-        # if not startup_complete:
-        #     raise Exception(f"Unable to get server started within {server_startup_max_seconds} seconds")
+            # https://stackoverflow.com/a/13143013
+            cmd = f"npm start -- --port {self._server_port}"
+            cmd = "exec " + cmd
+            npm_server = subprocess.Popen(cmd,
+                                          stdout=subprocess.PIPE,
+                                          shell=True,
+                                          cwd=site_www_dir)
 
         self._is_server_running = True
 
@@ -122,26 +114,27 @@ class WebServerTestHost:
 
         # kill on Mac
         if is_platform_mac():
-            # os.kill(os.getpgid(npm_server.pid), signal.SIGTERM)
+            for child in psutil.Process(npm_server.pid).children(recursive=True):
+                child.kill()
             npm_server.kill()
 
         # wait until stopped
-        # self._thread.join()
         self._is_server_running = False
 
     def wait_for_responsiveness(self, max_seconds):
         # wait until serving
-        responsiveness_wait = 0
+        start_time = datetime.datetime.now()
+        responsiveness_check_end_time = start_time + datetime.timedelta(0, max_seconds)
         is_responsive = False
-        while responsiveness_wait < max_seconds and not is_responsive:
+
+        while datetime.datetime.now() < responsiveness_check_end_time and not is_responsive:
             try:
                 response = requests.get(self.server_root, timeout=1.0)
                 if response.ok:
                     is_responsive = True
             except Exception as e:
+                time.sleep(0.5)
                 print(e)
-
-            responsiveness_wait = responsiveness_wait + 1
 
         if not is_responsive:
             raise Exception(f"Unable to get server response within {max_seconds} seconds")

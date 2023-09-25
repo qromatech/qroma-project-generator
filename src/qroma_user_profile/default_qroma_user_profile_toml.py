@@ -14,7 +14,7 @@ firmware_platforms = [
 
 [qroma.user.profile.dirs]
 # platform_io_packages_root = "C:/Users/ajb/.platformio/packages"
-
+# platform_io_packages_root = "/Users/ajb/.platformio/packages"
 
 [qroma.user.profile.tools.firmware_platforms.user_managed]
 build_prompt = "Build firmware. Hit enter when done. >>> "
