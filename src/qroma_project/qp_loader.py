@@ -44,7 +44,6 @@ def load_qroma_project_from_file(qroma_project_config_file_location: str | os.Pa
 
             template = Environment(loader=BaseLoader()).from_string(file_contents)
 
-            print("RENDERING TEMPLATE FOR PROJECT BASICS")
             qroma_basics_toml = template.render(qroma_project_dir=project_root_dir, qroma={
                 "project_dirs": {},
                 "user_profile_dirs": {},
@@ -52,16 +51,12 @@ def load_qroma_project_from_file(qroma_project_config_file_location: str | os.Pa
 
             qroma_basics_dict = tomllib.loads(qroma_basics_toml)
             qroma_project_basics = QromaProjectBasics(**qroma_basics_dict)
-            print(qroma_project_basics)
 
             qroma = create_qroma_project_file_template_values(project_root_dir, qroma_project_basics, user_profile)
-            print(qroma)
-            print("RENDERING TEMPLATE FOR FULL PROJECT")
             project_from_template = template.render(qroma_project_dir=project_root_dir, qroma=qroma)
 
             config_used_qroma_project_path = os.path.join(project_root_dir, "qroma-resolved.toml")
             with open(config_used_qroma_project_path, "w") as qrf:
-                print(project_from_template)
                 qrf.write(project_from_template)
 
             qroma_dict = tomllib.loads(project_from_template)
