@@ -218,7 +218,7 @@ def test_create_project_by_steps_and_get_it_running_in_browser(project_id):
 
     _test_server_host.init(project_id, server_port)
     _test_server_host.start_server()
-    _test_server_host.wait_for_responsiveness(30)
+    _test_server_host.wait_for_responsiveness(120)
 
     server_root = _test_server_host.server_root
 

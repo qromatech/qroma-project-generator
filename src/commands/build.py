@@ -9,7 +9,8 @@ from qroma_project import user_input
 app = typer.Typer(help="Qroma project build management commands")
 
 
-@app.command(name="all")
+# @app.command(name="all")
+@app.callback(invoke_without_command=True)
 def build_all(project_id: Optional[str] = typer.Argument(None)):
     qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
     user_profile = load_qroma_user_profile()
@@ -24,7 +25,6 @@ def build_all(project_id: Optional[str] = typer.Argument(None)):
                      user_profile=user_profile,
                      build_parameters=build_parameters,
                      )
-
 
 
 @app.command()

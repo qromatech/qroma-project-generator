@@ -40,17 +40,15 @@ category = "main"
 optional = false
 python-versions = "^3.11"
 files = []
-develop = false
+develop = true
 
 [package.dependencies]
 protobuf = "~3.20.1"
 pyserial = "^3.5"
 
 [package.source]
-type = "git"
-url = "https://github.com/qromatech/py-qroma"
-reference = "HEAD"
-resolved_reference = "a3a8f3fca243018f339802f95f59b3e9ceb78756"
+type = "directory"
+url = "../../../../../py-qroma"
 
 [[package]]
 name = "pyserial"
@@ -70,4 +68,4 @@ cp2110 = ["hidapi"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "b06bb794d37c9b28621009fea9dd0107b7e3e9e1d4f57ac696336e1d34697ffe"
+content-hash = "36ca2660b3f62e11a0259a7cd987e773139ba83906bb70daa1ece6ca06dc940f"

@@ -4,6 +4,16 @@
       "type": "publishedQromaFirmwareBuild",
       "path": "/qroma/versions/0.1.0/manifest.json",
       "details": {}
+    },
+    {
+      "type": "publishedQromaFirmwareBuild",
+      "path": "/qroma/versions/0.1.0/manifest.json",
+      "details": {}
+    },
+    {
+      "type": "publishedQromaFirmwareBuild",
+      "path": "/qroma/versions/0.1.0/manifest.json",
+      "details": {}
     }
   ]
 }

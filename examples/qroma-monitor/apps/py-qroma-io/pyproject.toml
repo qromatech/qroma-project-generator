@@ -8,7 +8,7 @@ packages = [{include = "py_qroma_io"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-py-qroma = {git = "https://github.com/qromatech/py-qroma"}
+py-qroma = {path = "C:/Users/ajb/Projects/qromatech/py-qroma", develop = true}
 
 
 [build-system]
