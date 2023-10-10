@@ -7,13 +7,13 @@ import io
 import tempfile
 
 import env_checks
-from constants import PROJECT_TEMPLATE_ZIP_URL
-from qroma_project.qroma_project import QromaProject
-from utils import qroma_os_remove, qroma_os_rmdir, qroma_copy_file
+from constants import PROJECT_TEMPLATE_ZIP_URL, REACT_QROMA_LIB_ZIP_URL
+from utils import qroma_os_rmdir, qroma_copy_file
 
 
 def download_template_to_dir(project_dir: os.PathLike) -> str:
     response = requests.get(PROJECT_TEMPLATE_ZIP_URL)
+    project_site_dir = os.path.join(project_dir, 'sites', 'site-www-qroma-project')
 
     # Create a ZipFile object from the content of the response
     with zipfile.ZipFile(io.BytesIO(response.content)) as myzip:
@@ -30,6 +30,26 @@ def download_template_to_dir(project_dir: os.PathLike) -> str:
 
     print(f"REMOVING TEMPLATE DIR: {template_dir}")
     qroma_os_rmdir(template_dir)
+
+    # download react-qroma-lib and put it in place - https://github.com/qromatech/react-qroma-lib
+    rql_response = requests.get(REACT_QROMA_LIB_ZIP_URL)
+    rql_final_dir = os.path.join(project_site_dir, 'src', 'react-qroma-lib')
+    rql_download_dir = os.path.join(project_site_dir, 'react-qroma-lib-download')
+
+    # Create a ZipFile object from the content of the response
+    with zipfile.ZipFile(io.BytesIO(rql_response.content)) as myzip:
+        myzip.extractall(rql_download_dir)
+
+    downloaded_rql_dir_name = os.listdir(rql_download_dir)[0]
+    rql_dir = os.path.join(rql_download_dir, downloaded_rql_dir_name)
+    print(f"DOWNLOADED_REACT_QROMA_LIB_DIR: {rql_dir}")
+    rql_dir_contents = os.listdir(rql_dir)
+    for td_content in rql_dir_contents:
+        print(f"{td_content}")
+        shutil.move(os.path.join(rql_dir, td_content), rql_final_dir)
+
+    print(f"REMOVING QROMA REACT LIB DOWNLOAD DIR: {rql_download_dir}")
+    qroma_os_rmdir(rql_download_dir)
 
     return template_dir
 
@@ -71,23 +91,23 @@ def setup_project_template_directory() -> tempfile.TemporaryDirectory:
 def remove_project_template_directory(template_temp_dir: tempfile.TemporaryDirectory):
     template_temp_dir.cleanup()
 
-
-def setup_project_directory(qroma_project: QromaProject) -> os.PathLike:
-
-    project_dir = qroma_project.project_dir
-
-    if os.path.exists(project_dir):
-        shutil.rmtree(project_dir)
-
-    os.makedirs(project_dir)
-
-    if LOCAL_TEMPLATE_DIR:
-        template_dir = copy_local_template_to_dir(project_dir)
-    else:
-        template_dir = download_template_to_dir(project_dir)
-
-    print("SETUP PROJECT DIR: " + template_dir)
-
-    # shutil.rmtree(template_dir)
-
-    return project_dir
+#
+# def setup_project_directory(qroma_project: QromaProject) -> os.PathLike:
+#
+#     project_dir = qroma_project.project_dir
+#
+#     if os.path.exists(project_dir):
+#         shutil.rmtree(project_dir)
+#
+#     os.makedirs(project_dir)
+#
+#     if LOCAL_TEMPLATE_DIR:
+#         template_dir = copy_local_template_to_dir(project_dir)
+#     else:
+#         template_dir = download_template_to_dir(project_dir)
+#
+#     print("SETUP PROJECT DIR: " + template_dir)
+#
+#     # shutil.rmtree(template_dir)
+#
+#     return project_dir
