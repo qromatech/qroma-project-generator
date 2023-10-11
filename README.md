@@ -17,6 +17,22 @@ Compiled Windows executables are available in [/downloads](/downloads)
 * `poetry run python src/qroma-cli.py build :my-qroma-project`
 
 
+### Create/Run a New Project
+#### Pre-conditions
+* Docker installed
+* VS Code with PlatformIO plugin
+* node/npm installed
+
+#### Steps
+* `qroma new :$PROJECT-ID`
+* `qroma build :$PROJECT-ID`
+* `qroma pb edit :pumpkin-2023`
+* `qroma firmware edit :pumpkin-2023`
+* `qroma site edit :$PROJECT-ID`
+* `npm run start`
+
+
+
 ### Dev Notes
 #### To build command line executable [Windows]
 * From root directory, run `package-qroma-project-generator.bat`
