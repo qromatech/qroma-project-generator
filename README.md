@@ -23,7 +23,7 @@ Compiled Windows executables are available in [/downloads](/downloads)
 * VS Code with PlatformIO plugin
 * node/npm installed
 
-#### Steps
+#### Steps to Develop Locally
 * `qroma new :$PROJECT-ID`
 * `qroma build :$PROJECT-ID`
 * `qroma pb edit :pumpkin-2023`
@@ -31,6 +31,18 @@ Compiled Windows executables are available in [/downloads](/downloads)
 * `qroma site edit :$PROJECT-ID`
 * `npm run start`
 
+#### Steps to Deploy to Github Pages
+These steps assume you have already created an empty repository named `$PROJECT-ID` for your project. See https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository.
+
+Next, run the steps below from your project's root directory.
+* `git init`
+* `git checkout -b main`
+* `git add *`
+* `git commit -m "New qroma project commit"`
+* `git remote add origin https://github.com/OWNER/$PROJECT-ID.git`
+* `git push origin main`
+* https://docusaurus.io/docs/deployment#triggering-deployment-with-github-actions
+* http://username.github.io/repository
 
 
 ### Dev Notes
