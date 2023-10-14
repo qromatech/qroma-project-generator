@@ -39,10 +39,14 @@ Next, run the steps below from your project's root directory.
 * `git checkout -b main`
 * `git add *`
 * `git commit -m "New qroma project commit"`
-* `git remote add origin https://github.com/OWNER/$PROJECT-ID.git`
+* `git remote add origin https://github.com/OWNER/$PROJECT-ID`
 * `git push origin main`
-* https://docusaurus.io/docs/deployment#triggering-deployment-with-github-actions
-* http://username.github.io/repository
+
+This project is ready to deploy the project's Docusaurus site to public Github pages with your declared Protocol Buffer types and using your compiled firmware artifacts. See Docusaurus docs at https://docusaurus.io/docs/deployment#triggering-deployment-with-github-actions
+* see build ran - `https://github.com/OWNER/$PROJECT-ID/actions`
+* Github - project - settings - pages - https://github.com/OWNER/$PROJECT-ID/settings/pages
+  * select `gh-pages` to be source branch
+* Site is available at http://OWNER.github.io/$PROJECT-ID
 
 
 ### Dev Notes
