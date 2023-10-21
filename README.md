@@ -26,8 +26,8 @@ Compiled Windows executables are available in [/downloads](/downloads)
 #### Steps to Develop a New Project Locally
 * `qroma new :$PROJECT-ID`
 * `qroma build :$PROJECT-ID`
-* `qroma pb edit :pumpkin-2023`
-* `qroma firmware edit :pumpkin-2023`
+* `qroma pb edit :$PROJECT-ID`
+* `qroma firmware edit :PROJECT-ID`
 * `qroma site edit :$PROJECT-ID`
 * `npm run start`
 
@@ -62,7 +62,11 @@ This project is ready to deploy the project's Docusaurus site to public Github p
 `poetry add -e C:\Users\ajb\Projects\qromatech\py-qroma`
 
 
-#### Prompts
+#### Set up alias
+`alias qroma="poetry run python /Users/ajb/Projects/qromatech/qroma-project-generator/src/qroma-cli.py"`
+
+
+#### Prompts (TODO)
 ```
 >>> Set your project ID
 >>> Choose the platform for your project:
