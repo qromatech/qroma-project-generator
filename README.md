@@ -23,7 +23,7 @@ Compiled Windows executables are available in [/downloads](/downloads)
 * VS Code with PlatformIO plugin
 * node/npm installed
 
-#### Steps to Develop Locally
+#### Steps to Develop a New Project Locally
 * `qroma new :$PROJECT-ID`
 * `qroma build :$PROJECT-ID`
 * `qroma pb edit :pumpkin-2023`
