@@ -29,7 +29,7 @@ Compiled Windows executables are available in [/downloads](/downloads)
 * `qroma pb edit :$PROJECT-ID`
 * `qroma firmware edit :PROJECT-ID`
 * `qroma site edit :$PROJECT-ID`
-* `npm run start`
+* `qroma site run :$PROJECT-ID` (calls `npm run start` for now)
 
 #### Steps to Deploy to Github Pages
 These steps assume you have already created an empty repository named `$PROJECT-ID` for your project. See https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository.
