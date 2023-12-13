@@ -92,10 +92,11 @@ def _assert_has_qroma_loader_manifest(server_url, project_id):
 @pytest.fixture
 def project_id():
     project_id_value = end_to_end_utils.create_project_id()
+    # project_id_value = "test-project-2023-09-30.122203.216"
     return project_id_value
 
 
-def xtest_create_project_from_template(project_id):
+def test_create_project_from_template(project_id):
     # arrange
     project_handle = ":" + project_id
 
@@ -190,7 +191,7 @@ def server_fixture():
 
 
 @pytest.mark.usefixtures('server_fixture')
-def test_create_project_by_steps_and_get_it_running_in_browser(project_id):
+def xtest_create_project_by_steps_and_get_it_running_in_browser(project_id):
     # arrange
     project_handle = ":" + project_id
     server_port = 8722
