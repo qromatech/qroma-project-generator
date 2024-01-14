@@ -9,6 +9,7 @@ from qroma_infra.qroma_infrastructure import load_qroma_user_profile
 from qroma_project import user_input
 from steps.site import site_build
 from steps.site.site_bundle import do_site_bundle_work
+from steps.site.site_host import do_site_npm_run_start_step
 
 app = typer.Typer(help="Qroma site management commands")
 
@@ -38,3 +39,10 @@ def build(project_id: Optional[str] = typer.Argument(None)):
     user_profile = load_qroma_user_profile()
 
     site_build.do_full_site_build(qroma_project, user_profile)
+
+
+@app.command()
+def host(project_id: Optional[str] = typer.Argument(None)):
+    qroma_project = user_input.load_existing_qroma_project_from_user_input(project_id)
+
+    do_site_npm_run_start_step(qroma_project)

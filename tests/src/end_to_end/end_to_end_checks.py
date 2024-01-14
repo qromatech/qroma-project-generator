@@ -28,6 +28,8 @@ def check_url_content_exists_with_size(url, size_minimum):
     response = requests.get(url)
     content = response.content
 
+    assert content is not None
+
     if len(content) < size_minimum:
         print(url, len(content))
         return False
