@@ -48,43 +48,29 @@ def _assert_http_server_is_running(server_url, project_id):
 
 
 def _assert_has_static_dir_qroma_firmware_files(server_url, project_id):
-    firmware_files_and_sizes = [
-        ("boot_app0.bin", 5000),
-        ("bootloader.bin", 15000),
-        ("firmware.bin", 300000),
-        ("partitions.bin", 2000),
+    firmwaredirs_boardnames_and_chip_families = [
+        ("esp32dev", "esp32", "ESP32"),
+        ("tinypico", "um_tinypico", "ESP32"),
+        ("adafruit_qtpy_esp32c3", "adafruit_qtpy_esp32c3", "ESP32-C3"),
     ]
 
-    firmware_url_root = f"{server_url}/qroma/versions/0.1.0/firmware"
-    for ff, f_size in firmware_files_and_sizes:
-        firmware_url = f"{firmware_url_root}/{ff}"
-        content_and_size_check = end_to_end_checks.check_url_content_exists_with_size(firmware_url, f_size)
+    firmware_url_root = f"{server_url}/{project_id}/qroma/versions/0.1.0/firmware"
+    expected_firmware_min_size = 380000
+
+    for firmwaredir, board_name, chip_family in firmwaredirs_boardnames_and_chip_families:
+        firmware_filename = f"{project_id}-firmware-{board_name}.bin"
+        manifest_filename = f"{project_id}-manifest-{board_name}.json"
+
+        firmware_url = f"{firmware_url_root}/{firmwaredir}/{firmware_filename}"
+        content_and_size_check = end_to_end_checks.check_url_content_exists_with_size(firmware_url, expected_firmware_min_size)
         assert content_and_size_check
 
-    manifest_url = f"{firmware_url_root}/manifest-firmware.json"
-    manifest_content_check = end_to_end_checks.check_url_content_has_strings(manifest_url, [
-        '"chipFamily": "ESP32"',
-        f'"name": "{project_id}"',
-    ])
-    assert manifest_content_check
-
-
-def _assert_has_qroma_loader_manifest(server_url, project_id):
-    manifest_url = f"{server_url}/qroma/versions/manifest.json"
-    manifest_content_check = end_to_end_checks.check_url_json_matches_dict(
-        manifest_url,
-        {
-            "project_id": project_id,
-            "version": "0.1.0",
-            "qromaEsp32LoaderManifests": [
-                {
-                    "name": project_id,
-                    "manifestPath": "/qroma/versions/0.1.0/firmware/manifest-firmware.json"
-                }
-            ]
-        })
-
-    assert manifest_content_check
+        manifest_url = f"{firmware_url_root}/{firmwaredir}/{manifest_filename}"
+        manifest_content_check = end_to_end_checks.check_url_content_has_strings(manifest_url, [
+            f'"chipFamily": "{chip_family}"',
+            f'"name": "{project_id}"',
+        ])
+        assert manifest_content_check
 
 
 
@@ -92,11 +78,11 @@ def _assert_has_qroma_loader_manifest(server_url, project_id):
 @pytest.fixture
 def project_id():
     project_id_value = end_to_end_utils.create_project_id()
-    # project_id_value = "test-project-2023-09-30.122203.216"
+    # project_id_value = "test-project-2024-01-14.112915.629"
     return project_id_value
 
 
-def test_create_project_from_template(project_id):
+def _test_create_project_from_template(project_id):
     # arrange
     project_handle = ":" + project_id
 
@@ -108,14 +94,14 @@ def test_create_project_from_template(project_id):
     _assert_project_created(project_id)
 
 
-def xtest_pb_compile_without_docker_running_and_report_docker_service_not_running(project_id):
+def _test_pb_compile_without_docker_running_and_report_docker_service_not_running(project_id):
     # arrange
     project_handle = ":" + project_id
 
     exception_triggered = False
 
     # act
-    xtest_create_project_from_template(project_id)
+    _test_create_project_from_template(project_id)
     ex = runner.invoke(qroma_app, ["pb", "build", project_handle])
     if ex.exception is not None:
         exception_triggered = True
@@ -126,12 +112,12 @@ def xtest_pb_compile_without_docker_running_and_report_docker_service_not_runnin
     assert "Cannot connect to the Docker daemon" in ex.exception.args[0]
 
 
-def xtest_create_project_and_compile_pb_step(project_id):
+def _test_create_project_and_compile_pb_step(project_id):
     # arrange
     project_handle = ":" + project_id
 
     # act
-    xtest_create_project_from_template(project_id)
+    _test_create_project_from_template(project_id)
     build_result = runner.invoke(qroma_app, ["pb", "build", project_handle])
 
     # assert
@@ -142,12 +128,12 @@ def xtest_create_project_and_compile_pb_step(project_id):
     _assert_project_has_compiled_pb(project_id)
 
 
-def xtest_create_project_and_compile_pb_and_firmware_steps(project_id):
+def _test_create_project_and_compile_pb_and_firmware_steps(project_id):
     # arrange
     project_handle = ":" + project_id
 
     # act
-    xtest_create_project_and_compile_pb_step(project_id)
+    _test_create_project_and_compile_pb_step(project_id)
     runner.invoke(qroma_app, ["firmware", "build", project_handle])
 
 
@@ -157,7 +143,7 @@ def xtest_create_project_and_compile_pb_and_firmware_steps(project_id):
     _assert_project_has_compiled_firmware(project_id)
 
 
-def xtest_create_project_with_full_build_and_get_it_running_in_browser(project_id):
+def _test_create_project_with_full_build_and_get_it_running_in_browser(project_id):
     # arrange
     project_handle = ":" + project_id
 
@@ -171,7 +157,6 @@ def xtest_create_project_with_full_build_and_get_it_running_in_browser(project_i
 
     _assert_has_node_modules_directory(project_id)
     _assert_has_static_dir_qroma_firmware_files(project_id)
-    _assert_has_qroma_loader_manifest(project_id)
 
 
 _test_server_host: end_to_end_utils.WebServerTestHost | None = None
@@ -191,13 +176,13 @@ def server_fixture():
 
 
 @pytest.mark.usefixtures('server_fixture')
-def xtest_create_project_by_steps_and_get_it_running_in_browser(project_id):
+def test_create_project_by_steps_and_get_it_running_in_browser(project_id):
     # arrange
     project_handle = ":" + project_id
     server_port = 8722
 
     # act
-    xtest_create_project_and_compile_pb_and_firmware_steps(project_id)
+    _test_create_project_and_compile_pb_and_firmware_steps(project_id)
     build_result = runner.invoke(qroma_app, ["site", "build", project_handle])
 
     if build_result.exit_code != 0:
@@ -228,7 +213,7 @@ def xtest_create_project_by_steps_and_get_it_running_in_browser(project_id):
     _assert_http_server_is_running(server_root, project_id)
 
     _assert_has_static_dir_qroma_firmware_files(server_root, project_id)
-    _assert_has_qroma_loader_manifest(server_root, project_id)
 
     # cleanup
     _test_server_host.stop_server()
+
