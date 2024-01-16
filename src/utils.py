@@ -1,7 +1,9 @@
+import datetime
 import os
 import shutil
 import subprocess
 import platform
+import time
 from contextlib import contextmanager
 
 import typer
@@ -33,10 +35,17 @@ def qroma_os_remove(path):
     os.remove(path)
 
 
-def qroma_os_rmdir(path):
+def qroma_os_rmdir(path, timeout=20):
     typer_show_to_user(f"REMOVING DIRECTORY {path}")
     # os.rmdir(path)
-    shutil.rmtree(path)
+    end_time = datetime.datetime.now() + datetime.timedelta(seconds=timeout)
+    while datetime.datetime.now() <= end_time and os.path.exists(path):
+        try:
+            shutil.rmtree(path)
+        except Exception as e:
+            time.sleep(1)
+            print(f"EXCEPTION WHILE REMOVING {path}")
+            print(e)
 
 
 def qroma_copy_file(from_path, to_fpath):

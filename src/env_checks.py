@@ -70,6 +70,15 @@ def check_for_npm() -> Optional[MissingToolSummary]:
     return None
 
 
+def check_for_git() -> Optional[MissingToolSummary]:
+    if which("git") is None:
+        return MissingToolSummary('git',
+                                  'https://git-scm.com/downloads',
+                                  'Git is used in some build steps, like the project git repo preparation/initialization step.',
+                                  )
+    return None
+
+
 def check_for_not_a_real_tool() -> Optional[MissingToolSummary]:
     if which("not_a_real_tool") is None:
         return MissingToolSummary('Not A Real Tool',

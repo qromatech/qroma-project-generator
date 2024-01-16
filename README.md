@@ -23,6 +23,10 @@ Compiled Windows executables are available in [/downloads](/downloads)
 * VS Code with PlatformIO plugin
 * node/npm installed
 
+#### Single Step to Develop/Replace a New Project Locally and Start Local Project Site Server
+* With `qroma` installed - `qroma new :$PROJECT-ID --replace-existing --full-build --do-git-prepare --run-site`
+* Poetry - `poetry run python src/qroma-cli.py new :$PROJECT-ID --replace-existing --full-build --do-git-prepare --run-site `
+
 #### Steps to Develop a New Project Locally
 * `qroma new :$PROJECT-ID`
 * `qroma build :$PROJECT-ID`

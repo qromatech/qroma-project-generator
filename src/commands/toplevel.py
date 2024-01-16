@@ -1,5 +1,3 @@
-from typing import List
-
 import typer
 
 import env_checks
@@ -9,7 +7,9 @@ from qroma_infra.qroma_infrastructure import ensure_qroma_user_profile_exists, l
 from qroma_project import user_input
 from qroma_project.generate.generate_project import do_generate_project_structure
 from qroma_project.qp_loader import load_qroma_project_from_directory
+from qroma_project.qroma_git import do_init_add_and_commit_project, do_add_and_commit_branch
 from qroma_types import QromaProjectConfigUserInputs, GenerateProjectOptions
+from steps.site.site_host import do_site_npm_run_start_step
 from utils import typer_show_to_user, qroma_show_dir
 
 
@@ -32,12 +32,13 @@ def new(project_id: str = typer.Argument(...,
                                          # callback=typer_validate_new_user_project_id_from_user,
                                          # callback=typer_validate_existing_project_id,
                                          ),
-        # firmware_platforms: List[FirmwareFramework] | None = typer.Option(None),
         editor: QromaEditorTypes = typer.Option(QromaEditorTypes.root),
         replace_existing: bool = typer.Option(False),
         do_build: bool = typer.Option(False),
         build_ignore_www: bool = typer.Option(True),
         full_build: bool = typer.Option(False),
+        do_git_prepare: bool = typer.Option(False),
+        run_site: bool = typer.Option(False),
         ):
     """
     Initialize a new Qroma project. Give a project ID to generate a new project in this directory. If you
@@ -79,14 +80,24 @@ def new(project_id: str = typer.Argument(...,
     this_project = load_qroma_project_from_directory(project_info.project_dir)
     user_profile = load_qroma_user_profile()
 
+    if do_git_prepare:
+        do_init_add_and_commit_project(qroma_project=this_project)
+
     do_build_project(qroma_project=this_project,
                      user_profile=user_profile,
                      build_parameters=generate_project_options.build_parameters,
                      )
 
+    if do_git_prepare:
+        commit_message = "Commit after building project protobufs, firmware, and site content."
+        do_add_and_commit_branch(qroma_project=this_project, branch_name="main", commit_message=commit_message)
+
     qroma_open_editor(this_project, editor)
 
     typer_show_to_user(f"Done initializing Qroma project: {project_id}")
+
+    if run_site:
+        do_site_npm_run_start_step(this_project)
 
 
 def version_callback(value: bool):
