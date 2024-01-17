@@ -1,14 +1,18 @@
+import hashlib
 import os
 import shutil
-from distutils.dir_util import copy_tree
 import requests
 import zipfile
 import io
 import tempfile
 
+import typer
+
+import config
 import env_checks
 from constants import PROJECT_TEMPLATE_ZIP_URL, REACT_QROMA_LIB_ZIP_URL
-from utils import qroma_os_rmdir, qroma_copy_file
+from qroma_enums import ExitReason
+from utils import qroma_os_rmdir
 
 
 def download_template_to_dir(project_dir: os.PathLike) -> str:
@@ -54,25 +58,65 @@ def download_template_to_dir(project_dir: os.PathLike) -> str:
     return template_dir
 
 
-def copy_local_template_to_dir(copy_to_dir: os.PathLike):
-    DIRS_TO_EXCLUDE = [".git", ".vscode", ".pio"]
-    FILES_TO_EXCLUDE = [".git", ".gitignore"]
+def unzip_local_templates_to_dir(project_dir: os.PathLike) -> str:
+    project_site_dir = os.path.join(project_dir, 'sites', 'site-www-qroma-project')
 
-    template_source_dir = env_checks.get_local_template_source_dir()
+    qroma_project_template_zip_path = env_checks.get_local_template_zip_resource_path(
+        config.LOCAL_TEMPLATE_QROMA_PROJECT_ZIP_FILENAME)
+    react_qroma_lib_zip_path = env_checks.get_local_template_zip_resource_path(
+        config.LOCAL_TEMPLATE_REACT_QROMA_LIB_ZIP_FILENAME)
 
-    for c in os.listdir(template_source_dir):
-        full_path = os.path.join(template_source_dir, c)
-        if os.path.isdir(full_path):
-            if c not in DIRS_TO_EXCLUDE:
-                copy_to_dir_path = os.path.join(copy_to_dir, c)
-                print(full_path)
-                copy_tree(full_path, copy_to_dir_path)
-        else:
-            if c not in FILES_TO_EXCLUDE:
-                copy_to_dir_path = os.path.join(copy_to_dir, c)
-                qroma_copy_file(full_path, copy_to_dir_path)
+    # Extract ZipFile from the project template zip
+    qroma_project_template_zip_f = open(qroma_project_template_zip_path, "rb")
+    with zipfile.ZipFile(qroma_project_template_zip_f) as myzip:
+        myzip.extractall(project_dir)
 
-    return copy_to_dir
+    downloaded_template_dir_name = os.listdir(project_dir)[0]
+    template_dir = os.path.join(project_dir, downloaded_template_dir_name)
+    template_dir_contents = os.listdir(template_dir)
+    for td_content in template_dir_contents:
+        print(f"{td_content}")
+        shutil.move(os.path.join(template_dir, td_content), project_dir)
+
+    qroma_os_rmdir(template_dir)
+
+    # download react-qroma-lib and put it in place - https://github.com/qromatech/react-qroma-lib
+    rql_final_dir = os.path.join(project_site_dir, 'src', 'react-qroma-lib')
+    rql_download_dir = os.path.join(project_site_dir, 'react-qroma-lib-extract')
+
+    # Extract ZipFile object from react-qroma-lib zip
+    react_qroma_lib_zip_f = open(react_qroma_lib_zip_path, "rb")
+    with zipfile.ZipFile(react_qroma_lib_zip_f) as myzip:
+        myzip.extractall(rql_download_dir)
+
+    downloaded_rql_dir_name = os.listdir(rql_download_dir)[0]
+    rql_dir = os.path.join(rql_download_dir, downloaded_rql_dir_name)
+    rql_dir_contents = os.listdir(rql_dir)
+    for td_content in rql_dir_contents:
+        print(f"{td_content}")
+        shutil.move(os.path.join(rql_dir, td_content), rql_final_dir)
+
+    qroma_os_rmdir(rql_download_dir)
+
+    return template_dir
+
+
+def download_template_zips_and_compare_to_local_versions():
+    for template_source_zip_local_filename, template_zip_url in config.TEMPLATE_SOURCE_ZIP_URLS_AND_LOCAL_FILENAMES:
+        template_zip_download_bytes = requests.get(template_zip_url).content
+        download_bytes_file_like_object = io.BytesIO(template_zip_download_bytes)
+        zip_download_hash = hashlib.file_digest(download_bytes_file_like_object, 'sha256').hexdigest()
+
+        zip_filepath = env_checks.get_local_template_zip_resource_path(template_source_zip_local_filename)
+        zip_file = open(zip_filepath, "rb", buffering=0)
+        zip_file_hash = hashlib.file_digest(zip_file, 'sha256').hexdigest()
+
+        if zip_download_hash != zip_file_hash:
+            # if this becomes a hassle, we could add a flag to command line to force ignore or
+            # prompt via typer right here
+            print(f"Zip download hash and local file hash don't match for "
+                             f"{template_source_zip_local_filename} / {template_zip_url}")
+            raise typer.Exit(ExitReason.TEMPLATE_FILES_MISMATCH.value)
 
 
 def setup_project_template_directory() -> tempfile.TemporaryDirectory:
@@ -81,7 +125,8 @@ def setup_project_template_directory() -> tempfile.TemporaryDirectory:
     if env_checks.is_running_as_cli_executable():
         template_dir = download_template_to_dir(temp_directory.name)
     else:
-        template_dir = copy_local_template_to_dir(temp_directory.name)
+        download_template_zips_and_compare_to_local_versions()
+        template_dir = unzip_local_templates_to_dir(temp_directory.name)
 
     print("SETUP TEMPLATE DIR: " + template_dir)
 
@@ -90,24 +135,3 @@ def setup_project_template_directory() -> tempfile.TemporaryDirectory:
 
 def remove_project_template_directory(template_temp_dir: tempfile.TemporaryDirectory):
     template_temp_dir.cleanup()
-
-#
-# def setup_project_directory(qroma_project: QromaProject) -> os.PathLike:
-#
-#     project_dir = qroma_project.project_dir
-#
-#     if os.path.exists(project_dir):
-#         shutil.rmtree(project_dir)
-#
-#     os.makedirs(project_dir)
-#
-#     if LOCAL_TEMPLATE_DIR:
-#         template_dir = copy_local_template_to_dir(project_dir)
-#     else:
-#         template_dir = download_template_to_dir(project_dir)
-#
-#     print("SETUP PROJECT DIR: " + template_dir)
-#
-#     # shutil.rmtree(template_dir)
-#
-#     return project_dir

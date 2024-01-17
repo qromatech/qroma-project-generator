@@ -41,3 +41,4 @@ class ExitReason(Enum):
     MISSING_TOOL_GIT                = 1202
 
     BUNDLE_FIRMWARE_MISSING_FILE    = 1300
+    TEMPLATE_FILES_MISMATCH         = 1301

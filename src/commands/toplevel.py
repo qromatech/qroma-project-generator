@@ -88,7 +88,7 @@ def new(project_id: str = typer.Argument(...,
                      build_parameters=generate_project_options.build_parameters,
                      )
 
-    if do_git_prepare:
+    if do_git_prepare and full_build:
         commit_message = "Commit after building project protobufs, firmware, and site content."
         do_add_and_commit_branch(qroma_project=this_project, branch_name="main", commit_message=commit_message)
 

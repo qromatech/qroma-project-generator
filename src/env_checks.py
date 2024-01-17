@@ -5,7 +5,7 @@ from collections import namedtuple
 from typing import Optional, List
 from pathlib import Path
 
-from config import LOCAL_TEMPLATE_DIR
+from config import LOCAL_TEMPLATE_DIR, LOCAL_PROJECT_TEMPLATE_RESOURCES_DIR
 
 MissingToolSummary = namedtuple("MissingToolSummary",
                                 ['tool_name', 'install_link', 'description'])
@@ -41,6 +41,13 @@ def get_local_template_source_dir():
     parent_dir = this_file.parent.parent
     template_source_dir = os.path.join(parent_dir, LOCAL_TEMPLATE_DIR)
     return template_source_dir
+
+
+def get_local_template_zip_resource_path(resource_filename):
+    this_file = Path(__file__)
+    parent_dir = this_file.parent.parent
+    template_source_zip_path = os.path.join(parent_dir, LOCAL_PROJECT_TEMPLATE_RESOURCES_DIR, resource_filename)
+    return template_source_zip_path
 
 
 def check_for_docker() -> Optional[MissingToolSummary]:
