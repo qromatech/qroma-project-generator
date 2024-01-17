@@ -42,7 +42,8 @@ def new(project_id: str = typer.Argument(...,
         ):
     """
     Initialize a new Qroma project. Give a project ID to generate a new project in this directory. If you
-    prefix the project ID with ':', it will generate your project in a global 'qroma-projects' directory.
+    prefix the project ID with ':', it will generate your project in the 'qroma-projects' directory in the user home
+    directory.
     """
     project_info = user_input.create_new_qroma_project_info_from_user_input(project_id)
 
