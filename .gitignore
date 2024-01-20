@@ -20,3 +20,5 @@
 src/build_info.py
 
 !downloads/**/qroma.exe
+
+/project_template_resources/*.zip
