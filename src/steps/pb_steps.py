@@ -3,6 +3,7 @@ import shutil
 
 import qroma_dirs
 import env_checks
+import config
 from docker import docker_container_run, docker_container_rm
 from qroma_enums import ExitReason
 from qroma_project.qroma_project import QromaProject
@@ -31,26 +32,20 @@ def run_pb_compile_step(qroma_project: QromaProject):
     for (src_dir, dest_dir) in src_and_dest_dirs:
         with typer_progress_message(f"COMPILE PROTOBUF SUBPROCESS [{src_dir} -> {dest_dir}]"):
 
-            docker_source_dir = "/usr/src/app/protofiles"
-            docker_dest_dir = "/usr/src/app/outfiles"
-
             if os.path.exists(dest_dir):
                 shutil.rmtree(dest_dir)
 
-            docker_image_name = "devalbo/qroma-protobuf-compiler:v2"
-            docker_container_name = "qroma-protobuf-compiler-1"
-
             with typer_progress_message(f"RUNNING DOCKER COMMAND TO COMPILE PROTOBUF"):
-                output = docker_container_run(docker_image_name,
-                                              docker_container_name,
-                                              ["-v", f"{src_dir}:{docker_source_dir}",
-                                               "-v", f"{dest_dir}:{docker_dest_dir}",
+                output = docker_container_run(config.DOCKER_PB_COMPILE_IMAGE_NAME,
+                                              config.DOCKER_PB_COMPILE_CONTAINER_NAME,
+                                              ["-v", f"{src_dir}:{config.DOCKER_PB_COMPILE_SOURCE_DIR}",
+                                               "-v", f"{dest_dir}:{config.DOCKER_PB_COMPILE_DEST_DIR}",
                                                ],
                                               )
                 typer_show_lines_to_user(output)
 
             with typer_progress_message("CLEANING UP DOCKER IMAGE"):
-                output = docker_container_rm(docker_container_name)
+                output = docker_container_rm(config.DOCKER_PB_COMPILE_CONTAINER_NAME)
                 typer_show_lines_to_user(output)
 
 
