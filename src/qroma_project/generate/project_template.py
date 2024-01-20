@@ -10,13 +10,14 @@ import typer
 
 import config
 import env_checks
-from constants import PROJECT_TEMPLATE_ZIP_URL, REACT_QROMA_LIB_ZIP_URL
+# from constants import PROJECT_TEMPLATE_ZIP_URL, REACT_QROMA_LIB_ZIP_URL
+from config import QROMA_PROJECT_TEMPLATE_ZIP_URL, REACT_QROMA_LIB_ZIP_URL
 from qroma_enums import ExitReason
 from utils import qroma_os_rmdir
 
 
 def download_template_to_dir(project_dir: os.PathLike) -> str:
-    response = requests.get(PROJECT_TEMPLATE_ZIP_URL)
+    response = requests.get(QROMA_PROJECT_TEMPLATE_ZIP_URL)
     project_site_dir = os.path.join(project_dir, 'sites', 'site-www-qroma-project')
 
     # Create a ZipFile object from the content of the response
@@ -108,6 +109,12 @@ def download_template_zips_and_compare_to_local_versions():
         zip_download_hash = hashlib.file_digest(download_bytes_file_like_object, 'sha256').hexdigest()
 
         zip_filepath = env_checks.get_local_template_zip_resource_path(template_source_zip_local_filename)
+
+        if not os.path.exists(zip_filepath):
+            with open(zip_filepath, "wb") as zip_to_save:
+                zip_to_save.write(template_zip_download_bytes)
+                print(f"DOWNLOADING AND SAVING '{template_zip_url}' TO {zip_filepath}")
+
         zip_file = open(zip_filepath, "rb", buffering=0)
         zip_file_hash = hashlib.file_digest(zip_file, 'sha256').hexdigest()
 
@@ -117,6 +124,11 @@ def download_template_zips_and_compare_to_local_versions():
             print(f"Zip download hash and local file hash don't match for "
                              f"{template_source_zip_local_filename} / {template_zip_url}")
             raise typer.Exit(ExitReason.TEMPLATE_FILES_MISMATCH.value)
+
+
+            # what_to_do = typer.prompt("Type 'dl' to use downloaded template")
+            # if what_to_do != "dl":
+            #     raise typer.Exit(ExitReason.TEMPLATE_FILES_MISMATCH.value)
 
 
 def setup_project_template_directory() -> tempfile.TemporaryDirectory:
