@@ -2,8 +2,8 @@
 LOCAL_TEMPLATE_DIR = "./qroma-project-template"
 LOCAL_PROJECT_TEMPLATE_RESOURCES_DIR = "./project_template_resources"
 
-# QROMA_PROJECT_TEMPLATE_BRANCH_NAME = "main"
-QROMA_PROJECT_TEMPLATE_BRANCH_NAME = "flatten-fw-dir"
+QROMA_PROJECT_TEMPLATE_BRANCH_NAME = "main"
+# QROMA_PROJECT_TEMPLATE_BRANCH_NAME = "flatten-fw-dir"
 QROMA_PROJECT_TEMPLATE_ZIP_URL = f'https://github.com/qromatech/qroma-project-template/archive/refs/heads/{QROMA_PROJECT_TEMPLATE_BRANCH_NAME}.zip'
 LOCAL_TEMPLATE_QROMA_PROJECT_ZIP_FILENAME = f"qroma-project-template-{QROMA_PROJECT_TEMPLATE_BRANCH_NAME}.zip"
 
