@@ -22,5 +22,8 @@ JINJA_TEST_TEMPLATE_DIR = "../jinja_dir_test/QROMA-PROJECT-TEMPLATE"
 
 DOCKER_PB_COMPILE_SOURCE_DIR = "/usr/src/app/protofiles"
 DOCKER_PB_COMPILE_DEST_DIR = "/usr/src/app/outfiles"
-DOCKER_PB_COMPILE_IMAGE_NAME = "devalbo/qroma-protobuf-compiler:v2"
-DOCKER_PB_COMPILE_CONTAINER_NAME = "qroma-protobuf-compiler-1"
+# DOCKER_PB_COMPILE_IMAGE_NAME = "devalbo/qroma-protobuf-compiler:v2"
+# DOCKER_PB_COMPILE_CONTAINER_NAME = "qroma-protobuf-compiler-1"
+DOCKER_PB_COMPILE_IMAGE_NAME = "devalbo/qroma-project-generator-tools:v1"
+DOCKER_PB_COMPILE_CONTAINER_NAME = "qroma-project-generator-tools-1"
+

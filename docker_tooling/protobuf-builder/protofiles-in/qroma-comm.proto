@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+import "file-system-commands.proto";
+import "qroma-comm-config-commands.proto";
+
+
+
+message QromaCommCommand {
+  oneof command {
+    bytes appCommandBytes = 1;
+    FileSystemCommand fsCommand = 2;
+    QromaCommConfigCommand commConfigCommand = 3;
+  }
+}
+
+message QromaCommHeartbeatResponse {
+  uint32 uptimeInMs = 1;
+  uint32 heartbeatTicks = 2;
+}
+
+message QromaCommResponse {
+  oneof response {
+    bytes appResponseBytes = 1;
+    FileSystemResponse fsResponse = 2;
+    QromaCommConfigResponse commConfigResponse = 3;
+    QromaCommHeartbeatResponse heartbeatResponse = 4;
+  }
+}

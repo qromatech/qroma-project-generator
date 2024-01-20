@@ -1,0 +1,171 @@
+syntax = "proto3";
+
+enum DirItemType {
+  DIT_NOT_SET = 0;
+  DIT_FILE = 1;
+  DIT_DIR = 2;
+}
+
+enum GetFileStatusCode {
+  GFSC_NOT_SET = 0;
+  GFSC_SUCCESS = 1;
+  GFSC_ERR_OPEN_FILE = 2;
+  GFSC_ERR_INVALID_FILE = 3;
+}
+
+enum WriteFileDataStatusCode {
+  WFDSC_NOT_SET = 0;
+  WFDSC_SUCCESS = 1;
+  WFDSC_ERR_OPEN_FILE = 2;
+  WFDSC_ERR_CRC_MISMATCH = 3;
+}
+
+message DirItem {
+  string name = 1;
+  DirItemType dirItemType = 2;
+  uint32 filesize = 3;
+}
+
+message FileData {
+  string filename = 1;
+  uint32 filesize = 2;
+  uint32 checksum = 3;
+}
+
+
+message StoreUpcomingFileDataCommand {
+  FileData fileData = 1;
+}
+
+message StoreUpcomingFileDataResponse {
+  bool success = 1;
+  uint32 bytesWritten = 2;
+  FileData command = 3;
+}
+
+
+
+message RmFileCommand {
+  string filePath = 1;
+}
+
+message RmFileResponse {
+  bool success = 1;
+  RmFileCommand rmFileCommand = 2;
+}
+
+
+message RmDirCommand {
+  string dirPath = 1;
+}
+
+message RmDirResponse {
+  bool success = 1;
+  RmDirCommand rmDirCommand = 2;
+}
+
+
+message MkDirCommand {
+  string dirPath = 1;
+}
+
+message MkDirResponse {
+  bool success = 1;
+  MkDirCommand mkDirCommand = 2;
+}
+
+
+message ReportFileDataCommand {
+  string filename = 1;
+}
+
+message ReportFileDataResponse {
+  bool fileExists = 1;
+  FileData fileData = 2;
+}
+
+
+message ListDirContentsCommand {
+  string dirPath = 1;
+  string startsWithConstraint = 2;
+  string endsWithConstraint = 3;
+}
+
+message ListDirContentsResponse {
+  string dirPath = 1;
+  bool success = 2;
+  repeated DirItem dirItems = 3;
+}
+
+message PrintDirContentsCommand {
+  string dirPath = 1;
+}
+
+
+message ResetFilesystemCommand {
+  bool dummy = 1;
+}
+
+message ResetFilesystemResponse {
+  bool success = 1;
+}
+
+
+message GetFileContentsCommand {
+  string filePath = 1;
+}
+
+message GetFileContentsResponse {
+  GetFileStatusCode statusCode = 1;
+  FileData fileData = 2;
+  bytes fileBytes = 3;
+}
+
+
+message WriteFileDataCommand {
+  FileData fileData = 1;
+  bytes fileBytes = 2;
+}
+
+message WriteFileDataResponse {
+  WriteFileDataStatusCode statusCode = 1;
+  FileData command = 2;
+}
+
+
+
+
+message FileSystemCommand {
+  oneof command {
+    GetFileContentsCommand getFileContentsCommand = 1;
+    WriteFileDataCommand writeFileDataCommand = 2;
+    // StoreUpcomingFileDataCommand storeUpcomingFileDataCommand = 3;
+    ReportFileDataCommand reportFileDataCommand = 4;
+    RmFileCommand rmFileCommand = 5;
+
+
+    // PrintDirContentsCommand printDirContentsCommand = 8;
+    ListDirContentsCommand listDirContentsCommand = 9;
+    MkDirCommand mkDirCommand = 10;
+    RmDirCommand rmDirCommand = 11;
+
+    ResetFilesystemCommand resetFilesystemCommand = 15;
+  }
+}
+
+
+message FileSystemResponse {
+  oneof response {
+    GetFileContentsResponse getFileContentsResponse = 1;
+    WriteFileDataResponse writeFileDataResponse = 2;
+    // StoreUpcomingFileDataResponse storeUpcomingFileDataResponse = 3;
+    ReportFileDataResponse reportFileDataResponse = 4;
+    RmFileResponse rmFileCommand = 5;
+
+    ListDirContentsResponse listDirContentsResponse = 9;
+    MkDirResponse mkDirResponse = 10;
+    RmDirResponse rmDirResponse = 11;
+
+    ResetFilesystemResponse resetFilesystemResponse = 15;
+  }
+}

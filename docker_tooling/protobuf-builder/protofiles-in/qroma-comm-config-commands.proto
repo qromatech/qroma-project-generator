@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+import "qroma-types.proto";
+import "qroma-config.proto";
+
+
+message RequestQromaCommConfig {
+  uint32 ignoreThis = 1;
+}
+
+message RequestQromaCommSerialIoConfig {
+  uint32 ignoreThis = 1;
+}
+
+message RequestQromaCommReportingConfig {
+  uint32 ignoreThis = 1;
+}
+
+message SetLogLevelRequest {
+  Qroma_LogLevel logLevel = 1;
+}
+
+message SetLogLevelResponse {
+  Qroma_LogLevel logLevel = 1;
+}
+
+
+message SetHeartbeatIntervalRequest {
+  uint32 heartbeatIntervalInMs = 1;
+}
+
+message SetHeartbeatIntervalResponse {
+  uint32 heartbeatIntervalInMs = 1;
+}
+
+
+message QromaCommConfigCommand {
+  oneof command {
+    RequestQromaCommConfig requestQromaCommConfig = 1;
+    RequestQromaCommSerialIoConfig requestQromaCommSerialIoConfig = 2;
+    RequestQromaCommReportingConfig requestQromaCommReportingConfig = 3;
+    SetLogLevelRequest setLogLevel = 4;
+    SetHeartbeatIntervalRequest setHeartbeatInterval = 5;
+  }
+}
+
+message QromaCommConfigResponse {
+  oneof response {
+    QromaCommConfig qromaCommConfig = 1;
+    QromaCommSerialIoConfig qromaCommSerialIoConfig = 2;
+    QromaCommReportingConfig qromaCommReportingConfig = 3;
+    SetLogLevelResponse setLogLevel = 4;
+    SetHeartbeatIntervalResponse setHeartbeatInterval = 5;
+  }
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "qroma-types.proto";
+
+
+message QromaCommSerialIoConfig {
+  uint32 baudRate = 1;
+  uint32 rxBufferSize = 2;
+  uint32 txBufferSize = 3;
+};
+
+message QromaCommReportingConfig {
+  Qroma_LogLevel logLevel = 1;
+  uint32 heartbeatIntervalInMs = 2;  
+}
+
+message QromaCommConfig {
+  QromaCommSerialIoConfig serialIoConfig = 1;
+  QromaCommReportingConfig reportingConfig = 2;
+}

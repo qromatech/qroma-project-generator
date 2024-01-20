@@ -1,0 +1,5 @@
+# LightshowInfo.name  max_size:30  fixed_length:true
+# LightshowInfo.uploadedTimestamp   max_size: 30  fixed_length: true
+
+QromaCommCommand.appCommandBytes   max_size: 1000
+QromaCommResponse.appResponseBytes   max_size: 1000

@@ -1,0 +1,27 @@
+FileData.filename  max_size:32  fixed_length:true
+DirItem.name  max_size:32  fixed_length:true
+
+ReportFileDataCommand.filename  max_size:32  fixed_length:true
+
+ListDirContentsCommand.dirPath  max_size:32  fixed_length:true
+ListDirContentsCommand.startsWithConstraint  max_size:10  fixed_length:true
+ListDirContentsCommand.endsWithConstraint  max_size:10  fixed_length:true
+
+
+ListDirContentsResponse.dirPath  max_size:32  fixed_length:true
+ListDirContentsResponse.dirItems  max_count: 50  
+
+PrintDirContentsCommand.dirPath  max_size:32  fixed_length:true
+
+RmFileCommand.filePath  max_size:32  fixed_length:true
+
+GetFileContentsCommand.filePath  max_size:32  fixed_length:true
+
+GetFileContentsResponse.fileBytes  max_size:5000
+
+WriteFileDataCommand.fileBytes  max_size:5000
+
+
+MkDirCommand.dirPath  max_size: 32
+
+RmDirCommand.dirPath  max_size: 32
