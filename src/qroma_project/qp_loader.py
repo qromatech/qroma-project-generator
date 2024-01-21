@@ -18,9 +18,9 @@ def load_qroma_project(qroma_project: QromaProject) -> Optional[QromaProject]:
     return load_qroma_project_from_directory(qroma_project.project_dir)
 
 
-def load_qroma_project_from_directory(qroma_dir: str | os.PathLike) -> Optional[QromaProject]:
+def load_qroma_project_from_directory(user_profile: QromaUserProfile, qroma_dir: str | os.PathLike) -> Optional[QromaProject]:
     qroma_project_config_file_path = Path(qroma_dir, QROMA_PROJECT_CONFIG_FILE_NAME)
-    return load_qroma_project_from_file(qroma_project_config_file_path)
+    return load_qroma_project_from_file(user_profile, qroma_project_config_file_path)
 
 
 def load_qroma_basics_from_file(qroma_project_config_file_location: str | os.PathLike) -> Optional[QromaProjectBasics]:

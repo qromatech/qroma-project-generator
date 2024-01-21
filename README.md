@@ -24,8 +24,8 @@ Compiled Windows executables are available in [/downloads](/downloads)
 * node/npm installed
 
 #### Single Step to Develop/Replace a New Project Locally and Start Local Project Site Server
-* With `qroma` installed - `qroma new :$PROJECT-ID --replace-existing --full-build --do-git-prepare --run-site`
-* Poetry - `poetry run python src/qroma-cli.py new :$PROJECT-ID --replace-existing --full-build --do-git-prepare --run-site `
+* With `qroma` installed - `qroma new --replace-existing --full-build --do-git-prepare --run-site :$PROJECT-ID`
+* Poetry - `poetry run python src/qroma-cli.py new --replace-existing --full-build --do-git-prepare --run-site :$PROJECT-ID`
 
 #### Steps to Develop a New Project Locally
 * `qroma new :$PROJECT-ID`

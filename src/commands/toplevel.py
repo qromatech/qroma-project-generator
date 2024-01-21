@@ -78,8 +78,8 @@ def new(project_id: str = typer.Argument(...,
 
     do_generate_project_structure(generate_project_options)
 
-    this_project = load_qroma_project_from_directory(project_info.project_dir)
     user_profile = load_qroma_user_profile()
+    this_project = load_qroma_project_from_directory(user_profile, project_info.project_dir)
 
     if do_git_prepare:
         do_init_add_and_commit_project(qroma_project=this_project)
