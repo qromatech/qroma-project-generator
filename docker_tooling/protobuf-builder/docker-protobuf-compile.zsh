@@ -1,4 +1,4 @@
-export IMAGE_NAME=devalbo/qroma-project-generator-tools:v2
+export IMAGE_NAME=devalbo/qroma-project-generator-tools:v1
 export CONTAINER_NAME=qroma-project-generator-tools-1
 
 rm -rf protofiles-out
