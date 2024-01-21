@@ -11,6 +11,8 @@ from qroma_infra.qroma_project_file_template_values import create_qroma_project_
 from qroma_project.qroma_project import QromaProject, QROMA_PROJECT_CONFIG_FILE_NAME
 from typing import Optional
 
+from qroma_user_profile.qroma_user_profile import QromaUserProfile
+
 
 def load_qroma_project(qroma_project: QromaProject) -> Optional[QromaProject]:
     return load_qroma_project_from_directory(qroma_project.project_dir)
@@ -32,9 +34,7 @@ def load_qroma_basics_from_file(qroma_project_config_file_location: str | os.Pat
         return None
     
 
-def load_qroma_project_from_file(qroma_project_config_file_location: str | os.PathLike) -> Optional[QromaProject]:
-    user_profile = load_qroma_user_profile()
-    
+def load_qroma_project_from_file(user_profile: QromaUserProfile, qroma_project_config_file_location: str | os.PathLike) -> Optional[QromaProject]:
     try:
         with open(qroma_project_config_file_location, 'r') as f:
             file_contents = f.read()
@@ -76,5 +76,20 @@ def load_qroma_project_from_file(qroma_project_config_file_location: str | os.Pa
 
 
 def load_current_dir_qroma_project() -> QromaProject:
-    qroma_project_config_file_path = Path(os.path.join(os.getcwd(), QROMA_PROJECT_CONFIG_FILE_NAME))
-    return load_qroma_project_from_file(qroma_project_config_file_path)
+    user_profile = load_qroma_user_profile()
+    dir_to_check = Path(os.getcwd()).absolute()
+
+    while True:
+        qroma_project_config_file_path = Path(os.path.join(dir_to_check, QROMA_PROJECT_CONFIG_FILE_NAME))
+        qroma_project = load_qroma_project_from_file(user_profile, qroma_project_config_file_path)
+
+        if qroma_project is not None:
+            return qroma_project
+
+        parent_dir = Path(os.path.dirname(dir_to_check)).absolute()
+        if parent_dir.samefile(dir_to_check.anchor):
+            # we are at the root
+            print(f"NO qroma project found in {os.getcwd()} or its parent paths")
+            return None
+
+        dir_to_check = parent_dir
