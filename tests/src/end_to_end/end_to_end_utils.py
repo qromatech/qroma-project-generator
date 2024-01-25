@@ -44,9 +44,9 @@ def get_pb_build_compiled_by_qroma_receipt_location(project_id):
 
 def get_firmware_build_output_bin_file_locations(project_id):
     user_qroma_dir = get_test_user_qroma_dir()
-    esp32dev_location = os.path.join(user_qroma_dir, project_id, "firmware", "esp32", project_id,
+    esp32dev_location = os.path.join(user_qroma_dir, project_id, "firmware", f"esp32-{project_id}",
                                      ".pio", "build", "esp32dev", "firmware.bin")
-    qtpy_location = os.path.join(user_qroma_dir, project_id, "firmware", "esp32", project_id,
+    qtpy_location = os.path.join(user_qroma_dir, project_id, "firmware", f"esp32-{project_id}",
                                  ".pio", "build", "adafruit_qtpy_esp32c3", "firmware.bin")
     return [esp32dev_location, qtpy_location]
 

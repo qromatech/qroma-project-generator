@@ -3,6 +3,7 @@ import os
 import typer
 
 from qroma_enums import QromaProjectLocation, ExitReason
+from qroma_infra.qroma_infrastructure import load_qroma_user_profile
 from qroma_project.qp_loader import load_qroma_project_from_directory, load_current_dir_qroma_project
 from qroma_project.qroma_project import calculate_project_dir, QromaProjectException,\
     QromaProject, is_qroma_project_dir_valid
@@ -77,5 +78,6 @@ def load_existing_qroma_project_from_user_input(user_project_id: str | None) -> 
         print(f"Invalid project dir for project ID {project_id}: {qroma_project_dir}")
         raise typer.Exit(ExitReason.INVALID_PROJECT_DIR.value)
 
-    qroma_project = load_qroma_project_from_directory(qroma_project_dir)
+    user_profile = load_qroma_user_profile()
+    qroma_project = load_qroma_project_from_directory(user_profile, qroma_project_dir)
     return qroma_project

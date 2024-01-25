@@ -15,7 +15,8 @@ from qroma_user_profile.qroma_user_profile import QromaUserProfile
 
 
 def load_qroma_project(qroma_project: QromaProject) -> Optional[QromaProject]:
-    return load_qroma_project_from_directory(qroma_project.project_dir)
+    user_profile = load_qroma_user_profile()
+    return load_qroma_project_from_directory(user_profile, qroma_project.project_dir)
 
 
 def load_qroma_project_from_directory(user_profile: QromaUserProfile, qroma_dir: str | os.PathLike) -> Optional[QromaProject]:
