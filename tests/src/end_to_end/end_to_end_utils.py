@@ -54,7 +54,7 @@ def get_firmware_build_output_bin_file_locations(project_id):
 def get_site_build_output_node_modules_dir_location(project_id):
     user_qroma_dir = get_test_user_qroma_dir()
     expected_site_node_modules_location = os.path.join(user_qroma_dir, project_id,
-                                                       "sites", f"site-www-{project_id}", "node_modules")
+                                                       "sites", f"www-{project_id}", "node_modules")
     return expected_site_node_modules_location
 
 
@@ -79,7 +79,7 @@ class WebServerTestHost:
         self._keep_server_running = True
 
         user_qroma_dir = get_test_user_qroma_dir()
-        site_www_dir = os.path.join(user_qroma_dir, self._project_id, "sites", f"site-www-{self._project_id}")
+        site_www_dir = os.path.join(user_qroma_dir, self._project_id, "sites", f"www-{self._project_id}")
 
         # start cmd / npm run serve
         npm_server = None

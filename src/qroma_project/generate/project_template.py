@@ -18,7 +18,7 @@ from utils import qroma_os_rmdir
 
 def download_template_to_dir(project_dir: os.PathLike) -> str:
     response = requests.get(QROMA_PROJECT_TEMPLATE_ZIP_URL)
-    project_site_dir = os.path.join(project_dir, 'sites', 'site-www-qroma-project')
+    project_site_dir = os.path.join(project_dir, 'sites', 'www-qroma-project')
 
     # Create a ZipFile object from the content of the response
     with zipfile.ZipFile(io.BytesIO(response.content)) as myzip:
@@ -60,7 +60,7 @@ def download_template_to_dir(project_dir: os.PathLike) -> str:
 
 
 def unzip_local_templates_to_dir(project_dir: os.PathLike) -> str:
-    project_site_dir = os.path.join(project_dir, 'sites', 'site-www-qroma-project')
+    project_site_dir = os.path.join(project_dir, 'sites', 'www-qroma-project')
 
     qroma_project_template_zip_path = env_checks.get_local_template_zip_resource_path(
         config.LOCAL_TEMPLATE_QROMA_PROJECT_ZIP_FILENAME)

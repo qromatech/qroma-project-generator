@@ -6,7 +6,7 @@ from qroma_project.qroma_project import QromaProject
 
 
 def setup_site_project(qroma_project: QromaProject):
-    project_template_site_dir = os.path.join(qroma_project.project_dir, "sites", "site-www-qroma-project")
+    project_template_site_dir = os.path.join(qroma_project.project_dir, "sites", "www-qroma-project")
     new_site_dir = qroma_dirs.get_project_site_www_dir(qroma_project)
     os.rename(project_template_site_dir, new_site_dir)
 
