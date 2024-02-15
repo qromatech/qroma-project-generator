@@ -15,59 +15,17 @@ from qroma_enums import ExitReason
 from utils import qroma_os_rmdir
 
 
-def download_template_to_dir(project_dir: os.PathLike) -> str:
-    response = requests.get(QROMA_PROJECT_TEMPLATE_ZIP_URL)
+def _create_project_dir_from_template_zips(project_dir: os.PathLike,
+                                           project_template_zip_path: os.PathLike,
+                                           react_qroma_lib_zip_path: os.PathLike) -> str:
+    print(f"CREATING PROJECT DIR FROM TEMPLATE ZIPS: {project_dir}")
+    print(project_template_zip_path)
+    print(react_qroma_lib_zip_path)
+
     project_site_dir = os.path.join(project_dir, 'sites', 'www-qroma-project')
-
-    # Create a ZipFile object from the content of the response
-    with zipfile.ZipFile(io.BytesIO(response.content)) as myzip:
-        # Extract all contents of the zip file to the current directory
-        myzip.extractall(project_dir)
-
-    downloaded_template_dir_name = os.listdir(project_dir)[0]
-    template_dir = os.path.join(project_dir, downloaded_template_dir_name)
-    print(f"DOWNLOADED_TEMPLATE_DIR: {template_dir}")
-    template_dir_contents = os.listdir(template_dir)
-    for td_content in template_dir_contents:
-        print(f"{td_content}")
-        shutil.move(os.path.join(template_dir, td_content), project_dir)
-
-    print(f"REMOVING TEMPLATE DIR: {template_dir}")
-    qroma_os_rmdir(template_dir)
-
-    # download react-qroma-lib and put it in place - https://github.com/qromatech/react-qroma-lib
-    rql_response = requests.get(REACT_QROMA_LIB_ZIP_URL)
-    rql_final_dir = os.path.join(project_site_dir, 'src', 'react-qroma-lib')
-    rql_download_dir = os.path.join(project_site_dir, 'react-qroma-lib-download')
-
-    # Create a ZipFile object from the content of the response
-    with zipfile.ZipFile(io.BytesIO(rql_response.content)) as myzip:
-        myzip.extractall(rql_download_dir)
-
-    downloaded_rql_dir_name = os.listdir(rql_download_dir)[0]
-    rql_dir = os.path.join(rql_download_dir, downloaded_rql_dir_name)
-    print(f"DOWNLOADED_REACT_QROMA_LIB_DIR: {rql_dir}")
-    rql_dir_contents = os.listdir(rql_dir)
-    for td_content in rql_dir_contents:
-        print(f"{td_content}")
-        shutil.move(os.path.join(rql_dir, td_content), rql_final_dir)
-
-    print(f"REMOVING QROMA REACT LIB DOWNLOAD DIR: {rql_download_dir}")
-    qroma_os_rmdir(rql_download_dir)
-
-    return template_dir
-
-
-def unzip_local_templates_to_dir(project_dir: os.PathLike) -> str:
-    project_site_dir = os.path.join(project_dir, 'sites', 'www-qroma-project')
-
-    qroma_project_template_zip_path = env_checks.get_local_template_zip_resource_path(
-        config.LOCAL_TEMPLATE_QROMA_PROJECT_ZIP_FILENAME)
-    react_qroma_lib_zip_path = env_checks.get_local_template_zip_resource_path(
-        config.LOCAL_TEMPLATE_REACT_QROMA_LIB_ZIP_FILENAME)
 
     # Extract ZipFile from the project template zip
-    qroma_project_template_zip_f = open(qroma_project_template_zip_path, "rb")
+    qroma_project_template_zip_f = open(project_template_zip_path, "rb")
     with zipfile.ZipFile(qroma_project_template_zip_f) as myzip:
         myzip.extractall(project_dir)
 
@@ -80,7 +38,6 @@ def unzip_local_templates_to_dir(project_dir: os.PathLike) -> str:
 
     qroma_os_rmdir(template_dir)
 
-    # download react-qroma-lib and put it in place - https://github.com/qromatech/react-qroma-lib
     rql_final_dir = os.path.join(project_site_dir, 'src', 'react-qroma-lib')
     rql_download_dir = os.path.join(project_site_dir, 'react-qroma-lib-extract')
 
@@ -99,6 +56,42 @@ def unzip_local_templates_to_dir(project_dir: os.PathLike) -> str:
         shutil.move(os.path.join(rql_dir, td_content), rql_final_dir)
 
     qroma_os_rmdir(rql_download_dir)
+
+    return template_dir
+
+
+def download_template_to_dir(template_dir: os.PathLike) -> str:
+    project_template_zip_response = requests.get(QROMA_PROJECT_TEMPLATE_ZIP_URL)
+    project_template_zip_bytes = project_template_zip_response.content
+
+    project_template_file_path = os.path.join(template_dir, "qroma-project-template.zip")
+    with open(project_template_file_path, "wb") as zip_to_save:
+        print(f"DOWNLOADING AND SAVING '{QROMA_PROJECT_TEMPLATE_ZIP_URL}' TO {project_template_file_path}")
+        zip_to_save.write(project_template_zip_bytes)
+
+    # download react-qroma-lib and put it in place - https://github.com/qromatech/react-qroma-lib
+    rql_zip_response = requests.get(REACT_QROMA_LIB_ZIP_URL)
+    rql_zip_bytes = rql_zip_response.content
+
+    rql_file_path = os.path.join(template_dir, "react-qroma-lib.zip")
+    with open(rql_file_path, "wb") as zip_to_save:
+        print(f"DOWNLOADING AND SAVING '{REACT_QROMA_LIB_ZIP_URL}' TO {rql_file_path}")
+        zip_to_save.write(rql_zip_bytes)
+
+    template_dir = _create_project_dir_from_template_zips(template_dir, project_template_file_path,
+                                                          rql_file_path)
+
+    return template_dir
+
+
+def unzip_local_templates_to_dir(project_dir: os.PathLike) -> str:
+    qroma_project_template_zip_path = env_checks.get_local_template_zip_resource_path(
+        config.LOCAL_TEMPLATE_QROMA_PROJECT_ZIP_FILENAME)
+    react_qroma_lib_zip_path = env_checks.get_local_template_zip_resource_path(
+        config.LOCAL_TEMPLATE_REACT_QROMA_LIB_ZIP_FILENAME)
+
+    template_dir = _create_project_dir_from_template_zips(project_dir, qroma_project_template_zip_path,
+                                                          react_qroma_lib_zip_path)
 
     return template_dir
 
