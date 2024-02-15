@@ -46,7 +46,7 @@ def get_project_site_static_dir(qroma_project: QromaProject):
 
 
 def get_project_site_www_dir(qroma_project: QromaProject):
-    project_site_www_dir = os.path.join(qroma_project.project_dir, "sites", "site-www-" + qroma_project.project_id)
+    project_site_www_dir = os.path.join(qroma_project.project_dir, "sites", "www-" + qroma_project.project_id)
     return project_site_www_dir
 
 
