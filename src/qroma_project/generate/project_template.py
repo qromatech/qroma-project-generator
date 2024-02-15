@@ -10,7 +10,6 @@ import typer
 
 import config
 import env_checks
-# from constants import PROJECT_TEMPLATE_ZIP_URL, REACT_QROMA_LIB_ZIP_URL
 from config import QROMA_PROJECT_TEMPLATE_ZIP_URL, REACT_QROMA_LIB_ZIP_URL
 from qroma_enums import ExitReason
 from utils import qroma_os_rmdir
@@ -89,6 +88,8 @@ def unzip_local_templates_to_dir(project_dir: os.PathLike) -> str:
     react_qroma_lib_zip_f = open(react_qroma_lib_zip_path, "rb")
     with zipfile.ZipFile(react_qroma_lib_zip_f) as myzip:
         myzip.extractall(rql_download_dir)
+
+    os.mkdir(rql_final_dir)
 
     downloaded_rql_dir_name = os.listdir(rql_download_dir)[0]
     rql_dir = os.path.join(rql_download_dir, downloaded_rql_dir_name)
