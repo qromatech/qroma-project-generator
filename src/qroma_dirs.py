@@ -54,3 +54,10 @@ def get_site_www_pb_dir(qroma_project: QromaProject):
     project_site_www_dir = get_project_site_static_dir(qroma_project)
     site_www_pb_dir = os.path.join(project_site_www_dir, "src", QROMA_PROTOBUFS_DIR_NAME)
     return site_www_pb_dir
+
+
+# def get_firmware_dir(qroma_project: QromaProject):
+def get_init_firmware_dir(project_id, project_dir: os.PathLike):
+    firmware_subdir_name = f"esp32-{project_id}"
+    project_firmware_dir = os.path.join(project_dir, "firmware", firmware_subdir_name)
+    return project_firmware_dir

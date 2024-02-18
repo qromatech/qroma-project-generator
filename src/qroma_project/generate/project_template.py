@@ -10,9 +10,10 @@ import typer
 
 import config
 import env_checks
+import qroma_dirs
 from config import QROMA_PROJECT_TEMPLATE_ZIP_URL, REACT_QROMA_LIB_ZIP_URL
 from qroma_enums import ExitReason
-from utils import qroma_os_rmdir
+from utils import qroma_os_rmdir, qroma_os_rename
 
 
 def _create_project_dir_from_template_zips(project_dir: os.PathLike,
@@ -142,3 +143,14 @@ def setup_project_template_directory() -> tempfile.TemporaryDirectory:
 
 def remove_project_template_directory(template_temp_dir: tempfile.TemporaryDirectory):
     template_temp_dir.cleanup()
+
+
+def rename_qroma_project_arduino_file_to_parent_dir_name(project_id, project_dir: os.PathLike):
+    init_firmware_dir = qroma_dirs.get_init_firmware_dir(project_id, project_dir)
+    template_ino_filepath = os.path.join(init_firmware_dir, "qroma-project.ino")
+    project_ino_filepath = os.path.join(init_firmware_dir, f"esp32-{project_id}.ino")
+
+    print("TEMPLATE INO FILEPATH: " + template_ino_filepath)
+    print("PROJECT INO FILEPATH: " + project_ino_filepath)
+
+    qroma_os_rename(template_ino_filepath, project_ino_filepath)

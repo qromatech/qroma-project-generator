@@ -2,6 +2,7 @@ import os
 
 import env_checks
 from qroma_project.generate import template_processor, project_template
+from qroma_project.qroma_project import QromaProject
 from qroma_types import GenerateProjectOptions
 from utils import qroma_os_rmdir, typer_show_to_user, qroma_os_remove
 
@@ -38,7 +39,13 @@ def do_generate_project_structure(generate_project_options: GenerateProjectOptio
     # download and unzip template contents from https://github.com/qromatech/qroma-project-template
     template_directory = project_template.setup_project_template_directory()
 
-    init_project_directory_from_project_template_directory(
+    project_dir = init_project_directory_from_project_template_directory(
         generate_project_options, template_directory.name)
 
     project_template.remove_project_template_directory(template_directory)
+
+    # Arduino requires .ino files to have a parent directory with the same name as the file itself :shrug:
+    project_template.rename_qroma_project_arduino_file_to_parent_dir_name(
+        project_id=generate_project_options.project_config_user_inputs.project_info.project_id,
+        project_dir=project_dir
+    )
