@@ -78,7 +78,8 @@ def download_template_to_dir(template_dir: os.PathLike) -> str:
         print(f"DOWNLOADING AND SAVING '{REACT_QROMA_LIB_ZIP_URL}' TO {rql_file_path}")
         zip_to_save.write(rql_zip_bytes)
 
-    template_dir = _create_project_dir_from_template_zips(template_dir, project_template_file_path,
+    template_dir = _create_project_dir_from_template_zips(template_dir,
+                                                          project_template_file_path,
                                                           rql_file_path)
 
     return template_dir

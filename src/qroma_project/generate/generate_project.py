@@ -3,7 +3,7 @@ import os
 import env_checks
 from qroma_project.generate import template_processor, project_template
 from qroma_types import GenerateProjectOptions
-from utils import qroma_os_rmdir, typer_show_to_user
+from utils import qroma_os_rmdir, typer_show_to_user, qroma_os_remove
 
 
 def init_project_directory_from_project_template_directory(generate_project_options: GenerateProjectOptions,
@@ -20,12 +20,13 @@ def init_project_directory_from_project_template_directory(generate_project_opti
 
     print(f"PROJECT {project_id} INITIALIZED AT {project_dir}")
 
-    # # use project ID to name Arduino project directory
-    # device_boards.setup_device_project(qroma_project, generate_project_options)
-    #
-    # # setup web sites for interacting with project installed on board
-    # # www_sites.do_docusaurus_setup(project_dir, project_id)
-    # www_sites.setup_site_project(qroma_project)
+    qroma_project_template_zip_path = os.path.join(project_dir, "qroma-project-template.zip")
+    if os.path.exists(qroma_project_template_zip_path):
+        qroma_os_remove(qroma_project_template_zip_path)
+
+    react_qroma_lib_zip_path = os.path.join(project_dir, "react-qroma-lib.zip")
+    if os.path.exists(react_qroma_lib_zip_path):
+        qroma_os_remove(react_qroma_lib_zip_path)
 
     return project_dir
 
