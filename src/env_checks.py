@@ -68,11 +68,20 @@ def check_for_platform_io() -> Optional[MissingToolSummary]:
     return None
 
 
+def check_for_node() -> Optional[MissingToolSummary]:
+    if which("node") is None:
+        return MissingToolSummary('Node.js',
+                                  'https://nodejs.org/en/download/',
+                                  'NPM and Node.js are required for building the default Qroma device sites.',
+                                  )
+    return None
+
+
 def check_for_npm() -> Optional[MissingToolSummary]:
     if which("npm") is None:
-        return MissingToolSummary('NPM/Node.js',
-                                  'https://nodejs.org/en/download/',
-                                  'NPM/Node.js is required for building the default Qroma device sites.',
+        return MissingToolSummary('NPM',
+                                  'https://docs.npmjs.com/downloading-and-installing-node-js-and-npm',
+                                  'NPMand Node.js are required for building the default Qroma device sites.',
                                   )
     return None
 
@@ -81,7 +90,17 @@ def check_for_git() -> Optional[MissingToolSummary]:
     if which("git") is None:
         return MissingToolSummary('git',
                                   'https://git-scm.com/downloads',
-                                  'Git is used in some build steps, like the project git repo preparation/initialization step.',
+                                  'Git is not necessary for basic operation, but can be used in some build steps, '
+                                  'like the project git repo preparation/initialization step.',
+                                  )
+    return None
+
+
+def check_for_code() -> Optional[MissingToolSummary]:
+    if which("code") is None:
+        return MissingToolSummary('code',
+                                  'https://code.visualstudio.com/',
+                                  'VS Code is not required for operation, but can be used as a default file editor.',
                                   )
     return None
 
@@ -104,17 +123,26 @@ def print_missing_tool_summary(missing_tool_summary: MissingToolSummary):
 def do_env_checks() -> List[MissingToolSummary]:
     docker_summary = check_for_docker()
     platform_io_summary = check_for_platform_io()
+    node_summary = check_for_node()
     npm_summary = check_for_npm()
-    nart_summary = check_for_not_a_real_tool()
+    git_summary = check_for_git()
+    code_summary = check_for_code()
+    # nart_summary = check_for_not_a_real_tool()
 
     env_missing_tool_summaries = [ts for ts in [docker_summary,
                                                 platform_io_summary,
+                                                node_summary,
                                                 npm_summary,
-                                                nart_summary,
+                                                git_summary,
+                                                code_summary,
+                                                # nart_summary,
                                                 ]
                                   if ts is not None]
 
     for missing_tool_summary in env_missing_tool_summaries:
         print_missing_tool_summary(missing_tool_summary)
+
+    if len(env_missing_tool_summaries) == 0:
+        print("All tools Qroma needs are available on your path!")
 
     return env_missing_tool_summaries
