@@ -13,7 +13,7 @@ Compiled Windows executables are available in [/downloads](/downloads)
   * `cd ..`
 * `poetry install`
 * `poetry run python src/qroma-cli.py new :my-qroma-project`
-* `poetry run python src/qroma-cli.py protobuf :my-qroma-project`
+* `poetry run python src/qroma-cli.py pb build :my-qroma-project`
 * `poetry run python src/qroma-cli.py build :my-qroma-project`
 
 
