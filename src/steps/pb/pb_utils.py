@@ -10,6 +10,7 @@ def get_compilers_and_dest_dirs_for_project(qroma_project: QromaProject):
         (ProtobufCompiler.python, pb_stage_config.replication.python.dirs),
         (ProtobufCompiler.typescript, pb_stage_config.replication.typescript.dirs),
         (ProtobufCompiler.dart, pb_stage_config.replication.dart.dirs),
+        (ProtobufCompiler.rust, pb_stage_config.replication.rust.dirs),
     ]
     return compilers_and_dest_dirs
 

@@ -27,11 +27,17 @@ class ProtobufDartReplicationStage:
 
 
 @dataclass
+class ProtobufRustReplicationStage:
+    dirs: list[str]
+
+
+@dataclass
 class ProtobufReplicationStage:
     nanopb: ProtobufNanoPbReplicationStage
     python: ProtobufPythonReplicationStage
     typescript: ProtobufTypescriptReplicationStage
     dart: ProtobufDartReplicationStage
+    rust: ProtobufRustReplicationStage
 
 
 @dataclass
