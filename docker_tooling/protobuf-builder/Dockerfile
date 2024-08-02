@@ -1,5 +1,5 @@
-# FROM ubuntu:18.04 as builder
-FROM ubuntu:22.04 as builder
+
+FROM ubuntu:24.04 as builder
 
 WORKDIR /usr/src/app
 RUN apt-get update && apt-get install -y python3 curl nano bash nodejs npm wget
@@ -37,10 +37,23 @@ RUN npm install @protobuf-ts/protoc @protobuf-ts/plugin
 RUN npx protoc || true
 
 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# Configure the PATH environment variable
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Add Rust to the PATH
+RUN . $HOME/.cargo/env
+
+# Verify the installation
+RUN rustc --version && cargo --version
+
+RUN cargo install protoc-gen-prost
+
+
 COPY pb-compilers-for-docker-image/compile-protobuf-files.sh .
 # COPY ts-compile-ts-protobuf-files.sh .
 
 CMD [ "./compile-protobuf-files.sh" ]
-# CMD [ "./compile-ts-protobuf-files.sh" ]
 #RUN [ "/usr/bin/bash" ]
 

@@ -1,5 +1,5 @@
-set IMAGE_NAME=devalbo/qroma-project-generator-tools:v1
-set CONTAINER_NAME=qroma-project-generator-tools-1
+set IMAGE_NAME=devalbo/qroma-project-generator-tools:v2
+set CONTAINER_NAME=qroma-project-generator-tools-2
 
 rmdir /S /Q protofiles-out
 
