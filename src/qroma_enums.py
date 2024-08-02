@@ -19,6 +19,7 @@ class ProtobufCompiler(str, Enum):
     python = "python"
     typescript = "typescript"
     dart = "dart"
+    rust = "rust"
 
 
 class ExitReason(Enum):
